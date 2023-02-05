@@ -1,0 +1,15 @@
+.board{
+    --grid-width: 120;
+    --grid-height: 160;
+    display: grid;
+    width: 10px;
+    height: 10px;
+    grid-template: repeat(var(--grid-width), 1fr) / repeat(var(--grid-height), 1fr);
+}
+
+.square{
+    display: grid;
+    place-items: center;
+}
+
+
