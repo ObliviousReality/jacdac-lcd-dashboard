@@ -1,5 +1,5 @@
-import { CONNECTION_STATE, createWebBus, injectDevTools } from "jacdac-ts";
-import { useBus, useChange } from "react-jacdac";
+import { CONNECTION_STATE, injectDevTools } from "jacdac-ts";
+import { useBus } from "react-jacdac";
 
 export default function Connect() {
 
@@ -7,7 +7,6 @@ export default function Connect() {
     const status = document.getElementById("statusbtn") as HTMLButtonElement;
     const devtools = document.getElementById("devt") as HTMLButtonElement;
     const bus = useBus();
-    const connected = useChange(bus, (_) => _.connected);
     const handleDevTools = () => injectDevTools(bus);
 
     bus.on(CONNECTION_STATE, () => {

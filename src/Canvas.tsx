@@ -82,12 +82,6 @@ const Canvas = (props) => {
         }
     }
 
-    const drawLine = ctx => {
-        for (let i = 0; i < 100; i++) {
-            ctx.fillRect(i * scaleFactor, i * scaleFactor, scaleFactor, scaleFactor);
-        }
-    }
-
     const setScale = (ctx, scale) => {
         if (scale <= 0 || scale > 10) {
             return;
@@ -113,18 +107,13 @@ const Canvas = (props) => {
 
         draw(context);
         if (pressure > 0) {
-            context.fillStyle = '#FFFFFF'
-            // context.canvas.width = context.canvas.width * 2;
             Log("Button Pressed.");
-            // setScale(context, 1);
+            ItemList.push(new RenderItem("C", 0, 255, 255));
+            ItemList.push(new RenderItem("L", 0, 0, 100, 100));
         }
-        else {
-            context.fillStyle = '#000000'
-            // context.canvas.width = context.canvas.width / 2;
-            // setScale(context, 5);
-        }
+
         // context.fillRect(10 * scaleFactor, 10 * scaleFactor, 1 * scaleFactor, 1 * scaleFactor);
-        drawLine(context);
+        // drawLine(context);
 
     }, [pressure]);
 
