@@ -1,8 +1,8 @@
-import { ButtonReg, CHANGE, EVENT, PACKET_SEND, SRV_BUTTON } from "jacdac-ts";
+import { ButtonReg, SRV_BUTTON } from "jacdac-ts";
 import * as React from "react";
 import { useRegister, useRegisterValue, useServices } from "react-jacdac";
-import './stylesheet.css';
 import Log from "./Logger.tsx";
+import './stylesheet.css';
 
 var initialFill = false;
 
@@ -14,7 +14,7 @@ var scaleFactor = 5;
 var context;
 var canvas;
 
-var ItemList: RenderItem[];
+var ItemList: RenderItem[] = [];
 
 
 class RenderItem {
@@ -30,13 +30,21 @@ class RenderItem {
         let d = this.data;
         switch (this.type) {
             case "L":
-                context.drawLine(d[0] * scale, d[1] * scale, d[2] * scale, d[3]);
+                context.strokeStyle = context.fillStyle;
+                context.lineWidth = scale;
+                context.beginPath();
+                context.moveTo(d[0] * scale, d[1] * scale);
+                context.lineTo(d[2] * scale, d[3] * scale);
+                context.stroke();
                 break;
             case "R":
-                context.drawRect(d[0] * scale, d[1] * scale, d[2] * scale, d[3]);
+                context.strokeStyle = context.fillStyle;
+                context.lineWidth = scale;
+                context.strokeRect(d[0] * scale, d[1] * scale, d[2] * scale, d[3] * scale);
                 break;
             case "C":
-                context.fillStyle(d[0], d[1], d[2]);
+                context.fillStyle = `rgb(${d[0]}, ${d[1]}, ${d[2]})`;
+                break;
         }
     }
 }
@@ -58,18 +66,19 @@ const Canvas = (props) => {
 
     scaleup.onclick = () => { setScale(context, scaleFactor + 1) }
     scaledown.onclick = () => { setScale(context, scaleFactor - 1) }
-    if (ItemList != undefined) {
+    if (ItemList !== undefined) {
+        ItemList.push(new RenderItem("C", 255, 0, 255));
+        ItemList.push(new RenderItem("L", 10, 10, 10, 100));
         ItemList.push(new RenderItem("C", 255, 255, 0));
-        ItemList.push(new RenderItem("K", 10, 10, 100, 100));
+        ItemList.push(new RenderItem("R", 50, 50, 100, 50));
     }
 
     const draw = ctx => {
-        Log("Drawing");
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
         ctx.fillStyle = '#000000'
         ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        if (ItemList != undefined) {
-            ItemList.forEach(() => draw(ctx));
+        if (ItemList !== undefined) {
+            ItemList.forEach((item) => item.draw(ctx, scaleFactor));
         }
     }
 
@@ -117,7 +126,7 @@ const Canvas = (props) => {
         // context.fillRect(10 * scaleFactor, 10 * scaleFactor, 1 * scaleFactor, 1 * scaleFactor);
         drawLine(context);
 
-    }, [pressure, draw]);
+    }, [pressure]);
 
 
 
