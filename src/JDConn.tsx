@@ -65,7 +65,6 @@ const JDConn = () => {
         let y = x.split(" ");
         let data = y[3];
         let newdata = data.match(/.{1,2}/g)?.toString().split(",");
-        // newdata?.forEach((item: any) => item = parseInt(item, 10));
         let outdata = newdata?.map((item) => parseInt(item, 16));
         switch (outdata[0]) {
             case 2:

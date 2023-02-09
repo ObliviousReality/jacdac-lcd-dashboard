@@ -35,7 +35,6 @@ export class RenderItem {
         let d = this.data;
         switch (this.type) {
             case "L":
-                context.strokeStyle = context.fillStyle;
                 context.lineWidth = scale;
                 context.beginPath();
                 context.moveTo(d[0] * scale, d[1] * scale);
@@ -43,12 +42,12 @@ export class RenderItem {
                 context.stroke();
                 break;
             case "R":
-                context.strokeStyle = context.fillStyle;
                 context.lineWidth = scale;
                 context.strokeRect(d[0] * scale, d[1] * scale, d[2] * scale, d[3] * scale);
                 break;
             case "C":
                 context.fillStyle = `rgb(${d[0]}, ${d[1]}, ${d[2]})`;
+                context.strokeStyle = context.fillStyle;
                 break;
             default:
                 Log("Not sure what to draw.");
