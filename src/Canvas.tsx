@@ -96,7 +96,7 @@ const Canvas = (props) => {
         ctx.canvas.width = width * scaleFactor;
         ctx.canvas.height = height * scaleFactor;
         scaletext.innerText = "Dimensions: " + width + "x" + height + ", with scaling factor " + scaleFactor;
-
+        refresh();
     }
 
     React.useEffect(() => {
