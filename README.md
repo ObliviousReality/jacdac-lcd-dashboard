@@ -12,7 +12,7 @@ Run command:
 
 `npm install`
 
-to install al required dependencies.
+to install all required dependencies.
 
 Then run command:
 

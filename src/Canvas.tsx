@@ -16,8 +16,13 @@ var canvas;
 
 var ItemList: RenderItem[] = [];
 
+export const addItem = (item: RenderItem) => {
+    ItemList.push(item);
+    refresh();
+}
 
-class RenderItem {
+
+export class RenderItem {
     type: string;
     data: number[]
 
@@ -45,7 +50,20 @@ class RenderItem {
             case "C":
                 context.fillStyle = `rgb(${d[0]}, ${d[1]}, ${d[2]})`;
                 break;
+            default:
+                Log("Not sure what to draw.");
+                break;
         }
+    }
+}
+
+const refresh = () => {
+    let ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.fillStyle = '#000000'
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    if (ItemList !== undefined) {
+        ItemList.forEach((item) => item.draw(ctx, scaleFactor));
     }
 }
 
@@ -62,25 +80,13 @@ const Canvas = (props) => {
 
     const scaleup = document.getElementById("scaleup") as HTMLButtonElement;
     const scaledown = document.getElementById("scaledown") as HTMLButtonElement;
+    const listitems = document.getElementById("listitems") as HTMLButtonElement;
     const scaletext = document.getElementById("scaletext") as HTMLParagraphElement;
 
     scaleup.onclick = () => { setScale(context, scaleFactor + 1) }
     scaledown.onclick = () => { setScale(context, scaleFactor - 1) }
-    if (ItemList !== undefined) {
-        ItemList.push(new RenderItem("C", 255, 0, 255));
-        ItemList.push(new RenderItem("L", 10, 10, 10, 100));
-        ItemList.push(new RenderItem("C", 255, 255, 0));
-        ItemList.push(new RenderItem("R", 50, 50, 100, 50));
-    }
+    listitems.onclick = () => { ItemList.forEach((item) => { Log(item.type); Log(item.data) }) };
 
-    const draw = ctx => {
-        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        ctx.fillStyle = '#000000'
-        ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        if (ItemList !== undefined) {
-            ItemList.forEach((item) => item.draw(ctx, scaleFactor));
-        }
-    }
 
     const setScale = (ctx, scale) => {
         if (scale <= 0 || scale > 10) {
@@ -90,7 +96,7 @@ const Canvas = (props) => {
         ctx.canvas.width = width * scaleFactor;
         ctx.canvas.height = height * scaleFactor;
         scaletext.innerText = "Dimensions: " + width + "x" + height + ", with scaling factor " + scaleFactor;
-        draw(ctx);
+
     }
 
     React.useEffect(() => {
@@ -99,22 +105,22 @@ const Canvas = (props) => {
         if (!initialFill) {
             context.canvas.width = width * scaleFactor;
             context.canvas.height = height * scaleFactor;
-            // context.fillStyle = '#000000'
-            // context.fillRect(0, 0, context.canvas.width, context.canvas.height);
-            // Log("Restting Canvas");
-            // // initialFill = true;
+            initialFill = true;
+            if (ItemList !== undefined) {
+                ItemList.push(new RenderItem("C", 255, 0, 255));
+                ItemList.push(new RenderItem("L", 10, 10, 10, 100));
+                ItemList.push(new RenderItem("C", 255, 255, 0));
+                ItemList.push(new RenderItem("R", 50, 50, 100, 50));
+            }
         }
 
-        draw(context);
         if (pressure > 0) {
             Log("Button Pressed.");
             ItemList.push(new RenderItem("C", 0, 255, 255));
             ItemList.push(new RenderItem("L", 0, 0, 100, 100));
         }
 
-        // context.fillRect(10 * scaleFactor, 10 * scaleFactor, 1 * scaleFactor, 1 * scaleFactor);
-        // drawLine(context);
-
+        refresh();
     }, [pressure]);
 
 
