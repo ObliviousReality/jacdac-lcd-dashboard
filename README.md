@@ -26,10 +26,13 @@ A scaleable representation of an LCD, currently fixed to the dimensions 160x120 
 
 Currently this has no connection to a Jacdac LCD Module, and this is the next thing to be added, but this is made harder as the current Jacdac Typescript hooks do not know the module exists.
 
-For the minute, functionality is either inbuilt, with two set shapes pre-drawn onto the screen, or from the connection of a standard Jacdac button, which allows a third shape to be drawn when pressed.
+Functionality can be obtained by connected a microbit to the system attached to a Jacdac Rotary Encoder. This device choice is temporary and may be changed later.
+
+Once the rotary button is connected, a set of buttons will appear below the screen. When pressed, these will send commands to the rotary button emulating the commands that the future LCD module will support. The rotary encoder does not accept any commands internally, so this does not affect the module. The code is also watching for commands sent to this device, and they are intercepted and used internally as well as being sent to the module. 
+
+This creates a system which emulates a real system with a real LCD module - the main difference being the commands in this emulation are sent from HTML buttons instead of from code on a brain like the Microbit. A possible next step could be sending these commands directly from a microbit program instead of HTML buttons. 
 
 ## To Do
 
 - Add more display primitives; currently all that is supported is lines and rectangles
-- Add a way of reading commands sent to a Jacdac LCD Module
-- Take these commands and recreate them within this digital twin.
+- Send the commands from a microbit program, not HTML buttons. 
