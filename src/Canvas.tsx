@@ -16,6 +16,11 @@ var canvas;
 
 var ItemList: RenderItem[] = [];
 
+var filled: boolean = false;
+
+var drawWidth: number = 1;
+
+
 export const addItem = (item: RenderItem) => {
     ItemList.push(item);
     refresh();
@@ -49,20 +54,49 @@ export class RenderItem {
     draw(context, scale) {
         let d = this.data;
         switch (this.type) {
+            case RenderTypes.P:
+                context.strokeRect(d[0] * scale, d[1] * scale, scale, scale);
+                break;
+            case RenderTypes.C:
+                context.fillStyle = `rgb(${d[0]}, ${d[1]}, ${d[2]})`;
+                context.strokeStyle = context.fillStyle;
+                break;
+            case RenderTypes.F:
+                filled = d[0] ? true : false;
+                break;
+            case RenderTypes.W:
+                drawWidth = d[0] * scale;
+                context.lineWidth = drawWidth;
+                break;
+            case RenderTypes.R:
+                context.lineWidth = drawWidth * scale;
+                if (filled)
+                    context.fillRect(d[0] * scale, d[1] * scale, d[2] * scale, d[3] * scale);
+                else
+                    context.strokeRect(d[0] * scale, d[1] * scale, d[2] * scale, d[3] * scale);
+                break;
             case RenderTypes.L:
-                context.lineWidth = scale;
+                context.lineWidth = drawWidth * scale;
                 context.beginPath();
                 context.moveTo(d[0] * scale, d[1] * scale);
                 context.lineTo(d[2] * scale, d[3] * scale);
                 context.stroke();
                 break;
-            case RenderTypes.R:
-                context.lineWidth = scale;
-                context.strokeRect(d[0] * scale, d[1] * scale, d[2] * scale, d[3] * scale);
+            case RenderTypes.O:
+                if (filled) {
+                    Log("Draw Filled Circle");
+                }
+                else {
+                    Log("Draw Unfilled Circle");
+                }
                 break;
-            case RenderTypes.C:
-                context.fillStyle = `rgb(${d[0]}, ${d[1]}, ${d[2]})`;
-                context.strokeStyle = context.fillStyle;
+            case RenderTypes.T:
+                if (filled) {
+                    Log("Filled Rotated Rectange");
+                }
+                else{
+                    Log("Unfilled Rotated Rectange");
+                }
                 break;
             default:
                 Log("Not sure what to draw.");
@@ -102,7 +136,7 @@ const Canvas = (props) => {
     listitems.onclick = () => { ItemList.forEach((item) => { Log(item.type); Log(item.data) }) };
 
 
-    const setScale = (ctx, scale) => {
+    const setScale = (ctx, scale: number) => {
         if (scale <= 0 || scale > 10) {
             return;
         }

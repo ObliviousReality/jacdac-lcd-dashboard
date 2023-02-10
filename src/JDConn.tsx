@@ -1,8 +1,7 @@
 import { PACKET_SEND, SRV_ROTARY_ENCODER } from "jacdac-ts";
 import * as React from "react";
 import { useServices } from "react-jacdac";
-import { RenderTypes } from "./Canvas";
-import { RenderItem, addItem } from "./Canvas.tsx";
+import { RenderItem, addItem, RenderTypes } from "./Canvas.tsx";
 import Log from "./Logger.tsx";
 
 const JDConn = () => {
@@ -59,6 +58,25 @@ const JDConn = () => {
         rotService.sendCmdAsync(10, arr, false);
     }
 
+    const setFill = (fill: boolean) => {
+        let arr = new Uint8Array(2);
+        arr[0] = RenderTypes.F;
+        arr[1] = fill ? 1 : 0;
+        rotService.sendCmdAsync(10, arr, false);
+    }
+
+    var fillBtn = document.getElementById("fill") as HTMLButtonElement;
+    var unFillBtn = document.getElementById("notfill") as HTMLButtonElement;
+    if (fillBtn !== null) {
+        fillBtn.onclick = () => {
+            setFill(true);
+        }
+
+        unFillBtn.onclick = () => {
+            setFill(false);
+        }
+    }
+
 
     const handlePacket = (pkt) => {
         Log("Packet Received: " + pkt);
@@ -68,9 +86,25 @@ const JDConn = () => {
         let newdata = data.match(/.{1,2}/g)?.toString().split(",");
         let outdata = newdata?.map((item) => parseInt(item, 16));
         switch (outdata[0]) {
+            case RenderTypes.X:
+                Log("Clear");
+                //
+                break;
+            case RenderTypes.P:
+                Log("Setting pixel");
+                addItem(new RenderItem(RenderTypes.P, outdata[2], outdata[3]));
+                break;
             case RenderTypes.C:
                 Log("Setting colour");
                 addItem(new RenderItem(RenderTypes.C, outdata[1], outdata[2], outdata[3]));
+                break;
+            case RenderTypes.F:
+                Log("Setting filled status");
+                addItem(new RenderItem(RenderTypes.F, outdata[1]));
+                break;
+            case RenderTypes.W:
+                Log("Setting fill width");
+                addItem(new RenderItem(RenderTypes.W, outdata[1]));
                 break;
             case RenderTypes.R:
                 Log("Rectangle!");
@@ -79,6 +113,26 @@ const JDConn = () => {
             case RenderTypes.L:
                 Log("Line");
                 addItem(new RenderItem(RenderTypes.L, outdata[2], outdata[3], outdata[4], outdata[5]));
+                break;
+            case RenderTypes.O:
+                Log("Drawing Circle");
+                addItem(new RenderItem(RenderTypes.O, outdata[2], outdata[3], outdata[4]));
+                break;
+            case RenderTypes.U:
+                Log("Update");
+                //
+                break;
+            case RenderTypes.D:
+                Log("Delete");
+                //
+                break;
+            case RenderTypes.T:
+                Log("Rotated Rectange");
+                addItem(new RenderItem(RenderTypes.T, outdata[2], outdata[3], outdata[4], outdata[5], outdata[6]));
+                break;
+            case RenderTypes.I:
+                Log("Get List");
+                //
                 break;
             default:
                 Log("Not sure");
@@ -99,6 +153,10 @@ const JDConn = () => {
                     <button onClick={setRed}>Red</button>
                     <button onClick={setGreen}>Green</button>
                     <button onClick={setBlue}>Blue</button>
+                </div>
+                <div>
+                    <button id="fill">Set Filled</button>
+                    <button id="notfill">Set Empty</button>
                 </div>
             </div>
         )
