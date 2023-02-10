@@ -21,12 +21,27 @@ export const addItem = (item: RenderItem) => {
     refresh();
 }
 
+export enum RenderTypes {
+    X,
+    P,
+    C,
+    F,
+    W,
+    R,
+    L,
+    O,
+    U,
+    D,
+    T,
+    I = 15
+}
+
 
 export class RenderItem {
-    type: string;
+    type: number;
     data: number[]
 
-    constructor(t: string, ...params: number[]) {
+    constructor(t: number, ...params: number[]) {
         this.type = t;
         this.data = params;
     }
@@ -34,18 +49,18 @@ export class RenderItem {
     draw(context, scale) {
         let d = this.data;
         switch (this.type) {
-            case "L":
+            case RenderTypes.L:
                 context.lineWidth = scale;
                 context.beginPath();
                 context.moveTo(d[0] * scale, d[1] * scale);
                 context.lineTo(d[2] * scale, d[3] * scale);
                 context.stroke();
                 break;
-            case "R":
+            case RenderTypes.R:
                 context.lineWidth = scale;
                 context.strokeRect(d[0] * scale, d[1] * scale, d[2] * scale, d[3] * scale);
                 break;
-            case "C":
+            case RenderTypes.C:
                 context.fillStyle = `rgb(${d[0]}, ${d[1]}, ${d[2]})`;
                 context.strokeStyle = context.fillStyle;
                 break;
@@ -106,17 +121,17 @@ const Canvas = (props) => {
             context.canvas.height = height * scaleFactor;
             initialFill = true;
             if (ItemList !== undefined) {
-                ItemList.push(new RenderItem("C", 255, 0, 255));
-                ItemList.push(new RenderItem("L", 10, 10, 10, 100));
-                ItemList.push(new RenderItem("C", 255, 255, 0));
-                ItemList.push(new RenderItem("R", 50, 50, 100, 50));
+                ItemList.push(new RenderItem(RenderTypes.C, 255, 0, 255));
+                ItemList.push(new RenderItem(RenderTypes.L, 10, 10, 10, 100));
+                ItemList.push(new RenderItem(RenderTypes.C, 255, 255, 0));
+                ItemList.push(new RenderItem(RenderTypes.R, 50, 50, 100, 50));
             }
         }
 
         if (pressure > 0) {
             Log("Button Pressed.");
-            ItemList.push(new RenderItem("C", 0, 255, 255));
-            ItemList.push(new RenderItem("L", 0, 0, 100, 100));
+            ItemList.push(new RenderItem(RenderTypes.C, 0, 255, 255));
+            ItemList.push(new RenderItem(RenderTypes.L, 0, 0, 100, 100));
         }
 
         refresh();

@@ -1,6 +1,7 @@
 import { PACKET_SEND, SRV_ROTARY_ENCODER } from "jacdac-ts";
 import * as React from "react";
 import { useServices } from "react-jacdac";
+import { RenderTypes } from "./Canvas";
 import { RenderItem, addItem } from "./Canvas.tsx";
 import Log from "./Logger.tsx";
 
@@ -10,7 +11,7 @@ const JDConn = () => {
 
     const drawRect = () => {
         let arr = new Uint8Array(6);
-        arr[0] = 5;
+        arr[0] = RenderTypes.R;
         arr[1] = 1;
         arr[2] = 80;
         arr[3] = 60;
@@ -22,7 +23,7 @@ const JDConn = () => {
 
     const drawLine = () => {
         let arr = new Uint8Array(6);
-        arr[0] = 6;
+        arr[0] = RenderTypes.L;
         arr[1] = 2;
         arr[2] = 120;
         arr[3] = 10;
@@ -33,7 +34,7 @@ const JDConn = () => {
 
     const setRed = () => {
         let arr = new Uint8Array(4);
-        arr[0] = 2;
+        arr[0] = RenderTypes.C;
         arr[1] = 255;
         arr[2] = 0;
         arr[3] = 0;
@@ -42,7 +43,7 @@ const JDConn = () => {
 
     const setGreen = () => {
         let arr = new Uint8Array(4);
-        arr[0] = 2;
+        arr[0] = RenderTypes.C;
         arr[1] = 0;
         arr[2] = 255;
         arr[3] = 0;
@@ -51,7 +52,7 @@ const JDConn = () => {
 
     const setBlue = () => {
         let arr = new Uint8Array(4);
-        arr[0] = 2;
+        arr[0] = RenderTypes.C;
         arr[1] = 0;
         arr[2] = 0;
         arr[3] = 255;
@@ -67,17 +68,17 @@ const JDConn = () => {
         let newdata = data.match(/.{1,2}/g)?.toString().split(",");
         let outdata = newdata?.map((item) => parseInt(item, 16));
         switch (outdata[0]) {
-            case 2:
+            case RenderTypes.C:
                 Log("Setting colour");
-                addItem(new RenderItem("C", outdata[1], outdata[2], outdata[3]));
+                addItem(new RenderItem(RenderTypes.C, outdata[1], outdata[2], outdata[3]));
                 break;
-            case 5:
+            case RenderTypes.R:
                 Log("Rectangle!");
-                addItem(new RenderItem("R", outdata[2], outdata[3], outdata[4], outdata[5]));
+                addItem(new RenderItem(RenderTypes.R, outdata[2], outdata[3], outdata[4], outdata[5]));
                 break;
-            case 6:
+            case RenderTypes.L:
                 Log("Line");
-                addItem(new RenderItem("L", outdata[2], outdata[3], outdata[4], outdata[5]));
+                addItem(new RenderItem(RenderTypes.L, outdata[2], outdata[3], outdata[4], outdata[5]));
                 break;
             default:
                 Log("Not sure");
