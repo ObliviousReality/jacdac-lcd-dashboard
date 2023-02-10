@@ -65,8 +65,8 @@ export class RenderItem {
                 filled = d[0] ? true : false;
                 break;
             case RenderTypes.W:
-                drawWidth = d[0] * scale;
-                context.lineWidth = drawWidth;
+                drawWidth = d[0];
+                context.lineWidth = drawWidth * scale;
                 break;
             case RenderTypes.R:
                 context.lineWidth = drawWidth * scale;
@@ -143,6 +143,7 @@ const Canvas = (props) => {
         scaleFactor = scale;
         ctx.canvas.width = width * scaleFactor;
         ctx.canvas.height = height * scaleFactor;
+        context.lineWidth = drawWidth * scale;
         scaletext.innerText = "Dimensions: " + width + "x" + height + ", with scaling factor " + scaleFactor;
         refresh();
     }
