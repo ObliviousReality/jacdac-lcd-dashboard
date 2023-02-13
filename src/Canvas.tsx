@@ -44,57 +44,63 @@ export enum RenderTypes {
 
 export class RenderItem {
     type: number;
-    data: number[]
+    id: number;
+    data: number[];
 
     constructor(t: number, ...params: number[]) {
         this.type = t;
         this.data = params;
+        this.id = params[0];
     }
 
     draw(context, scale) {
         let d = this.data;
         switch (this.type) {
             case RenderTypes.P:
-                context.strokeRect(d[0] * scale, d[1] * scale, scale, scale);
+                context.strokeRect(d[1] * scale, d[2] * scale, scale, scale);
                 break;
             case RenderTypes.C:
-                context.fillStyle = `rgb(${d[0]}, ${d[1]}, ${d[2]})`;
+                context.fillStyle = `rgb(${d[1]}, ${d[2]}, ${d[3]})`;
                 context.strokeStyle = context.fillStyle;
                 break;
             case RenderTypes.F:
-                filled = d[0] ? true : false;
+                filled = d[1] ? true : false;
                 break;
             case RenderTypes.W:
-                drawWidth = d[0];
+                drawWidth = d[1];
                 context.lineWidth = drawWidth * scale;
                 break;
             case RenderTypes.R:
                 context.lineWidth = drawWidth * scale;
                 if (filled)
-                    context.fillRect(d[0] * scale, d[1] * scale, d[2] * scale, d[3] * scale);
+                    context.fillRect(d[1] * scale, d[2] * scale, d[3] * scale, d[4] * scale);
                 else
-                    context.strokeRect(d[0] * scale, d[1] * scale, d[2] * scale, d[3] * scale);
+                    context.strokeRect(d[1] * scale, d[2] * scale, d[3] * scale, d[4] * scale);
                 break;
             case RenderTypes.L:
                 context.lineWidth = drawWidth * scale;
                 context.beginPath();
-                context.moveTo(d[0] * scale, d[1] * scale);
-                context.lineTo(d[2] * scale, d[3] * scale);
+                context.moveTo(d[1] * scale, d[2] * scale);
+                context.lineTo(d[3] * scale, d[4] * scale);
                 context.stroke();
                 break;
             case RenderTypes.O:
+                context.beginPath();
+                context.arc(d[1], d[2], d[3], 0, 2 * Math.PI);
                 if (filled) {
                     Log("Draw Filled Circle");
+                    context.fill();
                 }
                 else {
                     Log("Draw Unfilled Circle");
+                    context.stroke();
                 }
                 break;
             case RenderTypes.T:
                 if (filled) {
                     Log("Filled Rotated Rectange");
                 }
-                else{
+                else {
                     Log("Unfilled Rotated Rectange");
                 }
                 break;
@@ -115,7 +121,26 @@ const refresh = () => {
     }
 }
 
+export const clear = () => {
+    ItemList = [];
+    refresh();
+}
 
+export const del = (id: number) => {
+    for (let i = 0; i < ItemList.length; i++) {
+        if (id == ItemList[i].id) {
+            ItemList.splice(i, 1);
+        }
+    }
+}
+
+export const update = (id: number, ...params: number[]) => {
+    for (let i = 0; i < ItemList.length; i++) {
+        if (id == ItemList[i].id) {
+            ItemList[i] = new RenderItem(params.shift(), params); // Needs work and testing.
+        }
+    }
+}
 
 const Canvas = (props) => {
     const canvasRef = React.useRef(null);
@@ -156,10 +181,10 @@ const Canvas = (props) => {
             context.canvas.height = height * scaleFactor;
             initialFill = true;
             if (ItemList !== undefined) {
-                ItemList.push(new RenderItem(RenderTypes.C, 255, 0, 255));
-                ItemList.push(new RenderItem(RenderTypes.L, 10, 10, 10, 100));
-                ItemList.push(new RenderItem(RenderTypes.C, 255, 255, 0));
-                ItemList.push(new RenderItem(RenderTypes.R, 50, 50, 100, 50));
+                ItemList.push(new RenderItem(RenderTypes.C, 0, 255, 0, 255));
+                ItemList.push(new RenderItem(RenderTypes.L, 1, 10, 10, 10, 100));
+                ItemList.push(new RenderItem(RenderTypes.C, 2, 255, 255, 0));
+                ItemList.push(new RenderItem(RenderTypes.R, 3, 50, 50, 100, 50));
             }
         }
 
