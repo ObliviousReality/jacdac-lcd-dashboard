@@ -86,13 +86,11 @@ export class RenderItem {
                 break;
             case RenderTypes.O:
                 context.beginPath();
-                context.arc(d[1], d[2], d[3], 0, 2 * Math.PI);
+                context.arc(d[1] * scale, d[2] * scale, d[3] * scale, 0, 2 * Math.PI);
                 if (filled) {
-                    Log("Draw Filled Circle");
                     context.fill();
                 }
                 else {
-                    Log("Draw Unfilled Circle");
                     context.stroke();
                 }
                 break;
@@ -115,6 +113,7 @@ const refresh = () => {
     let ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     ctx.fillStyle = '#000000'
+    filled = false;
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     if (ItemList !== undefined) {
         ItemList.forEach((item) => item.draw(ctx, scaleFactor));
@@ -130,6 +129,7 @@ export const del = (id: number) => {
     for (let i = 0; i < ItemList.length; i++) {
         if (id == ItemList[i].id) {
             ItemList.splice(i, 1);
+            break;
         }
     }
 }
@@ -138,6 +138,7 @@ export const update = (id: number, ...params: number[]) => {
     for (let i = 0; i < ItemList.length; i++) {
         if (id == ItemList[i].id) {
             ItemList[i] = new RenderItem(params.shift(), params); // Needs work and testing.
+            break;
         }
     }
 }
@@ -190,8 +191,8 @@ const Canvas = (props) => {
 
         if (pressure > 0) {
             Log("Button Pressed.");
-            ItemList.push(new RenderItem(RenderTypes.C, 0, 255, 255));
-            ItemList.push(new RenderItem(RenderTypes.L, 0, 0, 100, 100));
+            ItemList.push(new RenderItem(RenderTypes.C, 4, 0, 255, 255));
+            ItemList.push(new RenderItem(RenderTypes.L, 5, 0, 0, 100, 100));
         }
 
         refresh();

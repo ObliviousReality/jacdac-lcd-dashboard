@@ -13,3 +13,23 @@
 }
 
 
+.redButton {
+    background-color: red;
+    border-color: red;
+}
+
+.greenButton {
+    background-color: green;
+    border-color: green;
+}
+
+.blueButton {
+    background-color: blue;
+    border-color: blue;
+}
+
+.emptyButton {
+    background-color: transparent;
+    color: black;
+}
+
