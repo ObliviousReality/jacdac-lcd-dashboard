@@ -6,6 +6,7 @@ import Connect from "./connect.tsx";
 import Canvas from "./Canvas.tsx";
 import Log from "./Logger.tsx"
 import JDConn from "./JDConn.tsx";
+import JDSend from "./JDSend.tsx";
 
 export default function App() {
     return (
@@ -13,6 +14,7 @@ export default function App() {
             <Connect />
             <Canvas />
             <Log />
+            <JDSend />
             <JDConn />
             {/* <Program /> */}
 
