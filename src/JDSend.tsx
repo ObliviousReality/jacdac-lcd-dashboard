@@ -13,77 +13,83 @@ export const JDSend = () => {
 
 
     const drawRect = () => {
-        let arr = new Uint8Array(6);
+        let arr = new Uint8Array(7);
         arr[0] = RenderTypes.R;
         arr[1] = 1;
         arr[2] = 80;
         arr[3] = 60;
         arr[4] = 10;
         arr[5] = 40;
-
+        arr[6] = 1;
         rotService.sendCmdAsync(10, arr, false)
     }
 
     const drawLine = () => {
-        let arr = new Uint8Array(6);
+        let arr = new Uint8Array(7);
         arr[0] = RenderTypes.L;
         arr[1] = 2;
         arr[2] = 120;
         arr[3] = 10;
         arr[4] = 10;
         arr[5] = 120;
+        arr[6] = 0;
         rotService.sendCmdAsync(10, arr, false);
     }
 
     const drawCircle = () => {
-        let arr = new Uint8Array(5);
+        let arr = new Uint8Array(6);
         arr[0] = RenderTypes.O;
         arr[1] = 3;
         arr[2] = 80;
         arr[3] = 30;
         arr[4] = 10;
+        arr[5] = 0;
         rotService.sendCmdAsync(10, arr, false);
     }
 
     const drawRandomLine = () => {
-        let arr = new Uint8Array(6);
+        let arr = new Uint8Array(7);
         arr[0] = RenderTypes.L;
         arr[1] = 2;
         arr[2] = getRndInteger(0, 160);
         arr[3] = getRndInteger(0, 120);
         arr[4] = getRndInteger(0, 160);
         arr[5] = getRndInteger(0, 120);
+        arr[6] = 0;
         rotService.sendCmdAsync(10, arr, false);
     }
 
     const drawRandomRect = () => {
-        let arr = new Uint8Array(6);
+        let arr = new Uint8Array(7);
         arr[0] = RenderTypes.R;
         arr[1] = 1;
         arr[2] = getRndInteger(0, 160);
         arr[3] = getRndInteger(0, 120);
         arr[4] = getRndInteger(0, 160 - arr[2]);
         arr[5] = getRndInteger(0, 120 - arr[3]);
+        arr[6] = 0;
         rotService.sendCmdAsync(10, arr, false)
     }
 
     const drawRandomCircle = () => {
-        let arr = new Uint8Array(5);
+        let arr = new Uint8Array(6);
         arr[0] = RenderTypes.O;
         arr[1] = 3;
         arr[2] = getRndInteger(0, 160);
         arr[3] = getRndInteger(0, 120);
         arr[4] = getRndInteger(1, 50);
+        arr[5] = 0;
         rotService.sendCmdAsync(10, arr, false);
     }
 
     const setColour = (r: number, g: number, b: number) => {
-        let arr = new Uint8Array(5);
+        let arr = new Uint8Array(6);
         arr[0] = RenderTypes.C;
         arr[1] = 1;
         arr[2] = r;
         arr[3] = g;
         arr[4] = b;
+        arr[5] = 0;
         rotService.sendCmdAsync(10, arr, false);
     }
 
@@ -104,10 +110,11 @@ export const JDSend = () => {
     }
 
     const setFill = (fill: boolean) => {
-        let arr = new Uint8Array(3);
+        let arr = new Uint8Array(4);
         arr[0] = RenderTypes.F;
         arr[1] = 100;
         arr[2] = fill ? 1 : 0;
+        arr[3] = 0;
         rotService.sendCmdAsync(10, arr, false);
     }
 

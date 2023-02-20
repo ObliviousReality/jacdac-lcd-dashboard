@@ -43,50 +43,72 @@ export enum RenderTypes {
 
 
 export class RenderItem {
-    type: number;
-    id: number;
+    type: number | undefined;
+    id: number | undefined;
+    z: number | undefined;
     data: number[];
+    colour: string;
+    width: number;
+    filled: boolean;
 
-    constructor(t: number, ...params: number[]) {
-        this.type = t;
+    next: RenderItem | undefined = undefined;
+
+    constructor(params: number[]) {
+        if (params.length <= 3) {
+            return;
+        }
+        this.type = params.shift();
+        this.id = params.shift();
+        this.z = params.pop();
         this.data = params;
-        this.id = params[0];
+    }
+
+    getNext() {
+        return this.next;
+    }
+
+    setNext(newNext: RenderItem) {
+        this.next = newNext;
+    }
+
+    clearNext() {
+        this.next = undefined;
     }
 
     draw(context, scale) {
         let d = this.data;
         switch (this.type) {
             case RenderTypes.P:
-                context.strokeRect(d[1] * scale, d[2] * scale, scale, scale);
+                context.strokeRect(d[0] * scale, d[1] * scale, scale, scale);
                 break;
             case RenderTypes.C:
-                context.fillStyle = `rgb(${d[1]}, ${d[2]}, ${d[3]})`;
+                context.fillStyle = `rgb(${d[0]}, ${d[1]}, ${d[2]})`;
                 context.strokeStyle = context.fillStyle;
                 break;
             case RenderTypes.F:
-                filled = d[1] ? true : false;
+                filled = d[0] ? true : false;
                 break;
             case RenderTypes.W:
-                drawWidth = d[1];
+                drawWidth = d[0];
                 context.lineWidth = drawWidth * scale;
                 break;
             case RenderTypes.R:
                 context.lineWidth = drawWidth * scale;
                 if (filled)
-                    context.fillRect(d[1] * scale, d[2] * scale, d[3] * scale, d[4] * scale);
+                    context.fillRect(d[0] * scale, d[1] * scale, d[2] * scale, d[3] * scale);
                 else
-                    context.strokeRect(d[1] * scale, d[2] * scale, d[3] * scale, d[4] * scale);
+                    context.strokeRect(d[0] * scale, d[1] * scale, d[2] * scale, d[3] * scale);
                 break;
             case RenderTypes.L:
                 context.lineWidth = drawWidth * scale;
                 context.beginPath();
-                context.moveTo(d[1] * scale, d[2] * scale);
-                context.lineTo(d[3] * scale, d[4] * scale);
+                context.moveTo(d[0] * scale, d[1] * scale);
+                context.lineTo(d[2] * scale, d[3] * scale);
                 context.stroke();
                 break;
             case RenderTypes.O:
                 context.beginPath();
-                context.arc(d[1] * scale, d[2] * scale, d[3] * scale, 0, 2 * Math.PI);
+                context.arc(d[0] * scale, d[1] * scale, d[2] * scale, 0, 2 * Math.PI);
                 if (filled) {
                     context.fill();
                 }
@@ -137,7 +159,7 @@ export const del = (id: number) => {
 export const update = (id: number, ...params: number[]) => {
     for (let i = 0; i < ItemList.length; i++) {
         if (id == ItemList[i].id) {
-            ItemList[i] = new RenderItem(params.shift(), params); // Needs work and testing.
+            ItemList[i] = new RenderItem(params); // Needs work and testing.
             break;
         }
     }
@@ -159,7 +181,7 @@ const Canvas = (props) => {
 
     scaleup.onclick = () => { setScale(context, scaleFactor + 1) }
     scaledown.onclick = () => { setScale(context, scaleFactor - 1) }
-    listitems.onclick = () => { ItemList.forEach((item) => { Log(item.type); Log(item.data) }) };
+    listitems.onclick = () => { ItemList.forEach((item) => { Log(item.type.toString()); Log(item.data) }) };
 
 
     const setScale = (ctx, scale: number) => {
@@ -182,17 +204,17 @@ const Canvas = (props) => {
             context.canvas.height = height * scaleFactor;
             initialFill = true;
             if (ItemList !== undefined) {
-                ItemList.push(new RenderItem(RenderTypes.C, 0, 255, 0, 255));
-                ItemList.push(new RenderItem(RenderTypes.L, 1, 10, 10, 10, 100));
-                ItemList.push(new RenderItem(RenderTypes.C, 2, 255, 255, 0));
-                ItemList.push(new RenderItem(RenderTypes.R, 3, 50, 50, 100, 50));
+                ItemList.push(new RenderItem([RenderTypes.C, 0, 255, 0, 255, 0]));
+                ItemList.push(new RenderItem([RenderTypes.L, 1, 10, 10, 10, 100, 0]));
+                ItemList.push(new RenderItem([RenderTypes.C, 2, 255, 255, 0, 0]));
+                ItemList.push(new RenderItem([RenderTypes.R, 3, 50, 50, 100, 50, 0]));
             }
         }
 
         if (pressure > 0) {
             Log("Button Pressed.");
-            ItemList.push(new RenderItem(RenderTypes.C, 4, 0, 255, 255));
-            ItemList.push(new RenderItem(RenderTypes.L, 5, 0, 0, 100, 100));
+            ItemList.push(new RenderItem([RenderTypes.C, 4, 0, 255, 255, 0]));
+            ItemList.push(new RenderItem([RenderTypes.L, 5, 0, 0, 100, 100, 0]));
         }
 
         refresh();

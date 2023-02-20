@@ -26,31 +26,31 @@ const JDConn = () => {
                 break;
             case RenderTypes.P:
                 Log("Setting pixel");
-                addItem(new RenderItem(RenderTypes.P, outdata[1], outdata[2], outdata[3]));
+                addItem(new RenderItem(outdata));
                 break;
             case RenderTypes.C:
                 Log("Setting colour");
-                addItem(new RenderItem(RenderTypes.C, outdata[1], outdata[2], outdata[3], outdata[4]));
+                addItem(new RenderItem(outdata));
                 break;
             case RenderTypes.F:
                 Log("Setting filled status");
-                addItem(new RenderItem(RenderTypes.F, outdata[1], outdata[2]));
+                addItem(new RenderItem(outdata));
                 break;
             case RenderTypes.W:
                 Log("Setting fill width");
-                addItem(new RenderItem(RenderTypes.W, outdata[1], outdata[2]));
+                addItem(new RenderItem(outdata));
                 break;
             case RenderTypes.R:
                 Log("Rectangle!");
-                addItem(new RenderItem(RenderTypes.R, outdata[1], outdata[2], outdata[3], outdata[4], outdata[5]));
+                addItem(new RenderItem(outdata));
                 break;
             case RenderTypes.L:
                 Log("Line");
-                addItem(new RenderItem(RenderTypes.L, outdata[1], outdata[2], outdata[3], outdata[4], outdata[5]));
+                addItem(new RenderItem(outdata));
                 break;
             case RenderTypes.O:
                 Log("Drawing Circle");
-                addItem(new RenderItem(RenderTypes.O, outdata[1], outdata[2], outdata[3], outdata[4]));
+                addItem(new RenderItem(outdata));
                 break;
             case RenderTypes.U:
                 Log("Update");
@@ -62,7 +62,7 @@ const JDConn = () => {
                 break;
             case RenderTypes.T:
                 Log("Rotated Rectange");
-                addItem(new RenderItem(RenderTypes.T, outdata[1], outdata[2], outdata[3], outdata[4], outdata[5], outdata[6]));
+                addItem(new RenderItem(outdata));
                 break;
             case RenderTypes.I:
                 Log("Get List");
