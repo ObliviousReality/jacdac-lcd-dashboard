@@ -83,13 +83,12 @@ export const JDSend = () => {
     }
 
     const setColour = (r: number, g: number, b: number) => {
-        let arr = new Uint8Array(6);
+        let arr = new Uint8Array(5);
         arr[0] = RenderTypes.C;
         arr[1] = 1;
         arr[2] = r;
         arr[3] = g;
         arr[4] = b;
-        arr[5] = 0;
         rotService.sendCmdAsync(10, arr, false);
     }
 
@@ -110,11 +109,10 @@ export const JDSend = () => {
     }
 
     const setFill = (fill: boolean) => {
-        let arr = new Uint8Array(4);
+        let arr = new Uint8Array(3);
         arr[0] = RenderTypes.F;
         arr[1] = 100;
         arr[2] = fill ? 1 : 0;
-        arr[3] = 0;
         rotService.sendCmdAsync(10, arr, false);
     }
 

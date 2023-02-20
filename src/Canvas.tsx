@@ -16,9 +16,11 @@ var canvas;
 
 var ItemList: RenderItem[] = [];
 
-var filled: boolean = false;
+var globalColour: number[] = [];
 
-var drawWidth: number = 1;
+var globalFilled: boolean = false;
+
+var globalDrawWidth: number = 1;
 
 
 export const addItem = (item: RenderItem) => {
@@ -47,20 +49,33 @@ export class RenderItem {
     id: number | undefined;
     z: number | undefined;
     data: number[];
-    colour: string;
+    colour: number[] = [];
     width: number;
     filled: boolean;
 
     next: RenderItem | undefined = undefined;
 
     constructor(params: number[]) {
-        if (params.length <= 3) {
-            return;
-        }
+
         this.type = params.shift();
         this.id = params.shift();
-        this.z = params.pop();
+
         this.data = params;
+
+
+        this.colour.push(globalColour[0]);
+        this.colour.push(globalColour[1]);
+        this.colour.push(globalColour[2]);
+
+        this.filled = globalFilled;
+        this.width = globalDrawWidth;
+
+        if ([RenderTypes.C, RenderTypes.W, RenderTypes.F].find(e => e == this.type) == undefined) {
+            this.z = params.pop();
+        }
+        else {
+            this.draw(context, scaleFactor);
+        }
     }
 
     getNext() {
@@ -77,30 +92,33 @@ export class RenderItem {
 
     draw(context, scale) {
         let d = this.data;
+        context.fillStyle = `rgb(${this.colour[0]}, ${this.colour[1]}, ${this.colour[2]})`;
+        context.strokeStyle = `rgb(${this.colour[0]}, ${this.colour[1]}, ${this.colour[2]})`;
+        context.lineWidth = this.width * scale;
         switch (this.type) {
             case RenderTypes.P:
                 context.strokeRect(d[0] * scale, d[1] * scale, scale, scale);
                 break;
             case RenderTypes.C:
-                context.fillStyle = `rgb(${d[0]}, ${d[1]}, ${d[2]})`;
-                context.strokeStyle = context.fillStyle;
+                globalColour[0] = d[0];
+                globalColour[1] = d[1];
+                globalColour[2] = d[2];
                 break;
             case RenderTypes.F:
-                filled = d[0] ? true : false;
+                globalFilled = d[0] ? true : false;
                 break;
             case RenderTypes.W:
-                drawWidth = d[0];
-                context.lineWidth = drawWidth * scale;
+                globalDrawWidth = d[0];
                 break;
             case RenderTypes.R:
-                context.lineWidth = drawWidth * scale;
-                if (filled)
+                if (this.filled) {
                     context.fillRect(d[0] * scale, d[1] * scale, d[2] * scale, d[3] * scale);
-                else
+                }
+                else {
                     context.strokeRect(d[0] * scale, d[1] * scale, d[2] * scale, d[3] * scale);
+                }
                 break;
             case RenderTypes.L:
-                context.lineWidth = drawWidth * scale;
                 context.beginPath();
                 context.moveTo(d[0] * scale, d[1] * scale);
                 context.lineTo(d[2] * scale, d[3] * scale);
@@ -109,7 +127,7 @@ export class RenderItem {
             case RenderTypes.O:
                 context.beginPath();
                 context.arc(d[0] * scale, d[1] * scale, d[2] * scale, 0, 2 * Math.PI);
-                if (filled) {
+                if (this.filled) {
                     context.fill();
                 }
                 else {
@@ -117,7 +135,7 @@ export class RenderItem {
                 }
                 break;
             case RenderTypes.T:
-                if (filled) {
+                if (this.filled) {
                     Log("Filled Rotated Rectange");
                 }
                 else {
@@ -134,9 +152,6 @@ export class RenderItem {
 const refresh = () => {
     let ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    ctx.fillStyle = '#000000'
-    filled = false;
-    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     if (ItemList !== undefined) {
         ItemList.forEach((item) => item.draw(ctx, scaleFactor));
     }
@@ -191,7 +206,7 @@ const Canvas = (props) => {
         scaleFactor = scale;
         ctx.canvas.width = width * scaleFactor;
         ctx.canvas.height = height * scaleFactor;
-        context.lineWidth = drawWidth * scale;
+        context.lineWidth = globalDrawWidth * scale;
         scaletext.innerText = "Dimensions: " + width + "x" + height + ", with scaling factor " + scaleFactor;
         refresh();
     }
@@ -202,12 +217,20 @@ const Canvas = (props) => {
         if (!initialFill) {
             context.canvas.width = width * scaleFactor;
             context.canvas.height = height * scaleFactor;
+            globalColour.push(0);
+            globalColour.push(0);
+            globalColour.push(0);
             initialFill = true;
             if (ItemList !== undefined) {
-                ItemList.push(new RenderItem([RenderTypes.C, 0, 255, 0, 255, 0]));
+                // ItemList.push(new RenderItem([RenderTypes.C, 0, 0, 0, 0]));
+                ItemList.push(new RenderItem([RenderTypes.F, 31, 1]));
+                ItemList.push(new RenderItem([RenderTypes.R, 69, 0, 0, width, height, 0]));
+                ItemList.push(new RenderItem([RenderTypes.F, 1, 0]));
+
+                ItemList.push(new RenderItem([RenderTypes.C, 0, 255, 0, 255]));
                 ItemList.push(new RenderItem([RenderTypes.L, 1, 10, 10, 10, 100, 0]));
-                ItemList.push(new RenderItem([RenderTypes.C, 2, 255, 255, 0, 0]));
-                ItemList.push(new RenderItem([RenderTypes.R, 3, 50, 50, 100, 50, 0]));
+                ItemList.push(new RenderItem([RenderTypes.C, 2, 255, 255, 0]));
+                ItemList.push(new RenderItem([RenderTypes.R, 30, 50, 50, 100, 50, 0]));
             }
         }
 
