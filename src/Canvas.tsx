@@ -56,12 +56,10 @@ export class RenderItem {
     next: RenderItem | undefined = undefined;
 
     constructor(params: number[]) {
-
         this.type = params.shift();
         this.id = params.shift();
-
+        this.z = params.pop();
         this.data = params;
-
 
         this.colour.push(globalColour[0]);
         this.colour.push(globalColour[1]);
@@ -69,13 +67,6 @@ export class RenderItem {
 
         this.filled = globalFilled;
         this.width = globalDrawWidth;
-
-        if ([RenderTypes.C, RenderTypes.W, RenderTypes.F].find(e => e == this.type) == undefined) {
-            this.z = params.pop();
-        }
-        else {
-            this.draw(context, scaleFactor);
-        }
     }
 
     getNext() {
@@ -98,17 +89,6 @@ export class RenderItem {
         switch (this.type) {
             case RenderTypes.P:
                 context.strokeRect(d[0] * scale, d[1] * scale, scale, scale);
-                break;
-            case RenderTypes.C:
-                globalColour[0] = d[0];
-                globalColour[1] = d[1];
-                globalColour[2] = d[2];
-                break;
-            case RenderTypes.F:
-                globalFilled = d[0] ? true : false;
-                break;
-            case RenderTypes.W:
-                globalDrawWidth = d[0];
                 break;
             case RenderTypes.R:
                 if (this.filled) {
@@ -155,6 +135,20 @@ const refresh = () => {
     if (ItemList !== undefined) {
         ItemList.forEach((item) => item.draw(ctx, scaleFactor));
     }
+}
+
+export const setColour = (r: number, g: number, b: number) => {
+    globalColour[0] = r;
+    globalColour[1] = g;
+    globalColour[2] = b;
+}
+
+export const setFilled = (f: number) => {
+    globalFilled = f ? true : false;
+}
+
+export const setDrawWidth = (w: number) => {
+    globalDrawWidth = w;
 }
 
 export const clear = () => {
@@ -223,20 +217,20 @@ const Canvas = (props) => {
             initialFill = true;
             if (ItemList !== undefined) {
                 // ItemList.push(new RenderItem([RenderTypes.C, 0, 0, 0, 0]));
-                ItemList.push(new RenderItem([RenderTypes.F, 31, 1]));
+                setFilled(1);
                 ItemList.push(new RenderItem([RenderTypes.R, 69, 0, 0, width, height, 0]));
-                ItemList.push(new RenderItem([RenderTypes.F, 1, 0]));
+                setFilled(0);
 
-                ItemList.push(new RenderItem([RenderTypes.C, 0, 255, 0, 255]));
+                setColour(255, 0, 255);
                 ItemList.push(new RenderItem([RenderTypes.L, 1, 10, 10, 10, 100, 0]));
-                ItemList.push(new RenderItem([RenderTypes.C, 2, 255, 255, 0]));
+                setColour(255, 255, 0);
                 ItemList.push(new RenderItem([RenderTypes.R, 30, 50, 50, 100, 50, 0]));
             }
         }
 
         if (pressure > 0) {
             Log("Button Pressed.");
-            ItemList.push(new RenderItem([RenderTypes.C, 4, 0, 255, 255, 0]));
+            setColour(255, 255, 0);
             ItemList.push(new RenderItem([RenderTypes.L, 5, 0, 0, 100, 100, 0]));
         }
 

@@ -1,6 +1,6 @@
 import { PACKET_SEND, SRV_ROTARY_ENCODER } from "jacdac-ts";
 import { useServices } from "react-jacdac";
-import { RenderItem, RenderTypes, addItem, clear } from "./Canvas.tsx";
+import { RenderItem, RenderTypes, addItem, clear, setColour, setDrawWidth, setFilled } from "./Canvas.tsx";
 import Log from "./Logger.tsx";
 
 const JDConn = () => {
@@ -30,15 +30,15 @@ const JDConn = () => {
                 break;
             case RenderTypes.C:
                 Log("Setting colour");
-                addItem(new RenderItem(outdata));
+                setColour(outdata[1], outdata[2], outdata[3]);
                 break;
             case RenderTypes.F:
                 Log("Setting filled status");
-                addItem(new RenderItem(outdata));
+                setFilled(outdata[1]);
                 break;
             case RenderTypes.W:
                 Log("Setting fill width");
-                addItem(new RenderItem(outdata));
+                setDrawWidth(outdata[1]);
                 break;
             case RenderTypes.R:
                 Log("Rectangle!");
