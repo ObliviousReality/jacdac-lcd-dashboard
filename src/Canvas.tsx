@@ -14,7 +14,7 @@ var scaleFactor = 5;
 var context;
 var canvas;
 
-var ItemList: RenderItem[] = [];
+var ItemList: RenderItem;
 
 var globalColour: number[] = [];
 
@@ -24,7 +24,15 @@ var globalDrawWidth: number = 1;
 
 
 export const addItem = (item: RenderItem) => {
-    ItemList.push(item);
+    if (ItemList == undefined) {
+        ItemList = item;
+        return;
+    }
+    let temp = ItemList;
+    while (temp.next) {
+        temp = temp.next;
+    }
+    temp.next = item;
     refresh();
 }
 
@@ -132,8 +140,10 @@ export class RenderItem {
 const refresh = () => {
     let ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    if (ItemList !== undefined) {
-        ItemList.forEach((item) => item.draw(ctx, scaleFactor));
+    let temp: RenderItem = ItemList;
+    while (temp) {
+        temp.draw(ctx, scaleFactor);
+        temp = temp.next;
     }
 }
 
@@ -152,26 +162,26 @@ export const setDrawWidth = (w: number) => {
 }
 
 export const clear = () => {
-    ItemList = [];
+    ItemList.next = undefined;
     refresh();
 }
 
 export const del = (id: number) => {
-    for (let i = 0; i < ItemList.length; i++) {
-        if (id == ItemList[i].id) {
-            ItemList.splice(i, 1);
-            break;
-        }
-    }
+    // for (let i = 0; i < ItemList.length; i++) {
+    //     if (id == ItemList[i].id) {
+    //         ItemList.splice(i, 1);
+    //         break;
+    //     }
+    // }
 }
 
 export const update = (id: number, ...params: number[]) => {
-    for (let i = 0; i < ItemList.length; i++) {
-        if (id == ItemList[i].id) {
-            ItemList[i] = new RenderItem(params); // Needs work and testing.
-            break;
-        }
-    }
+    // for (let i = 0; i < ItemList.length; i++) {
+    //     if (id == ItemList[i].id) {
+    //         ItemList[i] = new RenderItem(params); // Needs work and testing.
+    //         break;
+    //     }
+    // }
 }
 
 const Canvas = (props) => {
@@ -190,7 +200,7 @@ const Canvas = (props) => {
 
     scaleup.onclick = () => { setScale(context, scaleFactor + 1) }
     scaledown.onclick = () => { setScale(context, scaleFactor - 1) }
-    listitems.onclick = () => { ItemList.forEach((item) => { Log(item.type.toString()); Log(item.data) }) };
+    // listitems.onclick = () => { ItemList.forEach((item) => { Log(item.type.toString()); Log(item.data) }) };
 
 
     const setScale = (ctx, scale: number) => {
@@ -211,27 +221,24 @@ const Canvas = (props) => {
         if (!initialFill) {
             context.canvas.width = width * scaleFactor;
             context.canvas.height = height * scaleFactor;
+
             globalColour.push(0);
             globalColour.push(0);
             globalColour.push(0);
             initialFill = true;
-            if (ItemList !== undefined) {
-                // ItemList.push(new RenderItem([RenderTypes.C, 0, 0, 0, 0]));
-                setFilled(1);
-                ItemList.push(new RenderItem([RenderTypes.R, 69, 0, 0, width, height, 0]));
-                setFilled(0);
-
-                setColour(255, 0, 255);
-                ItemList.push(new RenderItem([RenderTypes.L, 1, 10, 10, 10, 100, 0]));
-                setColour(255, 255, 0);
-                ItemList.push(new RenderItem([RenderTypes.R, 30, 50, 50, 100, 50, 0]));
-            }
+            setFilled(1);
+            addItem(new RenderItem([RenderTypes.R, 69, 0, 0, width, height, 0]));
+            setFilled(0);
+            setColour(255, 0, 255);
+            addItem(new RenderItem([RenderTypes.L, 1, 10, 10, 10, 100, 0]));
+            setColour(255, 255, 0);
+            addItem(new RenderItem([RenderTypes.R, 30, 50, 50, 100, 50, 0]));
         }
 
         if (pressure > 0) {
             Log("Button Pressed.");
             setColour(255, 255, 0);
-            ItemList.push(new RenderItem([RenderTypes.L, 5, 0, 0, 100, 100, 0]));
+            addItem(new RenderItem([RenderTypes.L, 5, 0, 0, 100, 100, 0]));
         }
 
         refresh();
