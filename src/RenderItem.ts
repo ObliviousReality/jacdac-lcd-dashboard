@@ -1,5 +1,6 @@
 import { globalColour, globalDrawWidth, globalFilled } from "./Canvas.tsx";
 import RenderTypes from "./RenderTypes.ts";
+import Log from "./Logger.tsx";
 
 export class RenderItem {
     type: number | undefined;
@@ -51,31 +52,16 @@ export class RenderItem {
         context.lineWidth = this.width * scale;
         switch (this.type) {
             case RenderTypes.P:
-                context.strokeRect(d[0] * scale, d[1] * scale, scale, scale);
+                Log("Drawing in the wrong place.");
                 break;
             case RenderTypes.R:
-                if (this.filled) {
-                    context.fillRect(d[0] * scale, d[1] * scale, d[2] * scale, d[3] * scale);
-                }
-                else {
-                    context.strokeRect(d[0] * scale, d[1] * scale, d[2] * scale, d[3] * scale);
-                }
+                Log("Drawing in the wrong place.");
                 break;
             case RenderTypes.L:
-                context.beginPath();
-                context.moveTo(d[0] * scale, d[1] * scale);
-                context.lineTo(d[2] * scale, d[3] * scale);
-                context.stroke();
+                Log("Drawing in the wrong place.");
                 break;
             case RenderTypes.O:
-                context.beginPath();
-                context.arc(d[0] * scale, d[1] * scale, d[2] * scale, 0, 2 * Math.PI);
-                if (this.filled) {
-                    context.fill();
-                }
-                else {
-                    context.stroke();
-                }
+                Log("Drawing in the wrong place.");
                 break;
             case RenderTypes.T:
                 if (this.filled) {
@@ -90,6 +76,15 @@ export class RenderItem {
                 break;
         }
     }
+
+    translate(data: number[]) {
+        Log("Base Class; No functionality.")
+    }
+
+    resize(data: number[]) {
+        Log("Base Class; No functionality.")
+    }
+
 }
 
 export default RenderItem;

@@ -2,9 +2,11 @@ import { ButtonReg, SRV_BUTTON } from "jacdac-ts";
 import * as React from "react";
 import { useRegister, useRegisterValue, useServices } from "react-jacdac";
 import Log from "./Logger.tsx";
-import './stylesheet.css';
+import { Rect } from "./Rect.ts";
 import RenderItem from "./RenderItem.ts";
 import RenderTypes from "./RenderTypes.ts";
+import './stylesheet.css';
+import { Line } from "./Line.ts";
 
 var initialFill = false;
 
@@ -143,18 +145,18 @@ const Canvas = (props) => {
             globalColour.push(0);
             initialFill = true;
             setFilled(1);
-            addItem(new RenderItem([RenderTypes.R, 256, 0, 0, width, height, 0]));
+            addItem(new Rect([RenderTypes.R, 256, 0, 0, width, height, 0]));
             setFilled(0);
             setColour(255, 0, 255);
-            addItem(new RenderItem([RenderTypes.L, 1, 10, 10, 10, 100, 1]));
+            addItem(new Line([RenderTypes.L, 1, 10, 10, 10, 100, 1]));
             setColour(255, 255, 0);
-            addItem(new RenderItem([RenderTypes.R, 30, 50, 50, 100, 50, 1]));
+            addItem(new Rect([RenderTypes.R, 30, 50, 50, 100, 50, 1]));
         }
 
         if (pressure > 0) {
             Log("Button Pressed.");
             setColour(0, 255, 255);
-            addItem(new RenderItem([RenderTypes.L, 5, 0, 0, 100, 100, 0]));
+            addItem(new Line([RenderTypes.L, 5, 0, 0, 100, 100, 0]));
         }
 
         refresh();

@@ -4,6 +4,10 @@ import { addItem, clear, setColour, setDrawWidth, setFilled } from "./Canvas.tsx
 import Log from "./Logger.tsx";
 import RenderItem from "./RenderItem.ts";
 import RenderTypes from "./RenderTypes.ts";
+import { Rect } from "./Rect.ts";
+import { Circle } from "./Circle.ts";
+import { Line } from "./Line.ts";
+import { Pixel } from "./Pixel.ts";
 
 const JDConn = () => {
 
@@ -26,7 +30,7 @@ const JDConn = () => {
                 clear();
                 break;
             case RenderTypes.P:
-                addItem(new RenderItem(outdata));
+                addItem(new Pixel(outdata));
                 break;
             case RenderTypes.C:
                 setColour(outdata[1], outdata[2], outdata[3]);
@@ -38,13 +42,13 @@ const JDConn = () => {
                 setDrawWidth(outdata[1]);
                 break;
             case RenderTypes.R:
-                addItem(new RenderItem(outdata));
+                addItem(new Rect(outdata));
                 break;
             case RenderTypes.L:
-                addItem(new RenderItem(outdata));
+                addItem(new Line(outdata));
                 break;
             case RenderTypes.O:
-                addItem(new RenderItem(outdata));
+                addItem(new Circle(outdata));
                 break;
             case RenderTypes.U:
                 //
