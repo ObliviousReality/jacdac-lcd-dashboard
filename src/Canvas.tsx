@@ -1,12 +1,13 @@
 import { ButtonReg, SRV_BUTTON } from "jacdac-ts";
 import * as React from "react";
 import { useRegister, useRegisterValue, useServices } from "react-jacdac";
+import { Line } from "./Line.ts";
 import Log from "./Logger.tsx";
 import { Rect } from "./Rect.ts";
 import RenderItem from "./RenderItem.ts";
 import RenderTypes from "./RenderTypes.ts";
 import './stylesheet.css';
-import { Line } from "./Line.ts";
+import UpdateTypes from "./UpdateTypes.ts";
 
 var initialFill = false;
 
@@ -95,11 +96,52 @@ export const del = (id: number) => {
             return;
         }
     }
+    refresh();
 }
 
-export const update = (id: number, ...params: number[]) => {
+export const update = (id: number, params: number[]) => {
     if (id == 256)
         return;
+    let head = ItemList;
+    while (head.id != id) {
+        head = head.getNext();
+        if (head == null) {
+            return;
+        }
+    }
+    switch (params.shift()) {
+        case UpdateTypes.V:
+            head.setVisibility(params[0] ? true : false);
+            break;
+        case UpdateTypes.T:
+            head.translate(params);
+            break;
+        case UpdateTypes.S:
+            head.resize(params);
+            break;
+        case UpdateTypes.R:
+            head.rotate(params[0]);
+            break;
+        case UpdateTypes.C:
+            head.setColour(params);
+            break;
+        case UpdateTypes.W:
+            head.setWidth(params[0]);
+            break;
+        case UpdateTypes.F:
+            head.setFilled(params[0] ? true : false);
+            break;
+        case UpdateTypes.Z:
+            if (params[0] == 0) {
+                return;
+            }
+            head.setLayer(params[0]);
+            break;
+        default:
+            break;
+    }
+    refresh();
+
 }
 
 const Canvas = (props) => {
@@ -147,10 +189,10 @@ const Canvas = (props) => {
             setFilled(1);
             addItem(new Rect([RenderTypes.R, 256, 0, 0, width, height, 0]));
             setFilled(0);
-            setColour(255, 0, 255);
-            addItem(new Line([RenderTypes.L, 1, 10, 10, 10, 100, 1]));
-            setColour(255, 255, 0);
-            addItem(new Rect([RenderTypes.R, 30, 50, 50, 100, 50, 1]));
+            // setColour(255, 0, 255);
+            // addItem(new Line([RenderTypes.L, 1, 10, 10, 10, 100, 1]));
+            // setColour(255, 255, 0);
+            // addItem(new Rect([RenderTypes.R, 30, 50, 50, 100, 50, 1]));
         }
 
         if (pressure > 0) {

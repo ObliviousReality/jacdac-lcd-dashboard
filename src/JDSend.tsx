@@ -3,6 +3,7 @@ import * as React from "react";
 import { useServices } from "react-jacdac";
 import { clear } from "./Canvas.tsx";
 import RenderTypes from "./RenderTypes.ts";
+import UpdateTypes from "./UpdateTypes.ts";
 
 
 export const JDSend = () => {
@@ -125,6 +126,23 @@ export const JDSend = () => {
         setFill(false);
     }
 
+    const moveFirst = () => {
+        let arr = new Uint8Array(5);
+        arr[0] = RenderTypes.U;
+        arr[1] = 1;
+        arr[2] = UpdateTypes.T;
+        arr[3] = 10;
+        arr[4] = 10;
+        rotService.sendCmdAsync(10, arr, false);
+    }
+
+    const delFirst = () => {
+        let arr = new Uint8Array(2);
+        arr[0] = RenderTypes.D;
+        arr[1] = 1;
+        rotService.sendCmdAsync(10, arr, false);
+    }
+
     if (rotService != null) {
 
         return (
@@ -133,6 +151,8 @@ export const JDSend = () => {
                     <button onClick={drawRect}>Rect</button>
                     <button onClick={drawLine}>Line</button>
                     <button onClick={drawCircle}>Circle</button>
+                    <button onClick={moveFirst}>Move First</button>
+                    <button onClick={delFirst}>Delete First</button>
                 </div>
                 <div>
                     <button onClick={drawRandomRect}>Random Rect</button>

@@ -1,13 +1,13 @@
 import { PACKET_SEND, SRV_ROTARY_ENCODER } from "jacdac-ts";
 import { useServices } from "react-jacdac";
-import { addItem, clear, setColour, setDrawWidth, setFilled } from "./Canvas.tsx";
-import Log from "./Logger.tsx";
-import RenderItem from "./RenderItem.ts";
-import RenderTypes from "./RenderTypes.ts";
-import { Rect } from "./Rect.ts";
+import { addItem, clear, setColour, setDrawWidth, setFilled, update, del } from "./Canvas.tsx";
 import { Circle } from "./Circle.ts";
 import { Line } from "./Line.ts";
+import Log from "./Logger.tsx";
 import { Pixel } from "./Pixel.ts";
+import { Rect } from "./Rect.ts";
+import RenderItem from "./RenderItem.ts";
+import RenderTypes from "./RenderTypes.ts";
 
 const JDConn = () => {
 
@@ -51,10 +51,12 @@ const JDConn = () => {
                 addItem(new Circle(outdata));
                 break;
             case RenderTypes.U:
-                //
+                outdata.shift();
+                let id = outdata.shift();
+                update(id, outdata);
                 break;
             case RenderTypes.D:
-                //
+                del(outdata[1]);
                 break;
             case RenderTypes.T:
                 addItem(new RenderItem(outdata));

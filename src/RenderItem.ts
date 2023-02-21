@@ -5,11 +5,16 @@ import Log from "./Logger.tsx";
 export class RenderItem {
     type: number | undefined;
     id: number | undefined;
-    z: number | undefined;
     data: number[];
+
+    z: number | undefined;
+
     colour: number[] = [];
     width: number;
     filled: boolean;
+
+    visibility: boolean = true;
+    angle: number = 0;
 
     next: RenderItem | undefined = undefined;
 
@@ -84,6 +89,33 @@ export class RenderItem {
     resize(data: number[]) {
         Log("Base Class; No functionality.")
     }
+
+    setVisibility(nv: boolean) {
+        this.visibility = nv;
+    }
+
+    setLayer(nz: number) {
+        this.z = nz;
+    }
+
+    setColour(colour: number[]) {
+        this.colour[0] = colour[0];
+        this.colour[1] = colour[1];
+        this.colour[2] = colour[2];
+    }
+
+    setFilled(nf: boolean) {
+        this.filled = nf;
+    }
+
+    setWidth(nw: number) {
+        this.width = nw;
+    }
+
+    rotate(na: number) {
+        this.angle = na;
+    }
+
 
 }
 
