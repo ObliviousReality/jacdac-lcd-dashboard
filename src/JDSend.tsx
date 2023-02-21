@@ -55,7 +55,7 @@ export const JDSend = () => {
         arr[3] = getRndInteger(0, 120);
         arr[4] = getRndInteger(0, 160);
         arr[5] = getRndInteger(0, 120);
-        arr[6] = 0;
+        arr[6] = getRndInteger(1, 10);
         rotService.sendCmdAsync(10, arr, false);
     }
 
@@ -67,7 +67,7 @@ export const JDSend = () => {
         arr[3] = getRndInteger(0, 120);
         arr[4] = getRndInteger(0, 160 - arr[2]);
         arr[5] = getRndInteger(0, 120 - arr[3]);
-        arr[6] = 0;
+        arr[6] = getRndInteger(11, 20);
         rotService.sendCmdAsync(10, arr, false)
     }
 
@@ -78,7 +78,7 @@ export const JDSend = () => {
         arr[2] = getRndInteger(0, 160);
         arr[3] = getRndInteger(0, 120);
         arr[4] = getRndInteger(1, 50);
-        arr[5] = 0;
+        arr[5] = getRndInteger(21, 30);
         rotService.sendCmdAsync(10, arr, false);
     }
 

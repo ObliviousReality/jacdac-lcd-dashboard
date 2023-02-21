@@ -22,17 +22,33 @@ var globalFilled: boolean = false;
 
 var globalDrawWidth: number = 1;
 
+var topZ = 0;
+
 
 export const addItem = (item: RenderItem) => {
     if (ItemList == undefined) {
         ItemList = item;
         return;
     }
+    let id: number = item.id;
     let temp = ItemList;
+    if (id >= topZ) {
+        while (temp.next) {
+            temp = temp.next;
+        }
+        temp.next = item;
+        topZ = id;
+        refresh();
+        return;
+    }
     while (temp.next) {
+        if (id >= temp.id && id < temp.next.id) {
+            item.next = temp.next;
+            temp.next = item;
+            break;
+        }
         temp = temp.next;
     }
-    temp.next = item;
     refresh();
 }
 
@@ -67,6 +83,12 @@ export class RenderItem {
         this.type = params.shift();
         this.id = params.shift();
         this.z = params.pop();
+        if (this.z == 0) {
+            if (this.id == 255) { }
+            else {
+                this.z = 1;
+            }
+        }
         this.data = params;
 
         this.colour.push(globalColour[0]);
@@ -163,16 +185,20 @@ export const setDrawWidth = (w: number) => {
 
 export const clear = () => {
     ItemList.next = undefined;
+    topZ = 0;
     refresh();
 }
 
 export const del = (id: number) => {
-    // for (let i = 0; i < ItemList.length; i++) {
-    //     if (id == ItemList[i].id) {
-    //         ItemList.splice(i, 1);
-    //         break;
-    //     }
-    // }
+    if (id == 0)
+        return;
+    let item = ItemList;
+    while (item.next) {
+        if (item.next.id == id) {
+            item.next = item.next.next;
+            return;
+        }
+    }
 }
 
 export const update = (id: number, ...params: number[]) => {
@@ -200,7 +226,7 @@ const Canvas = (props) => {
 
     scaleup.onclick = () => { setScale(context, scaleFactor + 1) }
     scaledown.onclick = () => { setScale(context, scaleFactor - 1) }
-    // listitems.onclick = () => { ItemList.forEach((item) => { Log(item.type.toString()); Log(item.data) }) };
+    listitems.onclick = () => { let item = ItemList; while (item) { Log(item.type.toString()); Log(item.data + "," + item.z.toString()); item = item.next; }; };
 
 
     const setScale = (ctx, scale: number) => {
@@ -227,17 +253,17 @@ const Canvas = (props) => {
             globalColour.push(0);
             initialFill = true;
             setFilled(1);
-            addItem(new RenderItem([RenderTypes.R, 69, 0, 0, width, height, 0]));
+            addItem(new RenderItem([RenderTypes.R, 255, 0, 0, width, height, 0]));
             setFilled(0);
             setColour(255, 0, 255);
-            addItem(new RenderItem([RenderTypes.L, 1, 10, 10, 10, 100, 0]));
+            addItem(new RenderItem([RenderTypes.L, 1, 10, 10, 10, 100, 1]));
             setColour(255, 255, 0);
-            addItem(new RenderItem([RenderTypes.R, 30, 50, 50, 100, 50, 0]));
+            addItem(new RenderItem([RenderTypes.R, 30, 50, 50, 100, 50, 1]));
         }
 
         if (pressure > 0) {
             Log("Button Pressed.");
-            setColour(255, 255, 0);
+            setColour(0, 255, 255);
             addItem(new RenderItem([RenderTypes.L, 5, 0, 0, 100, 100, 0]));
         }
 
