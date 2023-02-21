@@ -51,7 +51,6 @@ export class RenderItem {
     }
 
     draw(context, scale) {
-        let d = this.data;
         context.fillStyle = `rgb(${this.colour[0]}, ${this.colour[1]}, ${this.colour[2]})`;
         context.strokeStyle = `rgb(${this.colour[0]}, ${this.colour[1]}, ${this.colour[2]})`;
         context.lineWidth = this.width * scale;

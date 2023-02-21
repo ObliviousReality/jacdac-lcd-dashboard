@@ -1,4 +1,3 @@
-import Log from "./Logger.tsx";
 import RenderItem from "./RenderItem.ts";
 
 
