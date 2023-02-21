@@ -8,6 +8,8 @@ import RenderTypes from "./RenderTypes.ts";
 export const JDSend = () => {
     const rotService = useServices({ serviceClass: SRV_ROTARY_ENCODER })[0];
 
+    var idCounter = 1;
+
     function getRndInteger(min: number, max: number) {
         return Math.floor(Math.random() * (max - min)) + min;
     }
@@ -16,7 +18,7 @@ export const JDSend = () => {
     const drawRect = () => {
         let arr = new Uint8Array(7);
         arr[0] = RenderTypes.R;
-        arr[1] = 1;
+        arr[1] = idCounter++;
         arr[2] = 80;
         arr[3] = 60;
         arr[4] = 10;
@@ -28,7 +30,7 @@ export const JDSend = () => {
     const drawLine = () => {
         let arr = new Uint8Array(7);
         arr[0] = RenderTypes.L;
-        arr[1] = 2;
+        arr[1] = idCounter++;
         arr[2] = 120;
         arr[3] = 10;
         arr[4] = 10;
@@ -40,7 +42,7 @@ export const JDSend = () => {
     const drawCircle = () => {
         let arr = new Uint8Array(6);
         arr[0] = RenderTypes.O;
-        arr[1] = 3;
+        arr[1] = idCounter++;
         arr[2] = 80;
         arr[3] = 30;
         arr[4] = 10;
@@ -51,7 +53,7 @@ export const JDSend = () => {
     const drawRandomLine = () => {
         let arr = new Uint8Array(7);
         arr[0] = RenderTypes.L;
-        arr[1] = 2;
+        arr[1] = idCounter++;
         arr[2] = getRndInteger(0, 160);
         arr[3] = getRndInteger(0, 120);
         arr[4] = getRndInteger(0, 160);
@@ -63,7 +65,7 @@ export const JDSend = () => {
     const drawRandomRect = () => {
         let arr = new Uint8Array(7);
         arr[0] = RenderTypes.R;
-        arr[1] = 1;
+        arr[1] = idCounter++;
         arr[2] = getRndInteger(0, 160);
         arr[3] = getRndInteger(0, 120);
         arr[4] = getRndInteger(0, 160 - arr[2]);
@@ -75,7 +77,7 @@ export const JDSend = () => {
     const drawRandomCircle = () => {
         let arr = new Uint8Array(6);
         arr[0] = RenderTypes.O;
-        arr[1] = 3;
+        arr[1] = idCounter++;
         arr[2] = getRndInteger(0, 160);
         arr[3] = getRndInteger(0, 120);
         arr[4] = getRndInteger(1, 50);

@@ -33,19 +33,19 @@ export const addItem = (item: RenderItem) => {
         ItemList = item;
         return;
     }
-    let id: number = item.id;
+    let z: number = item.z;
     let temp = ItemList;
-    if (id >= topZ) {
+    if (z >= topZ) {
         while (temp.next) {
             temp = temp.next;
         }
         temp.next = item;
-        topZ = id;
+        topZ = z;
         refresh();
         return;
     }
     while (temp.next) {
-        if (id >= temp.id && id < temp.next.id) {
+        if (z >= temp.z && z < temp.next.z) {
             item.next = temp.next;
             temp.next = item;
             break;
@@ -118,7 +118,7 @@ const Canvas = (props) => {
 
     scaleup.onclick = () => { setScale(context, scaleFactor + 1) }
     scaledown.onclick = () => { setScale(context, scaleFactor - 1) }
-    listitems.onclick = () => { let item = ItemList; while (item) { Log(item.type.toString()); Log(item.data + "," + item.z.toString()); item = item.next; }; };
+    listitems.onclick = () => { let item = ItemList; while (item) { Log(item.id?.toString() + " | " + item.type.toString() + " : " + item.data + "," + item.z.toString()); item = item.next; }; };
 
 
     const setScale = (ctx, scale: number) => {
