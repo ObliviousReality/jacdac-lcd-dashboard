@@ -1,7 +1,9 @@
 import { PACKET_SEND, SRV_ROTARY_ENCODER } from "jacdac-ts";
 import { useServices } from "react-jacdac";
-import { RenderItem, RenderTypes, addItem, clear, setColour, setDrawWidth, setFilled } from "./Canvas.tsx";
+import { addItem, clear, setColour, setDrawWidth, setFilled } from "./Canvas.tsx";
 import Log from "./Logger.tsx";
+import RenderItem from "./RenderItem.ts";
+import RenderTypes from "./RenderTypes.ts";
 
 const JDConn = () => {
 
@@ -9,7 +11,7 @@ const JDConn = () => {
 
 
     const handlePacket = (pkt) => {
-        Log("Packet Received: " + pkt);
+        // Log("Packet Received: " + pkt);
         let x: string = pkt.toString();
         let y = x.split(" ");
         let data = y[3];
@@ -21,51 +23,39 @@ const JDConn = () => {
         }
         switch (outdata[0]) {
             case RenderTypes.X:
-                Log("Clear");
                 clear();
                 break;
             case RenderTypes.P:
-                Log("Setting pixel");
                 addItem(new RenderItem(outdata));
                 break;
             case RenderTypes.C:
-                Log("Setting colour");
                 setColour(outdata[1], outdata[2], outdata[3]);
                 break;
             case RenderTypes.F:
-                Log("Setting filled status");
                 setFilled(outdata[1]);
                 break;
             case RenderTypes.W:
-                Log("Setting fill width");
                 setDrawWidth(outdata[1]);
                 break;
             case RenderTypes.R:
-                Log("Rectangle!");
                 addItem(new RenderItem(outdata));
                 break;
             case RenderTypes.L:
-                Log("Line");
                 addItem(new RenderItem(outdata));
                 break;
             case RenderTypes.O:
-                Log("Drawing Circle");
                 addItem(new RenderItem(outdata));
                 break;
             case RenderTypes.U:
-                Log("Update");
                 //
                 break;
             case RenderTypes.D:
-                Log("Delete");
                 //
                 break;
             case RenderTypes.T:
-                Log("Rotated Rectange");
                 addItem(new RenderItem(outdata));
                 break;
             case RenderTypes.I:
-                Log("Get List");
                 //
                 break;
             default:

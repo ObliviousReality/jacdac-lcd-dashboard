@@ -1,7 +1,8 @@
 import { SRV_ROTARY_ENCODER } from "jacdac-ts";
 import * as React from "react";
 import { useServices } from "react-jacdac";
-import { RenderTypes, clear } from "./Canvas.tsx";
+import { clear } from "./Canvas.tsx";
+import RenderTypes from "./RenderTypes.ts";
 
 
 export const JDSend = () => {
