@@ -9,7 +9,6 @@ export enum RenderTypes {
     O,
     U,
     D,
-    T,
     I = 15
 }
 

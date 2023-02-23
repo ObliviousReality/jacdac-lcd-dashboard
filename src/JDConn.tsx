@@ -58,9 +58,6 @@ const JDConn = () => {
             case RenderTypes.D:
                 del(outdata[1]);
                 break;
-            case RenderTypes.T:
-                addItem(new RenderItem(outdata));
-                break;
             case RenderTypes.I:
                 //
                 break;

@@ -7,7 +7,7 @@ export class RenderItem {
     id: number | undefined;
     data: number[];
 
-    z: number | undefined;
+    z: number | undefined = 1;
 
     colour: number[] = [];
     width: number;
@@ -66,14 +66,6 @@ export class RenderItem {
                 break;
             case RenderTypes.O:
                 Log("Drawing in the wrong place.");
-                break;
-            case RenderTypes.T:
-                if (this.filled) {
-                    Log("Filled Rotated Rectange");
-                }
-                else {
-                    Log("Unfilled Rotated Rectange");
-                }
                 break;
             default:
                 Log("Not sure what to draw.");
