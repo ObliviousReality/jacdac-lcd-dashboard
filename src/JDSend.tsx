@@ -3,6 +3,7 @@ import * as React from "react";
 import { useServices } from "react-jacdac";
 import RenderTypes from "./RenderTypes.ts";
 import UpdateTypes from "./UpdateTypes.ts";
+import { SpriteTypes } from "./SpriteTypes.ts";
 
 
 export const JDSend = () => {
@@ -150,25 +151,59 @@ export const JDSend = () => {
     }
 
     const drawASprite = () => {
+        drawSprite(50, 50, SpriteTypes.A);
+    }
+
+    const drawBSprite = () => {
+        drawSprite(56, 50, SpriteTypes.B);
+    }
+
+    const drawSprite = (x: number, y: number, id: number) => {
         let arr = new Uint8Array(6);
         arr[0] = RenderTypes.S;
         arr[1] = idCounter++;
-        arr[2] = 0;
-        arr[3] = 50;
-        arr[4] = 50;
+        arr[2] = id;
+        arr[3] = x;
+        arr[4] = y;
         arr[5] = 60;
         rotService.sendCmdAsync(10, arr, false);
     }
 
-    const drawBSprite = () => {
-        let arr = new Uint8Array(6);
-        arr[0] = RenderTypes.S;
-        arr[1] = idCounter++;
-        arr[2] = 1;
-        arr[3] = 56;
-        arr[4] = 50;
-        arr[5] = 60;
-        rotService.sendCmdAsync(10, arr, false);
+    const sayHello = () => {
+        drawSprite(50, 60, SpriteTypes.H);
+        drawSprite(56, 60, SpriteTypes.E);
+        drawSprite(62, 60, SpriteTypes.L);
+        drawSprite(68, 60, SpriteTypes.L);
+        drawSprite(74, 60, SpriteTypes.O);
+    }
+
+    const theRest = () => {
+        drawSprite(62, 70, SpriteTypes.I);
+        drawSprite(56, 80, SpriteTypes.A);
+        drawSprite(62, 80, SpriteTypes.M);
+        drawSprite(74, 80, SpriteTypes.A);
+        drawSprite(50, 90, SpriteTypes.S);
+        drawSprite(56, 90, SpriteTypes.P);
+        drawSprite(62, 90, SpriteTypes.R);
+        drawSprite(68, 90, SpriteTypes.I);
+        drawSprite(74, 90, SpriteTypes.T);
+        drawSprite(80, 90, SpriteTypes.E);
+        drawSprite(86, 90, SpriteTypes.Exclamation_Mark);
+    }
+
+    const alphabet = () => {
+        for (let i = 0; i < 26; i++) {
+            setRandom();
+            drawSprite(3 + 6 * i, 5, SpriteTypes.A + i);
+        }
+        for (let i = 0; i < 26; i++) {
+            setRandom();
+            drawSprite(3 + 6 * i, 15, SpriteTypes.a + i);
+        }
+        for (let i = 0; i < 10; i++) {
+            setRandom();
+            drawSprite(3 + 6 * i, 25, SpriteTypes.NUM_0 + i);
+        }
     }
 
     if (rotService != null) {
@@ -200,6 +235,9 @@ export const JDSend = () => {
                 <div>
                     <button onClick={drawASprite}>Draw A</button>
                     <button onClick={drawBSprite}>Draw B</button>
+                    <button onClick={sayHello}>Hello!</button>
+                    <button onClick={theRest}>The Rest</button>
+                    <button onClick={alphabet}>Alphabet</button>
                 </div>
                 <div>
                     <button onClick={clearScreen}>Clear</button>

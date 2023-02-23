@@ -16,6 +16,10 @@ spriteCounter = 0
 
 for file in listdir("sprites"):
     spriteName = file.split(".")[0]
+    if "LOWER" in spriteName:
+        spriteName = spriteName.replace("LOWER", "")
+    elif "UPPER" in spriteName:
+        spriteName = spriteName.replace("UPPER", "")
     im = Image.open("sprites/" + file)
     x = asarray(im)
     width = size(x, 1)
