@@ -1,7 +1,6 @@
 import RenderItem from "./RenderItem.ts";
 
 import sprites from "./sprites.json";
-import Log from "./Logger.tsx";
 
 export class Sprite extends RenderItem {
     x: number;

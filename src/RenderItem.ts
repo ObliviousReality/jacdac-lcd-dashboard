@@ -38,9 +38,10 @@ export class RenderItem {
 
         this.filled = globalFilled;
         this.width = globalDrawWidth;
-
-        if (globalGroup > 0) {
-            groupList[globalGroup - 1].items.push(this);
+        if (this.type != RenderTypes.G) {
+            if (globalGroup > 0) {
+                groupList[globalGroup - 1].items.push(this);
+            }
         }
     }
 
@@ -68,7 +69,7 @@ export class RenderItem {
         Log("Base Class; No functionality.")
     }
 
-    setPosition(data: number[]){
+    setPosition(data: number[]) {
         Log("Base Class; No functionality.")
     }
 

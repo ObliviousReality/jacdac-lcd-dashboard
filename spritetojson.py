@@ -28,7 +28,12 @@ for file in listdir("sprites"):
     for i in x:
         buf = []
         for j in i:
-            buf.append("1" if j[3] == 255 else "0")
+            try:
+                buf.append("1" if j[3] == 255 else "0")
+            except Exception:
+                print(
+                    "File: " + file + " has an incorrect bit-depth, files must have a bit-depth of 32 bits.")
+                break
         data.append(buf)
 
     outfile.write('\n"' + str(id) + '": {\n')

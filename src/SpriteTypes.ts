@@ -36,6 +36,7 @@ export enum SpriteTypes {
 	NUM_7,
 	NUM_8,
 	NUM_9,
+	right_arrow,
 	A,
 	B,
 	C,

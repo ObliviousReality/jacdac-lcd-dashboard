@@ -129,6 +129,9 @@ export const update = (id: number, params: number[]) => {
         case UpdateTypes.T:
             head.translate(params);
             break;
+        case UpdateTypes.P:
+            head.setPosition(params);
+            break;
         case UpdateTypes.S:
             head.resize(params);
             break;
@@ -160,15 +163,16 @@ export const update = (id: number, params: number[]) => {
 
 }
 
-export const addGroup = (group: Group) => {
-    let gid = group.groupID;
+export const addGroup = (data: number[]) => {
+    let gid = data[2];
     globalGroup = gid;
     if (gid == 0) {
         return;
     }
     if (!groupIDList.find(item => item == gid)) {
-        groupList.push(group);
-        addItem(group);
+        let g = new Group(data);
+        groupList.push(g);
+        addItem(g);
     }
 }
 

@@ -126,9 +126,9 @@ export const JDSend = () => {
         let arr = new Uint8Array(5);
         arr[0] = RenderTypes.U;
         arr[1] = 1;
-        arr[2] = UpdateTypes.T;
-        arr[3] = 10;
-        arr[4] = 10;
+        arr[2] = UpdateTypes.P;
+        arr[3] = 0;
+        arr[4] = 0;
         rotService.sendCmdAsync(10, arr, false);
     }
 

@@ -1,15 +1,13 @@
 import { PACKET_SEND, SRV_ROTARY_ENCODER } from "jacdac-ts";
 import { useServices } from "react-jacdac";
-import { addItem, clear, setColour, setDrawWidth, setFilled, update, del, groupList, globalGroup, addGroup } from "./Canvas.tsx";
+import { addGroup, addItem, clear, del, setColour, setDrawWidth, setFilled, update } from "./Canvas.tsx";
 import { Circle } from "./Circle.ts";
 import { Line } from "./Line.ts";
 import Log from "./Logger.tsx";
 import { Pixel } from "./Pixel.ts";
 import { Rect } from "./Rect.ts";
-import RenderItem from "./RenderItem.ts";
 import RenderTypes from "./RenderTypes.ts";
 import { Sprite } from "./Sprite.ts";
-import { Group } from "./Group.ts";
 
 const JDConn = () => {
 
@@ -65,7 +63,7 @@ const JDConn = () => {
                 break;
             case RenderTypes.G:
                 //New Group
-                addGroup(new Group(outdata));
+                addGroup(outdata);
                 break;
             case RenderTypes.I:
                 //
