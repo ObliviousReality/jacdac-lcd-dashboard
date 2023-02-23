@@ -95,6 +95,7 @@ export class RenderItem {
 
     setLayer(nz: number) {
         this.z = nz;
+        // Needs to do MORE.
     }
 
     setColour(colour: number[]) {

@@ -1,4 +1,4 @@
-import { ButtonReg, SRV_BUTTON } from "jacdac-ts";
+import { ButtonReg, SRV_BUTTON, SRV_ROTARY_ENCODER } from "jacdac-ts";
 import * as React from "react";
 import { useRegister, useRegisterValue, useServices } from "react-jacdac";
 import { Line } from "./Line.ts";
@@ -6,8 +6,8 @@ import Log from "./Logger.tsx";
 import { Rect } from "./Rect.ts";
 import RenderItem from "./RenderItem.ts";
 import RenderTypes from "./RenderTypes.ts";
-import './stylesheet.css';
 import UpdateTypes from "./UpdateTypes.ts";
+import './stylesheet.css';
 
 var initialFill = false;
 
@@ -61,7 +61,9 @@ const refresh = () => {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     let temp: RenderItem = ItemList;
     while (temp) {
-        temp.draw(ctx, scaleFactor);
+        if (temp.visibility) {
+            temp.draw(ctx, scaleFactor);
+        }
         temp = temp.next;
     }
 }
@@ -93,9 +95,11 @@ export const del = (id: number) => {
     while (item.next) {
         if (item.next.id == id) {
             item.next = item.next.next;
-            return;
+            break;
         }
+        item = item.next;
     }
+    topZ = 256; // Reset so next is correctly placed.
     refresh();
 }
 
@@ -136,6 +140,9 @@ export const update = (id: number, params: number[]) => {
                 return;
             }
             head.setLayer(params[0]);
+            // More Here.
+            del(head.id);
+            addItem(head); //??
             break;
         default:
             break;
@@ -148,6 +155,7 @@ const Canvas = (props) => {
     const canvasRef = React.useRef(null);
 
     const service = useServices({ serviceClass: SRV_BUTTON })[0];
+    const rotService = useServices({ serviceClass: SRV_ROTARY_ENCODER })[0];
 
     const buttonReg = useRegister(service, ButtonReg.Pressure);
 
@@ -176,39 +184,41 @@ const Canvas = (props) => {
     }
 
     React.useEffect(() => {
-        canvas = canvasRef.current;
-        context = canvas.getContext('2d');
-        if (!initialFill) {
-            context.canvas.width = width * scaleFactor;
-            context.canvas.height = height * scaleFactor;
+        if (canvasRef) {
+            canvas = canvasRef.current;
+            if (canvas) {
+                context = canvas.getContext('2d');
+                context.canvas.width = width * scaleFactor;
+                context.canvas.height = height * scaleFactor;
+                if (!initialFill) {
 
-            globalColour.push(0);
-            globalColour.push(0);
-            globalColour.push(0);
-            initialFill = true;
-            setFilled(1);
-            addItem(new Rect([RenderTypes.R, 256, 0, 0, width, height, 0]));
-            setFilled(0);
-            // setColour(255, 0, 255);
-            // addItem(new Line([RenderTypes.L, 1, 10, 10, 10, 100, 1]));
-            // setColour(255, 255, 0);
-            // addItem(new Rect([RenderTypes.R, 30, 50, 50, 100, 50, 1]));
+                    globalColour.push(0);
+                    globalColour.push(0);
+                    globalColour.push(0);
+                    initialFill = true;
+                    setFilled(1);
+                    addItem(new Rect([RenderTypes.R, 256, 0, 0, width, height, 0]));
+                    setFilled(0);
+                }
+
+                if (pressure > 0) {
+                    Log("Button Pressed.");
+                    setColour(0, 255, 255);
+                    addItem(new Line([RenderTypes.L, 5, 0, 0, 100, 100, 0]));
+                }
+
+                refresh();
+            }
         }
+    }, [pressure, rotService]);
 
-        if (pressure > 0) {
-            Log("Button Pressed.");
-            setColour(0, 255, 255);
-            addItem(new Line([RenderTypes.L, 5, 0, 0, 100, 100, 0]));
-        }
-
-        refresh();
-    }, [pressure]);
-
-    return (
-        <div>
-            <canvas id="thecanvas" ref={canvasRef} {...props} />
-        </div>
-    );
+    if (rotService) {
+        return (
+            <div>
+                <canvas id="thecanvas" ref={canvasRef} {...props} />
+            </div>
+        );
+    }
 }
 
 

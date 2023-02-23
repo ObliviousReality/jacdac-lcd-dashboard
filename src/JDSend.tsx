@@ -1,7 +1,6 @@
 import { SRV_ROTARY_ENCODER } from "jacdac-ts";
 import * as React from "react";
 import { useServices } from "react-jacdac";
-import { clear } from "./Canvas.tsx";
 import RenderTypes from "./RenderTypes.ts";
 import UpdateTypes from "./UpdateTypes.ts";
 
@@ -143,6 +142,13 @@ export const JDSend = () => {
         rotService.sendCmdAsync(10, arr, false);
     }
 
+    const clearScreen = () => {
+        let arr = new Uint8Array(1);
+        arr[0] = RenderTypes.X;
+        rotService.sendCmdAsync(10, arr, false);
+        idCounter = 1;
+    }
+
     if (rotService != null) {
 
         return (
@@ -170,9 +176,9 @@ export const JDSend = () => {
                     <button onClick={empty} className="emptyButton">Set Empty</button>
                 </div>
                 <div>
-                    <button onClick={clear}>Clear</button>
+                    <button onClick={clearScreen}>Clear</button>
                 </div>
-            </div>
+            </div >
         )
     }
 }
