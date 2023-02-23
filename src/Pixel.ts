@@ -16,9 +16,14 @@ export class Pixel extends RenderItem {
         context.strokeRect(this.x * scale, this.y * scale, scale, scale);
     }
 
-    translate(data: number[]): void {
+    setPosition(data: number[]): void {
         this.x = data[0];
         this.y = data[1];
+    }
+
+    translate(data: number[]): void {
+        this.x += data[0];
+        this.y += data[1];
     }
 
     resize(data: number[]): void {

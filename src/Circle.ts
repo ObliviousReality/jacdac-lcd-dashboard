@@ -27,9 +27,14 @@ export class Circle extends RenderItem {
         }
     }
 
-    translate(data: number[]): void {
+    setPosition(data: number[]): void {
         this.x = data[0];
         this.y = data[1];
+    }
+
+    translate(data: number[]): void {
+        this.x += data[0];
+        this.y += data[1];
     }
 
     resize(data: number[]): void {

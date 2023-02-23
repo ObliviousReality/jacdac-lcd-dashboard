@@ -1,6 +1,7 @@
 import { ButtonReg, SRV_BUTTON, SRV_ROTARY_ENCODER } from "jacdac-ts";
 import * as React from "react";
 import { useRegister, useRegisterValue, useServices } from "react-jacdac";
+import { Group } from "./Group.ts";
 import { Line } from "./Line.ts";
 import Log from "./Logger.tsx";
 import { Rect } from "./Rect.ts";
@@ -26,6 +27,11 @@ export var globalColour: number[] = [];
 export var globalFilled: boolean = false;
 
 export var globalDrawWidth: number = 1;
+
+export var globalGroup: number = 0;
+
+export var groupList: Group[] = [];
+var groupIDList: number[] = [];
 
 var topZ = 0;
 
@@ -85,6 +91,9 @@ export const setDrawWidth = (w: number) => {
 export const clear = () => {
     ItemList.next = undefined;
     topZ = 0;
+    globalGroup = 0;
+    groupList = [];
+    groupIDList = [];
     refresh();
 }
 
@@ -124,7 +133,7 @@ export const update = (id: number, params: number[]) => {
             head.resize(params);
             break;
         case UpdateTypes.R:
-            head.rotate(params[0]);
+            head.setAngle(params[0]);
             break;
         case UpdateTypes.C:
             head.setColour(params);
@@ -149,6 +158,18 @@ export const update = (id: number, params: number[]) => {
     }
     refresh();
 
+}
+
+export const addGroup = (group: Group) => {
+    let gid = group.groupID;
+    globalGroup = gid;
+    if (gid == 0) {
+        return;
+    }
+    if (!groupIDList.find(item => item == gid)) {
+        groupList.push(group);
+        addItem(group);
+    }
 }
 
 const Canvas = (props) => {

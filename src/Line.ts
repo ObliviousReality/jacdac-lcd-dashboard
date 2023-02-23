@@ -24,9 +24,16 @@ export class Line extends RenderItem {
         context.stroke();
     }
 
-    translate(data: number[]): void {
+    setPosition(data: number[]): void {
         this.x1 = data[0];
         this.y1 = data[1];
+    }
+
+    translate(data: number[]): void {
+        this.x1 += data[0];
+        this.y1 += data[1];
+        this.x2 += data[0];
+        this.y2 += data[1];
     }
 
     resize(data: number[]): void {

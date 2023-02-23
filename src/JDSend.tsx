@@ -15,75 +15,71 @@ export const JDSend = () => {
         return Math.floor(Math.random() * (max - min)) + min;
     }
 
+    const createGroup = (id) => {
+        let arr = new Uint8Array(3);
+        arr[0] = RenderTypes.G;
+        arr[1] = 69;
+        arr[2] = id;
+        rotService.sendCmdAsync(10, arr, false)
+    }
 
-    const drawRect = () => {
+    const createCircle = (x, y, r, z) => {
+        let arr = new Uint8Array(6);
+        arr[0] = RenderTypes.O;
+        arr[1] = idCounter++;
+        arr[2] = x;
+        arr[3] = y;
+        arr[4] = r;
+        arr[5] = z;
+        rotService.sendCmdAsync(10, arr, false);
+    }
+
+    const createRect = (x, y, w, h, z) => {
         let arr = new Uint8Array(7);
         arr[0] = RenderTypes.R;
         arr[1] = idCounter++;
-        arr[2] = 80;
-        arr[3] = 60;
-        arr[4] = 10;
-        arr[5] = 40;
-        arr[6] = 1;
+        arr[2] = x;
+        arr[3] = y;
+        arr[4] = w;
+        arr[5] = h;
+        arr[6] = z;
         rotService.sendCmdAsync(10, arr, false)
+    }
+
+    const createLine = (x1, y1, x2, y2, z) => {
+        let arr = new Uint8Array(7);
+        arr[0] = RenderTypes.L;
+        arr[1] = idCounter++;
+        arr[2] = x1;
+        arr[3] = y1;
+        arr[4] = x2;
+        arr[5] = y2;
+        arr[6] = z;
+        rotService.sendCmdAsync(10, arr, false);
+    }
+
+    const drawRect = () => {
+        createRect(80, 60, 10, 40, 1);
     }
 
     const drawLine = () => {
-        let arr = new Uint8Array(7);
-        arr[0] = RenderTypes.L;
-        arr[1] = idCounter++;
-        arr[2] = 120;
-        arr[3] = 10;
-        arr[4] = 10;
-        arr[5] = 120;
-        arr[6] = 0;
-        rotService.sendCmdAsync(10, arr, false);
+        createLine(120, 10, 10, 120, 0);
     }
 
     const drawCircle = () => {
-        let arr = new Uint8Array(6);
-        arr[0] = RenderTypes.O;
-        arr[1] = idCounter++;
-        arr[2] = 80;
-        arr[3] = 30;
-        arr[4] = 10;
-        arr[5] = 0;
-        rotService.sendCmdAsync(10, arr, false);
+        createCircle(80, 30, 10, 0);
     }
 
     const drawRandomLine = () => {
-        let arr = new Uint8Array(7);
-        arr[0] = RenderTypes.L;
-        arr[1] = idCounter++;
-        arr[2] = getRndInteger(0, 160);
-        arr[3] = getRndInteger(0, 120);
-        arr[4] = getRndInteger(0, 160);
-        arr[5] = getRndInteger(0, 120);
-        arr[6] = getRndInteger(1, 10);
-        rotService.sendCmdAsync(10, arr, false);
+        createLine(getRndInteger(0, 160), getRndInteger(0, 120), getRndInteger(0, 160), getRndInteger(0, 120), getRndInteger(1, 10));
     }
 
     const drawRandomRect = () => {
-        let arr = new Uint8Array(7);
-        arr[0] = RenderTypes.R;
-        arr[1] = idCounter++;
-        arr[2] = getRndInteger(0, 160);
-        arr[3] = getRndInteger(0, 120);
-        arr[4] = getRndInteger(0, 160 - arr[2]);
-        arr[5] = getRndInteger(0, 120 - arr[3]);
-        arr[6] = getRndInteger(11, 20);
-        rotService.sendCmdAsync(10, arr, false)
+        createRect(getRndInteger(0, 160), getRndInteger(0, 120), getRndInteger(0, 160), getRndInteger(0, 120), getRndInteger(11, 20));
     }
 
     const drawRandomCircle = () => {
-        let arr = new Uint8Array(6);
-        arr[0] = RenderTypes.O;
-        arr[1] = idCounter++;
-        arr[2] = getRndInteger(0, 160);
-        arr[3] = getRndInteger(0, 120);
-        arr[4] = getRndInteger(1, 50);
-        arr[5] = getRndInteger(21, 30);
-        rotService.sendCmdAsync(10, arr, false);
+        createCircle(getRndInteger(0, 160), getRndInteger(0, 120), getRndInteger(1, 50), getRndInteger(21, 30));
     }
 
     const setColour = (r: number, g: number, b: number) => {
@@ -191,6 +187,34 @@ export const JDSend = () => {
         drawSprite(86, 90, SpriteTypes.Exclamation_Mark);
     }
 
+    const bereal = () => {
+        setRandom();
+        drawSprite(50, 60, SpriteTypes.H);
+        setRandom();
+        drawSprite(56, 60, SpriteTypes.E);
+        setRandom();
+        drawSprite(62, 60, SpriteTypes.L);
+        setRandom();
+        drawSprite(68, 60, SpriteTypes.L);
+        setRandom();
+        drawSprite(74, 60, SpriteTypes.O);
+        setRandom();
+        drawSprite(47, 70, SpriteTypes.B);
+        setRandom();
+        drawSprite(53, 70, SpriteTypes.E);
+        setRandom();
+        drawSprite(59, 70, SpriteTypes.R);
+        setRandom();
+        drawSprite(65, 70, SpriteTypes.E);
+        setRandom();
+        drawSprite(71, 70, SpriteTypes.A);
+        setRandom();
+        drawSprite(77, 70, SpriteTypes.L);
+        setRandom();
+        drawSprite(83, 70, SpriteTypes.Exclamation_Mark);
+
+    }
+
     const alphabet = () => {
         for (let i = 0; i < 26; i++) {
             setRandom();
@@ -204,6 +228,28 @@ export const JDSend = () => {
             setRandom();
             drawSprite(3 + 6 * i, 25, SpriteTypes.NUM_0 + i);
         }
+    }
+
+    const groupTest = () => {
+        createGroup(1);
+        setFill(true);
+        setColour(255, 255, 255);
+        createCircle(80, 80, 20, 5);
+        createCircle(80, 45, 15, 5);
+        setColour(10, 10, 10);
+        createRect(70, 15, 20, 20, 5);
+        createLine(60, 35, 100, 35, 5);
+        createGroup(0);
+    }
+
+    const moveGroup = () => {
+        let arr = new Uint8Array(5);
+        arr[0] = RenderTypes.U;
+        arr[1] = 69;
+        arr[2] = UpdateTypes.T;
+        arr[3] = 10;
+        arr[4] = 10;
+        rotService.sendCmdAsync(10, arr, false);
     }
 
     if (rotService != null) {
@@ -238,6 +284,11 @@ export const JDSend = () => {
                     <button onClick={sayHello}>Hello!</button>
                     <button onClick={theRest}>The Rest</button>
                     <button onClick={alphabet}>Alphabet</button>
+                    <button onClick={bereal}>bereal</button>
+                </div>
+                <div>
+                    <button onClick={groupTest}>Snowman</button>
+                    <button onClick={moveGroup}>Move</button>
                 </div>
                 <div>
                     <button onClick={clearScreen}>Clear</button>

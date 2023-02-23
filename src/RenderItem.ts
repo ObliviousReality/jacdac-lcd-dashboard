@@ -1,4 +1,4 @@
-import { globalColour, globalDrawWidth, globalFilled } from "./Canvas.tsx";
+import { globalColour, globalDrawWidth, globalFilled, globalGroup, groupList } from "./Canvas.tsx";
 import RenderTypes from "./RenderTypes.ts";
 import Log from "./Logger.tsx";
 
@@ -7,7 +7,7 @@ export class RenderItem {
     id: number | undefined;
     data: number[];
 
-    z: number | undefined = 1;
+    z: number = 1;
 
     colour: number[] = [];
     width: number;
@@ -15,13 +15,15 @@ export class RenderItem {
 
     visibility: boolean = true;
     angle: number = 0;
+    localScale: number = 1;
 
     next: RenderItem | undefined = undefined;
 
     constructor(params: number[]) {
         this.type = params.shift();
         this.id = params.shift();
-        this.z = params.pop();
+        if (this.type != RenderTypes.G)
+            this.z = params.pop();
         if (this.z == 0) {
             if (this.id != 256) {
                 this.z = 1;
@@ -36,6 +38,10 @@ export class RenderItem {
 
         this.filled = globalFilled;
         this.width = globalDrawWidth;
+
+        if (globalGroup > 0) {
+            groupList[globalGroup - 1].items.push(this);
+        }
     }
 
     getNext() {
@@ -51,26 +57,7 @@ export class RenderItem {
     }
 
     draw(context, scale) {
-        context.fillStyle = `rgb(${this.colour[0]}, ${this.colour[1]}, ${this.colour[2]})`;
-        context.strokeStyle = `rgb(${this.colour[0]}, ${this.colour[1]}, ${this.colour[2]})`;
-        context.lineWidth = this.width * scale;
-        switch (this.type) {
-            case RenderTypes.P:
-                Log("Drawing in the wrong place.");
-                break;
-            case RenderTypes.R:
-                Log("Drawing in the wrong place.");
-                break;
-            case RenderTypes.L:
-                Log("Drawing in the wrong place.");
-                break;
-            case RenderTypes.O:
-                Log("Drawing in the wrong place.");
-                break;
-            default:
-                Log("Not sure what to draw.");
-                break;
-        }
+        Log("Drawing in the wrong place.");
     }
 
     translate(data: number[]) {
@@ -78,6 +65,10 @@ export class RenderItem {
     }
 
     resize(data: number[]) {
+        Log("Base Class; No functionality.")
+    }
+
+    setPosition(data: number[]){
         Log("Base Class; No functionality.")
     }
 
@@ -104,8 +95,12 @@ export class RenderItem {
         this.width = nw;
     }
 
-    rotate(na: number) {
+    setAngle(na: number) {
         this.angle = na;
+    }
+
+    setScale(ns: number) {
+        this.localScale = ns;
     }
 
 
