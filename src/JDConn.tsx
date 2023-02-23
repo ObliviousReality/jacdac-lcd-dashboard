@@ -8,6 +8,7 @@ import { Pixel } from "./Pixel.ts";
 import { Rect } from "./Rect.ts";
 import RenderItem from "./RenderItem.ts";
 import RenderTypes from "./RenderTypes.ts";
+import { Sprite } from "./Sprite.ts";
 
 const JDConn = () => {
 
@@ -57,6 +58,9 @@ const JDConn = () => {
                 break;
             case RenderTypes.D:
                 del(outdata[1]);
+                break;
+            case RenderTypes.S:
+                addItem(new Sprite(outdata));
                 break;
             case RenderTypes.I:
                 //

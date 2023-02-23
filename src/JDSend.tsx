@@ -149,6 +149,28 @@ export const JDSend = () => {
         idCounter = 1;
     }
 
+    const drawASprite = () => {
+        let arr = new Uint8Array(6);
+        arr[0] = RenderTypes.S;
+        arr[1] = idCounter++;
+        arr[2] = 0;
+        arr[3] = 50;
+        arr[4] = 50;
+        arr[5] = 60;
+        rotService.sendCmdAsync(10, arr, false);
+    }
+
+    const drawBSprite = () => {
+        let arr = new Uint8Array(6);
+        arr[0] = RenderTypes.S;
+        arr[1] = idCounter++;
+        arr[2] = 1;
+        arr[3] = 56;
+        arr[4] = 50;
+        arr[5] = 60;
+        rotService.sendCmdAsync(10, arr, false);
+    }
+
     if (rotService != null) {
 
         return (
@@ -174,6 +196,10 @@ export const JDSend = () => {
                 <div>
                     <button onClick={fill}>Set Filled</button>
                     <button onClick={empty} className="emptyButton">Set Empty</button>
+                </div>
+                <div>
+                    <button onClick={drawASprite}>Draw A</button>
+                    <button onClick={drawBSprite}>Draw B</button>
                 </div>
                 <div>
                     <button onClick={clearScreen}>Clear</button>
