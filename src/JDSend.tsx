@@ -187,34 +187,6 @@ export const JDSend = () => {
         drawSprite(86, 90, SpriteTypes.Exclamation_Mark);
     }
 
-    const bereal = () => {
-        setRandom();
-        drawSprite(50, 60, SpriteTypes.H);
-        setRandom();
-        drawSprite(56, 60, SpriteTypes.E);
-        setRandom();
-        drawSprite(62, 60, SpriteTypes.L);
-        setRandom();
-        drawSprite(68, 60, SpriteTypes.L);
-        setRandom();
-        drawSprite(74, 60, SpriteTypes.O);
-        setRandom();
-        drawSprite(47, 70, SpriteTypes.B);
-        setRandom();
-        drawSprite(53, 70, SpriteTypes.E);
-        setRandom();
-        drawSprite(59, 70, SpriteTypes.R);
-        setRandom();
-        drawSprite(65, 70, SpriteTypes.E);
-        setRandom();
-        drawSprite(71, 70, SpriteTypes.A);
-        setRandom();
-        drawSprite(77, 70, SpriteTypes.L);
-        setRandom();
-        drawSprite(83, 70, SpriteTypes.Exclamation_Mark);
-
-    }
-
     const alphabet = () => {
         for (let i = 0; i < 26; i++) {
             setRandom();
@@ -284,7 +256,6 @@ export const JDSend = () => {
                     <button onClick={sayHello}>Hello!</button>
                     <button onClick={theRest}>The Rest</button>
                     <button onClick={alphabet}>Alphabet</button>
-                    <button onClick={bereal}>bereal</button>
                 </div>
                 <div>
                     <button onClick={groupTest}>Snowman</button>
