@@ -58,6 +58,16 @@ export const JDSend = () => {
         rotService.sendCmdAsync(10, arr, false);
     }
 
+    const createUpdate = (uid, ut, p: number[]) => {
+        let arr = new Uint8Array(3 + p.length);
+        arr[0] = RenderTypes.U;
+        arr[1] = uid;
+        arr[2] = ut;
+        let n = 3;
+        p.map((item) => { arr[n++] = item });
+        rotService.sendCmdAsync(10, arr, false);
+    }
+
     const drawRect = () => {
         createRect(80, 60, 10, 40, 1);
     }
@@ -190,7 +200,7 @@ export const JDSend = () => {
     const alphabet = () => {
         for (let i = 0; i < 26; i++) {
             setRandom();
-            drawSprite(3 + 6 * i, 5, SpriteTypes.A + i);
+            drawSprite(3 + 6 * i, 100, SpriteTypes.A + i);
         }
         for (let i = 0; i < 26; i++) {
             setRandom();
@@ -199,6 +209,17 @@ export const JDSend = () => {
         for (let i = 0; i < 10; i++) {
             setRandom();
             drawSprite(3 + 6 * i, 25, SpriteTypes.NUM_0 + i);
+        }
+    }
+
+    const bigAlphabet = () => {
+        for (let i = 1; i < 63; i++) {
+            createUpdate(i, UpdateTypes.S, [2]);
+        }
+    }
+    const smallAlphabet = () => {
+        for (let i = 1; i < 63; i++) {
+            createUpdate(i, UpdateTypes.S, [1]);
         }
     }
 
@@ -256,6 +277,8 @@ export const JDSend = () => {
                     <button onClick={sayHello}>Hello!</button>
                     <button onClick={theRest}>The Rest</button>
                     <button onClick={alphabet}>Alphabet</button>
+                    <button onClick={bigAlphabet}>Big</button>
+                    <button onClick={smallAlphabet}>Small</button>
                 </div>
                 <div>
                     <button onClick={groupTest}>Snowman</button>

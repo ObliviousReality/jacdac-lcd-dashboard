@@ -62,14 +62,17 @@ export class RenderItem {
     }
 
     translate(data: number[]) {
+        Log("Translate");
         Log("Base Class; No functionality.")
     }
 
     resize(data: number[]) {
+        Log("Resize");
         Log("Base Class; No functionality.")
     }
 
     setPosition(data: number[]) {
+        Log("Set Pos");
         Log("Base Class; No functionality.")
     }
 

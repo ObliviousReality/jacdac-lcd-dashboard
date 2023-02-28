@@ -13,7 +13,7 @@ export class Pixel extends RenderItem {
         context.fillStyle = `rgb(${this.colour[0]}, ${this.colour[1]}, ${this.colour[2]})`;
         context.strokeStyle = `rgb(${this.colour[0]}, ${this.colour[1]}, ${this.colour[2]})`;
         context.lineWidth = this.width * scale;
-        context.strokeRect(this.x * scale, this.y * scale, scale, scale);
+        context.fillRect(this.x * scale, this.y * scale, scale, scale);
     }
 
     setPosition(data: number[]): void {

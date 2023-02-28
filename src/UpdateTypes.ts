@@ -2,12 +2,13 @@ enum UpdateTypes {
     V,
     T,
     P,
-    S,
     R,
+    A,
     C,
     W,
     F,
-    Z
+    Z,
+    S
 }
 
 export default UpdateTypes

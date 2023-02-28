@@ -35,6 +35,10 @@ var groupIDList: number[] = [];
 
 var topZ = 0;
 
+const advancedRenderMode: boolean = true;
+
+var screen: number[][][] = [];
+
 export const addItem = (item: RenderItem) => {
     if (ItemList == undefined) {
         ItemList = item;
@@ -65,12 +69,22 @@ export const addItem = (item: RenderItem) => {
 const refresh = () => {
     let ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    let temp: RenderItem = ItemList;
-    while (temp) {
-        if (temp.visibility) {
-            temp.draw(ctx, scaleFactor);
+    if (advancedRenderMode) {
+        for (let i = 0; i < screen.length; i++) {
+            for (let j = 0; j < screen[i].length; j++) {
+                context.fillStyle = `rgb(${screen[i][j][0]}, ${screen[i][j][1]}, ${screen[i][j][2]})`;
+                context.strokeStyle = `rgb(${screen[i][j][0]}, ${screen[i][j][1]}, ${screen[i][j][2]})`;
+                context.fillRect(i * scaleFactor, j * scaleFactor, scaleFactor, scaleFactor);
+            }
         }
-        temp = temp.next;
+    } else {
+        let temp: RenderItem = ItemList;
+        while (temp) {
+            if (temp.visibility) {
+                temp.draw(ctx, scaleFactor);
+            }
+            temp = temp.next;
+        }
     }
 }
 
@@ -132,10 +146,10 @@ export const update = (id: number, params: number[]) => {
         case UpdateTypes.P:
             head.setPosition(params);
             break;
-        case UpdateTypes.S:
+        case UpdateTypes.R:
             head.resize(params);
             break;
-        case UpdateTypes.R:
+        case UpdateTypes.A:
             head.setAngle(params[0]);
             break;
         case UpdateTypes.C:
@@ -156,6 +170,9 @@ export const update = (id: number, params: number[]) => {
             del(head.id);
             addItem(head); //??
             break;
+        case UpdateTypes.S:
+            head.setScale(params[0]);
+            break;
         default:
             break;
     }
@@ -174,6 +191,10 @@ export const addGroup = (data: number[]) => {
         groupList.push(g);
         addItem(g);
     }
+}
+
+function getRndInteger(min: number, max: number) {
+    return Math.floor(Math.random() * (max - min)) + min;
 }
 
 const Canvas = (props) => {
@@ -216,6 +237,15 @@ const Canvas = (props) => {
                 context.canvas.width = width * scaleFactor;
                 context.canvas.height = height * scaleFactor;
                 if (!initialFill) {
+
+                    if (advancedRenderMode) {
+                        for (let i = 0; i < context.canvas.width; i++) {
+                            screen.push([]);
+                            for (let j = 0; j < context.canvas.height; j++) {
+                                screen[i].push([getRndInteger(0, 255), getRndInteger(0, 255), getRndInteger(0, 255), 0]);
+                            }
+                        }
+                    }
 
                     globalColour.push(0);
                     globalColour.push(0);

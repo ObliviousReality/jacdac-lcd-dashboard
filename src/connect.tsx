@@ -13,10 +13,12 @@ export default function Connect() {
         connect.innerText = bus.connected ? "disconnect" : bus.disconnected ? "connect" : "searching";
         if (bus.connected) {
             status.style.backgroundColor = "green";
+            status.style.borderColor = "green";
             status.innerText = "Connected";
         }
         else {
             status.style.backgroundColor = "red";
+            status.style.borderColor = "red";
             status.innerText = "disconnected";
         }
     })

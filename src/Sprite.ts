@@ -25,11 +25,11 @@ export class Sprite extends RenderItem {
     draw(context: any, scale: any): void {
         context.fillStyle = `rgb(${this.colour[0]}, ${this.colour[1]}, ${this.colour[2]})`;
         context.strokeStyle = `rgb(${this.colour[0]}, ${this.colour[1]}, ${this.colour[2]})`;
-        context.lineWidth = this.width * scale;
+        context.lineWidth = this.width * scale * this.localScale;
         for (let i = 0; i < this.w; i++) {
             for (let j = 0; j < this.h; j++) {
                 if (this.spriteData[j][i]) {
-                    context.fillRect((this.x + i) * scale, (this.y + j) * scale, scale, scale);
+                    context.fillRect((this.x + i) * scale * this.localScale, (this.y + j) * scale * this.localScale, scale * this.localScale, scale * this.localScale);
                 }
             }
         }
