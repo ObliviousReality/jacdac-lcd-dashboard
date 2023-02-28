@@ -35,7 +35,7 @@ var groupIDList: number[] = [];
 
 var topZ = 0;
 
-const advancedRenderMode: boolean = true;
+var advancedRenderMode: boolean = true;
 
 var screen: number[][][] = [];
 
@@ -216,6 +216,9 @@ const Canvas = (props) => {
     scaledown.onclick = () => { setScale(context, scaleFactor - 1) }
     listitems.onclick = () => { let item = ItemList; while (item) { Log(item.id?.toString() + " | " + item.type.toString() + " : " + item.data + "," + item.z.toString()); item = item.next; }; };
 
+    const slider = document.getElementById("adv") as HTMLInputElement;
+    slider.onclick = () => { advancedRenderMode = !advancedRenderMode; Log("Slider Clicked"); refresh(); }
+    // slider.checked = true;
 
     const setScale = (ctx, scale: number) => {
         if (scale <= 0 || scale > 10) {
@@ -230,6 +233,7 @@ const Canvas = (props) => {
     }
 
     React.useEffect(() => {
+        Log(slider.checked.toString());
         if (canvasRef) {
             canvas = canvasRef.current;
             if (canvas) {
@@ -265,7 +269,7 @@ const Canvas = (props) => {
                 refresh();
             }
         }
-    }, [pressure, rotService]);
+    }, [pressure, rotService, slider]);
 
     if (rotService) {
         return (
