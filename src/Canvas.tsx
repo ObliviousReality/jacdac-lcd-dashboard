@@ -9,6 +9,7 @@ import RenderItem from "./RenderItem.ts";
 import RenderTypes from "./RenderTypes.ts";
 import UpdateTypes from "./UpdateTypes.ts";
 import './stylesheet.css';
+import { timeStamp } from "console";
 
 var initialFill = false;
 
@@ -67,6 +68,7 @@ export const addItem = (item: RenderItem) => {
 }
 
 const refresh = () => {
+    let st = Date.now();
     let ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     if (advancedRenderMode) {
@@ -86,6 +88,8 @@ const refresh = () => {
             temp = temp.next;
         }
     }
+    st = (Date.now() - st);
+    Log("Render Time: " + st.toString() + "ms");
 }
 
 export const setColour = (r: number, g: number, b: number) => {
@@ -217,8 +221,7 @@ const Canvas = (props) => {
     listitems.onclick = () => { let item = ItemList; while (item) { Log(item.id?.toString() + " | " + item.type.toString() + " : " + item.data + "," + item.z.toString()); item = item.next; }; };
 
     const slider = document.getElementById("adv") as HTMLInputElement;
-    slider.onclick = () => { advancedRenderMode = !advancedRenderMode; Log("Slider Clicked"); refresh(); }
-    // slider.checked = true;
+    slider.onclick = () => { advancedRenderMode = !advancedRenderMode; refresh(); }
 
     const setScale = (ctx, scale: number) => {
         if (scale <= 0 || scale > 10) {
@@ -233,7 +236,6 @@ const Canvas = (props) => {
     }
 
     React.useEffect(() => {
-        Log(slider.checked.toString());
         if (canvasRef) {
             canvas = canvasRef.current;
             if (canvas) {
