@@ -11,7 +11,8 @@ export enum RenderTypes {
     D,
     S,
     G,
-    I = 15
+    B,
+    I
 }
 
 export default RenderTypes;

@@ -4,6 +4,7 @@ import { useServices } from "react-jacdac";
 import RenderTypes from "./RenderTypes.ts";
 import UpdateTypes from "./UpdateTypes.ts";
 import { SpriteTypes } from "./SpriteTypes.ts";
+import { InitTypes } from "./InitTypes.ts";
 
 
 export const JDSend = () => {
@@ -13,6 +14,13 @@ export const JDSend = () => {
 
     function getRndInteger(min: number, max: number) {
         return Math.floor(Math.random() * (max - min)) + min;
+    }
+
+    const sendInitCmd = (type: number, bit: number) => {
+        let arr = new Uint8Array(2);
+        arr[0] = RenderTypes.I;
+        arr[1] = (type << 1) + bit;
+        rotService.sendCmdAsync(10, arr, false)
     }
 
     const createGroup = (id, gid) => {
@@ -156,6 +164,13 @@ export const JDSend = () => {
         idCounter = 1;
     }
 
+    const renderScreen = () => {
+        let arr = new Uint8Array(1);
+        arr[0] = RenderTypes.B;
+        rotService.sendCmdAsync(10, arr, false);
+        idCounter = 1;
+    }
+
     const drawASprite = () => {
         drawSprite(50, 50, SpriteTypes.A);
     }
@@ -212,6 +227,7 @@ export const JDSend = () => {
             drawSprite(3 + 6 * i, 25, SpriteTypes.NUM_0 + i);
         }
         createGroup(0, 0);
+        renderScreen();
     }
 
     const bigAlphabet = () => {
@@ -243,10 +259,32 @@ export const JDSend = () => {
         rotService.sendCmdAsync(10, arr, false);
     }
 
+    const autoRenderOn = () => {
+        sendInitCmd(InitTypes.A, 1);
+    }
+
+    const autoRenderOff = () => {
+        sendInitCmd(InitTypes.A, 0);
+    }
+
+    const advancedRenderTypeOn = () => {
+        sendInitCmd(InitTypes.R, 1);
+    }
+
+    const advancedRenderTypeOff = () => {
+        sendInitCmd(InitTypes.R, 0);
+    }
+
     if (rotService != null) {
 
         return (
             <div>
+                <div>
+                    <button onClick={autoRenderOn}>Enable Auto Render</button>
+                    <button onClick={autoRenderOff}>Disable Auto Render</button>
+                    <button onClick={advancedRenderTypeOn}>Enable Advanced Render</button>
+                    <button onClick={advancedRenderTypeOff}>Disable Advanced Render</button>
+                </div>
                 <div>
                     <button onClick={drawRect}>Rect</button>
                     <button onClick={drawLine}>Line</button>
@@ -283,6 +321,7 @@ export const JDSend = () => {
                     <button onClick={moveGroup}>Move</button>
                 </div>
                 <div>
+                    <button onClick={renderScreen}>Render</button>
                     <button onClick={clearScreen}>Clear</button>
                 </div>
             </div >

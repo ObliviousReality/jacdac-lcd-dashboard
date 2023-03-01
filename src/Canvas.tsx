@@ -9,7 +9,7 @@ import RenderItem from "./RenderItem.ts";
 import RenderTypes from "./RenderTypes.ts";
 import UpdateTypes from "./UpdateTypes.ts";
 import './stylesheet.css';
-import { timeStamp } from "console";
+import { InitTypes } from "./InitTypes.ts";
 
 var initialFill = false;
 
@@ -37,8 +37,27 @@ var groupIDList: number[] = [];
 var topZ = 0;
 
 var advancedRenderMode: boolean = true;
+var autoRefreshMode: boolean = true;
 
 var screen: number[][][] = [];
+
+
+export const init = (data: number) => {
+    let bit = data % 2;
+    let cmd = data >> 1;
+    switch (cmd) {
+        case InitTypes.A:
+            autoRefreshMode = bit ? true : false;
+            break;
+        case InitTypes.R:
+            advancedRenderMode = bit ? true : false;
+            if (autoRefreshMode) {
+                refresh();
+            }
+        default:
+            break;
+    }
+}
 
 export const addItem = (item: RenderItem) => {
     if (ItemList == undefined) {
@@ -53,7 +72,9 @@ export const addItem = (item: RenderItem) => {
         }
         temp.next = item;
         topZ = z;
-        refresh();
+        if (autoRefreshMode) {
+            refresh();
+        }
         return;
     }
     while (temp.next) {
@@ -64,10 +85,12 @@ export const addItem = (item: RenderItem) => {
         }
         temp = temp.next;
     }
-    refresh();
+    if (autoRefreshMode) {
+        refresh();
+    }
 }
 
-const refresh = () => {
+export const refresh = () => {
     let st = Date.now();
     let ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -126,7 +149,9 @@ export const del = (id: number) => {
         item = item.next;
     }
     topZ = 256; // Reset so next is correctly placed.
-    refresh();
+    if (autoRefreshMode) {
+        refresh();
+    }
 }
 
 export const update = (id: number, params: number[]) => {
@@ -179,7 +204,9 @@ export const update = (id: number, params: number[]) => {
         default:
             break;
     }
-    refresh();
+    if (autoRefreshMode) {
+        refresh();
+    }
 
 }
 
@@ -195,10 +222,6 @@ export const addGroup = (data: number[]) => {
         groupIDList.push(gid);
         addItem(g);
     }
-}
-
-function getRndInteger(min: number, max: number) {
-    return Math.floor(Math.random() * (max - min)) + min;
 }
 
 const Canvas = (props) => {
@@ -219,9 +242,6 @@ const Canvas = (props) => {
     scaleup.onclick = () => { setScale(context, scaleFactor + 1) }
     scaledown.onclick = () => { setScale(context, scaleFactor - 1) }
     listitems.onclick = () => { let item = ItemList; while (item) { Log(item.id?.toString() + " | " + item.type.toString() + " : " + item.data + "," + item.z.toString()); item = item.next; }; };
-
-    const slider = document.getElementById("adv") as HTMLInputElement;
-    slider.onclick = () => { advancedRenderMode = !advancedRenderMode; refresh(); }
 
     const setScale = (ctx, scale: number) => {
         if (scale <= 0 || scale > 10) {
@@ -248,7 +268,7 @@ const Canvas = (props) => {
                         for (let i = 0; i < context.canvas.width; i++) {
                             screen.push([]);
                             for (let j = 0; j < context.canvas.height; j++) {
-                                screen[i].push([getRndInteger(0, 255), getRndInteger(0, 255), getRndInteger(0, 255), 0]);
+                                screen[i].push([0, 0, 0, 0]);
                             }
                         }
                     }
@@ -271,7 +291,7 @@ const Canvas = (props) => {
                 refresh();
             }
         }
-    }, [pressure, rotService, slider]);
+    }, [pressure, rotService]);
 
     if (rotService) {
         return (
