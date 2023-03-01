@@ -15,11 +15,11 @@ export const JDSend = () => {
         return Math.floor(Math.random() * (max - min)) + min;
     }
 
-    const createGroup = (id) => {
+    const createGroup = (id, gid) => {
         let arr = new Uint8Array(3);
         arr[0] = RenderTypes.G;
-        arr[1] = 69;
-        arr[2] = id;
+        arr[1] = id;
+        arr[2] = gid;
         rotService.sendCmdAsync(10, arr, false)
     }
 
@@ -198,9 +198,10 @@ export const JDSend = () => {
     }
 
     const alphabet = () => {
+        createGroup(70, 2);
         for (let i = 0; i < 26; i++) {
             setRandom();
-            drawSprite(3 + 6 * i, 100, SpriteTypes.A + i);
+            drawSprite(3 + 6 * i, 5, SpriteTypes.A + i);
         }
         for (let i = 0; i < 26; i++) {
             setRandom();
@@ -210,21 +211,18 @@ export const JDSend = () => {
             setRandom();
             drawSprite(3 + 6 * i, 25, SpriteTypes.NUM_0 + i);
         }
+        createGroup(0, 0);
     }
 
     const bigAlphabet = () => {
-        for (let i = 1; i < 63; i++) {
-            createUpdate(i, UpdateTypes.S, [2]);
-        }
+        createUpdate(70, UpdateTypes.S, [2]);
     }
     const smallAlphabet = () => {
-        for (let i = 1; i < 63; i++) {
-            createUpdate(i, UpdateTypes.S, [1]);
-        }
+        createUpdate(70, UpdateTypes.S, [1]);
     }
 
     const groupTest = () => {
-        createGroup(1);
+        createGroup(69, 1);
         setFill(true);
         setColour(255, 255, 255);
         createCircle(80, 80, 20, 5);
@@ -232,7 +230,7 @@ export const JDSend = () => {
         setColour(10, 10, 10);
         createRect(70, 15, 20, 20, 5);
         createLine(60, 35, 100, 35, 5);
-        createGroup(0);
+        createGroup(0, 0);
     }
 
     const moveGroup = () => {

@@ -40,7 +40,10 @@ export class RenderItem {
         this.width = globalDrawWidth;
         if (this.type != RenderTypes.G) {
             if (globalGroup > 0) {
-                groupList[globalGroup - 1].items.push(this);
+                let gr = groupList.find(g => g.groupID == globalGroup);
+                if (gr) {
+                    gr.items.push(this);
+                }
             }
         }
     }

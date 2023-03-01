@@ -9,6 +9,7 @@ export class Group extends RenderItem {
     constructor(params: number[]) {
         super(params);
         this.groupID = params[0];
+        Log(params[0].toString());
     }
 
     draw(context: any, scale: any): void {
@@ -48,6 +49,12 @@ export class Group extends RenderItem {
     setAngle(na: number): void {
         for (let i = 0; i < this.items.length; i++) {
             this.items[i].setAngle(na);
+        }
+    }
+
+    setScale(ns: number): void {
+        for (let i = 0; i < this.items.length; i++) {
+            this.items[i].setScale(ns);
         }
     }
 

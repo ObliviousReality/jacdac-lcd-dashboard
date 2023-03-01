@@ -75,7 +75,6 @@ const refresh = () => {
         for (let i = 0; i < screen.length; i++) {
             for (let j = 0; j < screen[i].length; j++) {
                 context.fillStyle = `rgb(${screen[i][j][0]}, ${screen[i][j][1]}, ${screen[i][j][2]})`;
-                context.strokeStyle = `rgb(${screen[i][j][0]}, ${screen[i][j][1]}, ${screen[i][j][2]})`;
                 context.fillRect(i * scaleFactor, j * scaleFactor, scaleFactor, scaleFactor);
             }
         }
@@ -193,6 +192,7 @@ export const addGroup = (data: number[]) => {
     if (!groupIDList.find(item => item == gid)) {
         let g = new Group(data);
         groupList.push(g);
+        groupIDList.push(gid);
         addItem(g);
     }
 }
