@@ -36,10 +36,15 @@ var groupIDList: number[] = [];
 
 var topZ = 0;
 
-var advancedRenderMode: boolean = true;
+export var advancedRenderMode: boolean = true;
 var autoRefreshMode: boolean = true;
 
-var screen: number[][][] = [];
+var buffer: number[][][] = [];
+
+export const setPixel = (x: number, y: number, c: number[]) => {
+    if (x > 0 && y > 0)
+        buffer[x][y] = c;
+}
 
 
 export const init = (data: number) => {
@@ -51,11 +56,27 @@ export const init = (data: number) => {
             break;
         case InitTypes.R:
             advancedRenderMode = bit ? true : false;
+            if (advancedRenderMode) {
+                buildBuffer();
+            }
+            else {
+                buffer = [];
+            }
             if (autoRefreshMode) {
                 refresh();
             }
+            break;
         default:
             break;
+    }
+}
+
+const buildBuffer = () => {
+    for (let i = 0; i < context.canvas.width; i++) {
+        buffer.push([]);
+        for (let j = 0; j < context.canvas.height; j++) {
+            buffer[i].push([0, 0, 128, 0]);
+        }
     }
 }
 
@@ -94,24 +115,25 @@ export const refresh = () => {
     let st = Date.now();
     let ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    let temp: RenderItem = ItemList;
+    while (temp) {
+        if (temp.visibility) {
+            temp.draw(ctx, scaleFactor);
+        }
+        temp = temp.next;
+    }
     if (advancedRenderMode) {
-        for (let i = 0; i < screen.length; i++) {
-            for (let j = 0; j < screen[i].length; j++) {
-                context.fillStyle = `rgb(${screen[i][j][0]}, ${screen[i][j][1]}, ${screen[i][j][2]})`;
+        for (let i = 0; i < buffer.length; i++) {
+            for (let j = 0; j < buffer[i].length; j++) {
+                context.fillStyle = `rgb(${buffer[i][j][0]}, ${buffer[i][j][1]}, ${buffer[i][j][2]})`;
                 context.fillRect(i * scaleFactor, j * scaleFactor, scaleFactor, scaleFactor);
             }
         }
-    } else {
-        let temp: RenderItem = ItemList;
-        while (temp) {
-            if (temp.visibility) {
-                temp.draw(ctx, scaleFactor);
-            }
-            temp = temp.next;
-        }
     }
-    st = (Date.now() - st);
-    Log("Render Time: " + st.toString() + "ms");
+    if (advancedRenderMode) {
+        st = (Date.now() - st);
+        Log("Render Time: " + st.toString() + "ms");
+    }
 }
 
 export const setColour = (r: number, g: number, b: number) => {
@@ -134,7 +156,9 @@ export const clear = () => {
     globalGroup = 0;
     groupList = [];
     groupIDList = [];
-    refresh();
+    if (autoRefreshMode) {
+        refresh();
+    }
 }
 
 export const del = (id: number) => {
@@ -263,16 +287,9 @@ const Canvas = (props) => {
                 context.canvas.width = width * scaleFactor;
                 context.canvas.height = height * scaleFactor;
                 if (!initialFill) {
-
                     if (advancedRenderMode) {
-                        for (let i = 0; i < context.canvas.width; i++) {
-                            screen.push([]);
-                            for (let j = 0; j < context.canvas.height; j++) {
-                                screen[i].push([0, 0, 0, 0]);
-                            }
-                        }
+                        buildBuffer();
                     }
-
                     globalColour.push(0);
                     globalColour.push(0);
                     globalColour.push(0);

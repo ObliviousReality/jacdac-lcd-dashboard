@@ -29,7 +29,7 @@ export class Sprite extends RenderItem {
         for (let i = 0; i < this.w; i++) {
             for (let j = 0; j < this.h; j++) {
                 if (this.spriteData[j][i]) {
-                    context.fillRect((this.x + i) * scale * this.localScale, (this.y + j) * scale * this.localScale, scale * this.localScale, scale * this.localScale);
+                    context.fillRect((this.x + (i * this.localScale)) * scale, (this.y + (j * this.localScale)) * scale, scale * this.localScale, scale * this.localScale);
                 }
             }
         }

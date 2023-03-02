@@ -1,3 +1,4 @@
+import { advancedRenderMode, setPixel } from "./Canvas.tsx";
 import RenderItem from "./RenderItem.ts";
 
 
@@ -19,7 +20,16 @@ export class Rect extends RenderItem {
         context.strokeStyle = `rgb(${this.colour[0]}, ${this.colour[1]}, ${this.colour[2]})`;
         context.lineWidth = this.width * scale;
         if (this.filled) {
-            context.fillRect(this.x * scale, this.y * scale, this.w * scale, this.h * scale);
+            if (advancedRenderMode) {
+                for (let i = this.x; i < this.x + this.w; i++) {
+                    for (let j = this.y; j < this.h + this.y; j++) {
+                        setPixel(i, j, this.colour);
+                    }
+                }
+            }
+            else {
+                context.fillRect(this.x * scale, this.y * scale, this.w * scale, this.h * scale);
+            }
         }
         else {
             context.strokeRect(this.x * scale, this.y * scale, this.w * scale, this.h * scale);
