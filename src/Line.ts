@@ -8,10 +8,18 @@ export class Line extends RenderItem {
 
     constructor(params: number[]) {
         super(params);
-        this.x1 = params[0];
-        this.y1 = params[1];
-        this.x2 = params[2];
-        this.y2 = params[3];
+        if (params.length > 5) {
+            this.x1 = this.unconvCoord(params[0], params[1]);
+            this.y1 = this.unconvCoord(params[2], params[3]);
+            this.x2 = this.unconvCoord(params[4], params[5]);
+            this.y2 = this.unconvCoord(params[6], params[7]);
+        }
+        else {
+            this.x1 = params[0];
+            this.y1 = params[1];
+            this.x2 = params[2];
+            this.y2 = params[3];
+        }
     }
 
     draw(context: any, scale: any): void {

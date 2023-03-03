@@ -1,5 +1,6 @@
 import { advancedRenderMode, buffer } from "./Canvas.tsx";
 import RenderItem from "./RenderItem.ts";
+import Log from "./Logger.tsx";
 
 
 export class Rect extends RenderItem {
@@ -9,10 +10,17 @@ export class Rect extends RenderItem {
     h: number;
     constructor(params: number[]) {
         super(params);
-        this.x = params[0];
-        this.y = params[1];
-        this.w = params[2];
-        this.h = params[3];
+        if (params.length > 5) {
+            this.x = this.unconvCoord(params[0], params[1]);
+            this.y = this.unconvCoord(params[2], params[3]);
+            this.w = this.unconvCoord(params[4], params[5]);
+            this.h = this.unconvCoord(params[6], params[7]);
+        } else {
+            this.x = params[0];
+            this.y = params[1];
+            this.w = params[2];
+            this.h = params[3];
+        }
     }
 
     draw(context: any, scale: any): void {

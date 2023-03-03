@@ -9,7 +9,6 @@ export class Group extends RenderItem {
     constructor(params: number[]) {
         super(params);
         this.groupID = params[0];
-        Log(params[0].toString());
     }
 
     draw(context: any, scale: any): void {

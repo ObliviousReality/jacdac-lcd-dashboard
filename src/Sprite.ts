@@ -15,9 +15,14 @@ export class Sprite extends RenderItem {
 
     constructor(params: number[]) {
         super(params);
-        this.spriteType = params[0];
-        this.x = params[1];
-        this.y = params[2];
+        this.spriteType = params.shift();
+        if (params.length > 3) {
+            this.x = this.unconvCoord(params[0], params[1]);
+            this.y = this.unconvCoord(params[2], params[3]);
+        } else {
+            this.x = params[0];
+            this.y = params[1];
+        }
         let spriteJSON = sprites[this.spriteType.toString()];
         this.spriteData = spriteJSON.data;
         this.w = spriteJSON.width;

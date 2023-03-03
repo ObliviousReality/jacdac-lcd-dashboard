@@ -48,6 +48,10 @@ export class RenderItem {
         }
     }
 
+    unconvCoord(upper, lower) {
+        return ((upper << 8) + lower) - 32767;
+    }
+
     getNext() {
         return this.next;
     }

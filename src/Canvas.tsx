@@ -134,8 +134,8 @@ export const refresh = () => {
         }
     }
     if (advancedRenderMode) {
-        st = (Date.now() - st);
-        Log("Render Time: " + st.toString() + "ms");
+        // st = (Date.now() - st);
+        // Log("Render Time: " + st.toString() + "ms");
     }
 }
 

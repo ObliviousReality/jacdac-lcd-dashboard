@@ -5,12 +5,21 @@ import RenderTypes from "./RenderTypes.ts";
 import UpdateTypes from "./UpdateTypes.ts";
 import { SpriteTypes } from "./SpriteTypes.ts";
 import { InitTypes } from "./InitTypes.ts";
+import Log from "./Logger.tsx";
 
 
 export const JDSend = () => {
     const rotService = useServices({ serviceClass: SRV_ROTARY_ENCODER })[0];
 
     var idCounter = 1;
+
+    function convCoord(c: number) {
+        let n = [0, 0];
+        c = c + 32767;
+        n[0] = c >> 8;
+        n[1] = c & 0xff;
+        return n;
+    }
 
     function getRndInteger(min: number, max: number) {
         return Math.floor(Math.random() * (max - min)) + min;
@@ -32,37 +41,59 @@ export const JDSend = () => {
     }
 
     const createCircle = (x, y, r, z) => {
-        let arr = new Uint8Array(6);
+        let arr = new Uint8Array(9);
         arr[0] = RenderTypes.O;
         arr[1] = idCounter++;
-        arr[2] = x;
-        arr[3] = y;
-        arr[4] = r;
-        arr[5] = z;
+        x = convCoord(x);
+        arr[2] = x[0];
+        arr[3] = x[1];
+        y = convCoord(y);
+        arr[4] = y[0];
+        arr[5] = y[1];
+        r = convCoord(r);
+        arr[6] = r[0];
+        arr[7] = r[1];
+        arr[8] = z;
         rotService.sendCmdAsync(10, arr, false);
     }
 
     const createRect = (x, y, w, h, z) => {
-        let arr = new Uint8Array(7);
+        let arr = new Uint8Array(11);
         arr[0] = RenderTypes.R;
         arr[1] = idCounter++;
-        arr[2] = x;
-        arr[3] = y;
-        arr[4] = w;
-        arr[5] = h;
-        arr[6] = z;
+        x = convCoord(x);
+        y = convCoord(y);
+        w = convCoord(w);
+        h = convCoord(h);
+        arr[2] = x[0];
+        arr[3] = x[1];
+        arr[4] = y[0];
+        arr[5] = y[1];
+        arr[6] = w[0];
+        arr[7] = w[1];
+        arr[8] = h[0];
+        arr[9] = h[1];
+        arr[10] = z;
         rotService.sendCmdAsync(10, arr, false)
     }
 
     const createLine = (x1, y1, x2, y2, z) => {
-        let arr = new Uint8Array(7);
+        let arr = new Uint8Array(11);
         arr[0] = RenderTypes.L;
         arr[1] = idCounter++;
-        arr[2] = x1;
-        arr[3] = y1;
-        arr[4] = x2;
-        arr[5] = y2;
-        arr[6] = z;
+        x1 = convCoord(x1);
+        x2 = convCoord(x2);
+        y1 = convCoord(y1);
+        y2 = convCoord(y2);
+        arr[2] = x1[0];
+        arr[3] = x1[1];
+        arr[4] = y1[0];
+        arr[5] = y1[1];
+        arr[6] = x2[0];
+        arr[7] = x2[1];
+        arr[8] = y2[0];
+        arr[9] = y2[1];
+        arr[10] = z;
         rotService.sendCmdAsync(10, arr, false);
     }
 
@@ -179,14 +210,18 @@ export const JDSend = () => {
         drawSprite(56, 50, SpriteTypes.B);
     }
 
-    const drawSprite = (x: number, y: number, id: number) => {
-        let arr = new Uint8Array(6);
+    const drawSprite = (x, y, id: number) => {
+        let arr = new Uint8Array(8);
         arr[0] = RenderTypes.S;
         arr[1] = idCounter++;
         arr[2] = id;
-        arr[3] = x;
-        arr[4] = y;
-        arr[5] = 60;
+        x = convCoord(x);
+        y = convCoord(y);
+        arr[3] = x[0];
+        arr[4] = x[1];
+        arr[5] = y[0];
+        arr[6] = y[1];
+        arr[7] = 60;
         rotService.sendCmdAsync(10, arr, false);
     }
 

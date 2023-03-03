@@ -9,9 +9,9 @@ export class Circle extends RenderItem {
 
     constructor(params: number[]) {
         super(params);
-        this.x = params[0];
-        this.y = params[1];
-        this.r = params[2];
+        this.x = this.unconvCoord(params[0], params[1]);
+        this.y = this.unconvCoord(params[2], params[3]);
+        this.r = this.unconvCoord(params[4], params[5]);
     }
 
     draw(context: any, scale: any): void {
