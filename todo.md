@@ -4,9 +4,8 @@
 2. Support for values > 255
 3. Basic Primitives in Advanced Mode
 4. Sprites in advanced mode
-5. Fix scaling
-6. Rotation
-7. Customisable Origin Rotation
-8. Alpha transparency in Advanced Mode
-9. Anti-Aliasing
-10. Vector Fonts
+5. Rotation
+6. Customisable Origin Rotation
+7. Alpha transparency in Advanced Mode
+8. Anti-Aliasing
+9. Vector Fonts

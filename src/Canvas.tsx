@@ -127,12 +127,8 @@ export const refresh = () => {
     if (advancedRenderMode) {
         for (let i = 0; i < buffer.width; i++) {
             for (let j = 0; j < buffer.height; j++) {
-                const c = buffer.get(i,j);
-                try {
-                    context.fillStyle = `rgb(${c[0]}, ${c[1]}, ${c[2]})`;
-                } catch (Exception) {
-                    Log(c.toString());
-                }
+                const c = buffer.get(i, j);
+                context.fillStyle = `rgb(${c[0]}, ${c[1]}, ${c[2]})`;
                 context.fillRect(i * scaleFactor, j * scaleFactor, scaleFactor, scaleFactor);
             }
         }

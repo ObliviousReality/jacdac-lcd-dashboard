@@ -1,4 +1,6 @@
+import { advancedRenderMode, buffer } from "./Canvas.tsx";
 import RenderItem from "./RenderItem.ts";
+import Log from "./Logger.tsx";
 
 import sprites from "./sprites.json";
 
@@ -29,7 +31,17 @@ export class Sprite extends RenderItem {
         for (let i = 0; i < this.w; i++) {
             for (let j = 0; j < this.h; j++) {
                 if (this.spriteData[j][i]) {
-                    context.fillRect((this.x + (i * this.localScale)) * scale, (this.y + (j * this.localScale)) * scale, scale * this.localScale, scale * this.localScale);
+                    if (advancedRenderMode) {
+                        // for (let k = (this.x + (i)); k < (this.x + (i * this.localScale)); k++) {
+                        //     for (let l = (this.y + (j)); l < (this.y + (j * this.localScale)); l++) {
+                        //         buffer.set(k, l, this.colour);
+                        //     }
+                        // }
+                        buffer.set(this.x + i, this.y + j, this.colour);
+                        // Log("Setting sprite pixel X: " + i.toString() + " Y: " + j.toString());
+                    } else {
+                        context.fillRect((this.x + (i * this.localScale)) * scale, (this.y + (j * this.localScale)) * scale, scale * this.localScale, scale * this.localScale);
+                    }
                 }
             }
         }
