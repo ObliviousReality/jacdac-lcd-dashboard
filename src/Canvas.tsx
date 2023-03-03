@@ -48,6 +48,10 @@ export var buffer: Bitmap;
 //         buffer[x][y] = c;
 // }
 
+export const unconvCoord = (upper, lower) => {
+    return ((upper << 8) + lower) - 32767;
+}
+
 
 export const init = (data: number) => {
     let bit = data % 2;
@@ -193,7 +197,8 @@ export const update = (id: number, params: number[]) => {
     }
     switch (params.shift()) {
         case UpdateTypes.V:
-            head.setVisibility(params[0] ? true : false);
+            var val = unconvCoord(params[0], params[1]);
+            head.setVisibility(val ? true : false);
             break;
         case UpdateTypes.T:
             head.translate(params);
@@ -205,28 +210,32 @@ export const update = (id: number, params: number[]) => {
             head.resize(params);
             break;
         case UpdateTypes.A:
-            head.setAngle(params[0]);
+            var val = unconvCoord(params[0], params[1]);
+            head.setAngle(val);
             break;
         case UpdateTypes.C:
             head.setColour(params);
             break;
         case UpdateTypes.W:
-            head.setWidth(params[0]);
+            var val = unconvCoord(params[0], params[1]);
+            head.setWidth(val);
             break;
         case UpdateTypes.F:
-            head.setFilled(params[0] ? true : false);
+            var val = unconvCoord(params[0], params[1]);
+            head.setFilled(val ? true : false);
             break;
         case UpdateTypes.Z:
-            if (params[0] == 0) {
+            var val = unconvCoord(params[0], params[1]);
+            if (val == 0 || val > 255) {
                 return;
             }
-            head.setLayer(params[0]);
-            // More Here.
+            head.setLayer(val);
             del(head.id);
             addItem(head); //??
             break;
         case UpdateTypes.S:
-            head.setScale(params[0]);
+            var val = unconvCoord(params[0], params[1]);
+            head.setScale(val);
             break;
         default:
             break;

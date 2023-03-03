@@ -98,12 +98,12 @@ export const JDSend = () => {
     }
 
     const createUpdate = (uid, ut, p: number[]) => {
-        let arr = new Uint8Array(3 + p.length);
+        let arr = new Uint8Array(3 + (p.length * 2));
         arr[0] = RenderTypes.U;
         arr[1] = uid;
         arr[2] = ut;
         let n = 3;
-        p.map((item) => { arr[n++] = item });
+        p.map((item) => { let splitem = convCoord(item); arr[n++] = splitem[0]; arr[n++] = splitem[1]; });
         rotService.sendCmdAsync(10, arr, false);
     }
 
@@ -172,13 +172,7 @@ export const JDSend = () => {
     }
 
     const moveFirst = () => {
-        let arr = new Uint8Array(5);
-        arr[0] = RenderTypes.U;
-        arr[1] = 1;
-        arr[2] = UpdateTypes.P;
-        arr[3] = 0;
-        arr[4] = 0;
-        rotService.sendCmdAsync(10, arr, false);
+        createUpdate(1, UpdateTypes.P, [0, 0]);
     }
 
     const delFirst = () => {
@@ -285,13 +279,11 @@ export const JDSend = () => {
     }
 
     const moveGroup = () => {
-        let arr = new Uint8Array(5);
-        arr[0] = RenderTypes.U;
-        arr[1] = 69;
-        arr[2] = UpdateTypes.T;
-        arr[3] = 10;
-        arr[4] = 10;
-        rotService.sendCmdAsync(10, arr, false);
+        createUpdate(69, UpdateTypes.T, [10, 10]);
+    }
+
+    const moveGroup2 = () => {
+        createUpdate(69, UpdateTypes.T, [-10, -10]);
     }
 
     const autoRenderOn = () => {
@@ -353,7 +345,8 @@ export const JDSend = () => {
                 </div>
                 <div>
                     <button onClick={groupTest}>Snowman</button>
-                    <button onClick={moveGroup}>Move</button>
+                    <button onClick={moveGroup}>Move Down</button>
+                    <button onClick={moveGroup2}>Move Up</button>
                 </div>
                 <div>
                     <button onClick={renderScreen}>Render</button>

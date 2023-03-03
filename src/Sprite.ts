@@ -53,12 +53,12 @@ export class Sprite extends RenderItem {
     }
 
     setPosition(data: number[]): void {
-        this.x = data[0];
-        this.y = data[1];
+        this.x = this.unconvCoord(data[0], data[1]);
+        this.y = this.unconvCoord(data[2], data[3]);
     }
 
     translate(data: number[]): void {
-        this.x += data[0];
-        this.y += data[1];
+        this.x += this.unconvCoord(data[0], data[1]);
+        this.y += this.unconvCoord(data[2], data[3]);
     }
 }
