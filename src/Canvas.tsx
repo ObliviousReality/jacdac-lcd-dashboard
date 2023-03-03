@@ -10,6 +10,7 @@ import RenderTypes from "./RenderTypes.ts";
 import UpdateTypes from "./UpdateTypes.ts";
 import './stylesheet.css';
 import { InitTypes } from "./InitTypes.ts";
+import { Bitmap } from "./Bitmap.ts";
 
 var initialFill = false;
 
@@ -39,12 +40,13 @@ var topZ = 0;
 export var advancedRenderMode: boolean = true;
 var autoRefreshMode: boolean = true;
 
-var buffer: number[][][] = [];
+// var buffer: number[][][] = [];
+export var buffer: Bitmap;
 
-export const setPixel = (x: number, y: number, c: number[]) => {
-    if (x > 0 && y > 0)
-        buffer[x][y] = c;
-}
+// export const setPixel = (x: number, y: number, c: number[]) => {
+//     if (x >= 0 && y >= 0)
+//         buffer[x][y] = c;
+// }
 
 
 export const init = (data: number) => {
@@ -56,12 +58,12 @@ export const init = (data: number) => {
             break;
         case InitTypes.R:
             advancedRenderMode = bit ? true : false;
-            if (advancedRenderMode) {
-                buildBuffer();
-            }
-            else {
-                buffer = [];
-            }
+            // if (advancedRenderMode) {
+            //     buildBuffer();
+            // }
+            // else {
+            //     buffer = [];
+            // }
             if (autoRefreshMode) {
                 refresh();
             }
@@ -71,14 +73,14 @@ export const init = (data: number) => {
     }
 }
 
-const buildBuffer = () => {
-    for (let i = 0; i < context.canvas.width; i++) {
-        buffer.push([]);
-        for (let j = 0; j < context.canvas.height; j++) {
-            buffer[i].push([0, 0, 128, 0]);
-        }
-    }
-}
+// const buildBuffer = () => {
+//     for (let i = 0; i < context.canvas.width; i++) {
+//         buffer.push([]);
+//         for (let j = 0; j < context.canvas.height; j++) {
+//             buffer[i].push([0, 0, 128, 0]);
+//         }
+//     }
+// }
 
 export const addItem = (item: RenderItem) => {
     if (ItemList == undefined) {
@@ -123,9 +125,14 @@ export const refresh = () => {
         temp = temp.next;
     }
     if (advancedRenderMode) {
-        for (let i = 0; i < buffer.length; i++) {
-            for (let j = 0; j < buffer[i].length; j++) {
-                context.fillStyle = `rgb(${buffer[i][j][0]}, ${buffer[i][j][1]}, ${buffer[i][j][2]})`;
+        for (let i = 0; i < buffer.width; i++) {
+            for (let j = 0; j < buffer.height; j++) {
+                const c = buffer.get(i,j);
+                try {
+                    context.fillStyle = `rgb(${c[0]}, ${c[1]}, ${c[2]})`;
+                } catch (Exception) {
+                    Log(c.toString());
+                }
                 context.fillRect(i * scaleFactor, j * scaleFactor, scaleFactor, scaleFactor);
             }
         }
@@ -287,9 +294,7 @@ const Canvas = (props) => {
                 context.canvas.width = width * scaleFactor;
                 context.canvas.height = height * scaleFactor;
                 if (!initialFill) {
-                    if (advancedRenderMode) {
-                        buildBuffer();
-                    }
+                    buffer = new Bitmap(context.canvas.width, context.canvas.height);
                     globalColour.push(0);
                     globalColour.push(0);
                     globalColour.push(0);

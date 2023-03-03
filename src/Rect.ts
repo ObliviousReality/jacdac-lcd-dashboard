@@ -1,4 +1,4 @@
-import { advancedRenderMode, setPixel } from "./Canvas.tsx";
+import { advancedRenderMode, buffer } from "./Canvas.tsx";
 import RenderItem from "./RenderItem.ts";
 
 
@@ -23,7 +23,7 @@ export class Rect extends RenderItem {
             if (advancedRenderMode) {
                 for (let i = this.x; i < this.x + this.w; i++) {
                     for (let j = this.y; j < this.h + this.y; j++) {
-                        setPixel(i, j, this.colour);
+                        buffer.set(i, j, this.colour);
                     }
                 }
             }
