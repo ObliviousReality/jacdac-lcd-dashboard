@@ -18,6 +18,47 @@ export class Bitmap {
         }
     }
 
+    fillLine(x1: number, y1: number, x2: number, y2: number, c: number[]) {
+        const dx = x2 - x1;
+        const dy = y2 - y1;
+        const absdx = Math.abs(dx);
+        const absdy = Math.abs(dy);
+
+        let x = x1;
+        let y = y1;
+        this.set(x, y, c);
+
+        // slope < 1
+        if (absdx > absdy) {
+
+            let d = 2 * absdy - absdx;
+
+            for (let i = 0; i < absdx; i++) {
+                x = dx < 0 ? x - 1 : x + 1;
+                if (d < 0) {
+                    d = d + 2 * absdy
+                } else {
+                    y = dy < 0 ? y - 1 : y + 1;
+                    d = d + (2 * absdy - 2 * absdx);
+                }
+                this.set(x, y, c);
+            }
+        } else { // case when slope is greater than or equals to 1
+            let d = 2 * absdx - absdy;
+
+            for (let i = 0; i < absdy; i++) {
+                y = dy < 0 ? y - 1 : y + 1;
+                if (d < 0)
+                    d = d + 2 * absdx;
+                else {
+                    x = dx < 0 ? x - 1 : x + 1;
+                    d = d + (2 * absdx) - (2 * absdy);
+                }
+                this.set(x, y, c);
+            }
+        }
+    }
+
     get(x: number, y: number) {
         if (x >= 0 && y >= 0) {
             let index: number = this.coord(x, y);

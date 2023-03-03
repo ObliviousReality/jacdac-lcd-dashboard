@@ -2,9 +2,9 @@
 
 1. ~~Support for negative numbers~~
 2. ~~Support for values > 255~~
-3. Basic Primitives in Advanced Mode (75% Done)
+3. ~~Basic Primitives in Advanced Mode~~
 4. ~~Sprites in advanced mode~~
-5. ~~Fix Scaling~~
+5. Fix Scaling
 6. Rotation
 7. Customisable Origin Rotation
 8. Alpha transparency in Advanced Mode

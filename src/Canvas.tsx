@@ -120,7 +120,7 @@ export const addItem = (item: RenderItem) => {
 export const refresh = () => {
     let st = Date.now();
     let ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    // ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     let temp: RenderItem = ItemList;
     while (temp) {
         if (temp.visibility) {

@@ -30,14 +30,22 @@ export class Circle extends RenderItem {
             let d = 3 - 2 * this.r
 
             while (y >= x) {
-                buffer.set(this.x + x, this.y + y, this.colour);
-                buffer.set(this.x - x, this.y + y, this.colour);
-                buffer.set(this.x + x, this.y - y, this.colour);
-                buffer.set(this.x - x, this.y - y, this.colour);
-                buffer.set(this.x + y, this.y + x, this.colour);
-                buffer.set(this.x - y, this.y + x, this.colour);
-                buffer.set(this.x + y, this.y - x, this.colour);
-                buffer.set(this.x - y, this.y - x, this.colour);
+                if (!this.filled) {
+                    buffer.set(this.x + x, this.y + y, this.colour);
+                    buffer.set(this.x - x, this.y + y, this.colour);
+                    buffer.set(this.x + x, this.y - y, this.colour);
+                    buffer.set(this.x - x, this.y - y, this.colour);
+                    buffer.set(this.x + y, this.y + x, this.colour);
+                    buffer.set(this.x - y, this.y + x, this.colour);
+                    buffer.set(this.x + y, this.y - x, this.colour);
+                    buffer.set(this.x - y, this.y - x, this.colour);
+                }
+                else {
+                    buffer.fillLine(this.x + x, this.y + y, this.x - x, this.y + y, this.colour);
+                    buffer.fillLine(this.x + x, this.y - y, this.x - x, this.y - y, this.colour);
+                    buffer.fillLine(this.x + y, this.y + x, this.x - y, this.y + x, this.colour);
+                    buffer.fillLine(this.x + y, this.y - x, this.x - y, this.y - x, this.colour);
+                }
                 x++
                 if (d > 0) {
                     y--
@@ -48,18 +56,17 @@ export class Circle extends RenderItem {
             }
         }
         else {
-
-        }
-        context.fillStyle = `rgb(${this.colour[0]}, ${this.colour[1]}, ${this.colour[2]})`;
-        context.strokeStyle = `rgb(${this.colour[0]}, ${this.colour[1]}, ${this.colour[2]})`;
-        context.lineWidth = this.width * scale;
-        context.beginPath();
-        context.arc(this.x * scale, this.y * scale, this.r * scale, 0, 2 * Math.PI);
-        if (this.filled) {
-            context.fill();
-        }
-        else {
-            context.stroke();
+            context.fillStyle = `rgb(${this.colour[0]}, ${this.colour[1]}, ${this.colour[2]})`;
+            context.strokeStyle = `rgb(${this.colour[0]}, ${this.colour[1]}, ${this.colour[2]})`;
+            context.lineWidth = this.width * scale;
+            context.beginPath();
+            context.arc(this.x * scale, this.y * scale, this.r * scale, 0, 2 * Math.PI);
+            if (this.filled) {
+                context.fill();
+            }
+            else {
+                context.stroke();
+            }
         }
     }
 

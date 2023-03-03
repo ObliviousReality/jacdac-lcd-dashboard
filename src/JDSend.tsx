@@ -272,7 +272,7 @@ export const JDSend = () => {
         setColour(255, 255, 255);
         createCircle(80, 80, 20, 5);
         createCircle(80, 45, 15, 5);
-        setColour(10, 10, 10);
+        setColour(255, 10, 255);
         createRect(70, 15, 20, 20, 5);
         createLine(60, 35, 100, 35, 5);
         createGroup(0, 0);
