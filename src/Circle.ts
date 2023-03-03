@@ -1,11 +1,9 @@
 import { advancedRenderMode, buffer } from "./Canvas.tsx";
-import RenderItem from "./RenderItem.ts";
+import { RenderItem, OriginTypes } from "./RenderItem.ts";
 import Log from "./Logger.tsx";
 
 
 export class Circle extends RenderItem {
-    x: number;
-    y: number;
     r: number;
 
     constructor(params: number[]) {
@@ -13,21 +11,23 @@ export class Circle extends RenderItem {
         this.x = this.unconvCoord(params[0], params[1]);
         this.y = this.unconvCoord(params[2], params[3]);
         this.r = this.unconvCoord(params[4], params[5]);
+        this.originType = OriginTypes.CENTER;
     }
 
     draw(context: any, scale: any): void {
         if (advancedRenderMode) {
+            let scaledRadius = this.r * this.localScale;
             this.x = this.x | 0;
             this.y = this.y | 0;
-            this.r = this.r | 0;
+            scaledRadius = scaledRadius | 0;
             // short cuts
-            if (this.r < 0)
+            if (scaledRadius < 0)
                 return;
 
             // Bresenham's algorithm
             let x = 0
-            let y = this.r
-            let d = 3 - 2 * this.r
+            let y = scaledRadius
+            let d = 3 - 2 * scaledRadius
 
             while (y >= x) {
                 if (!this.filled) {
@@ -60,7 +60,7 @@ export class Circle extends RenderItem {
             context.strokeStyle = `rgb(${this.colour[0]}, ${this.colour[1]}, ${this.colour[2]})`;
             context.lineWidth = this.width * scale;
             context.beginPath();
-            context.arc(this.x * scale, this.y * scale, this.r * scale, 0, 2 * Math.PI);
+            context.arc(this.x * scale, this.y * scale, scaledRadius * scale, 0, 2 * Math.PI);
             if (this.filled) {
                 context.fill();
             }

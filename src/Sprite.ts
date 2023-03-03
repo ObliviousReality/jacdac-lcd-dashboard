@@ -5,8 +5,6 @@ import Log from "./Logger.tsx";
 import sprites from "./sprites.json";
 
 export class Sprite extends RenderItem {
-    x: number;
-    y: number;
     spriteType: number;
 
     spriteData: number[][] = []
@@ -42,7 +40,7 @@ export class Sprite extends RenderItem {
                         //         buffer.set(k, l, this.colour);
                         //     }
                         // }
-                        buffer.set(this.x + i, this.y + j, this.colour);
+                        buffer.fillRect(this.x + (i * this.localScale), this.y + (j * this.localScale), this.localScale, this.localScale, this.colour);
                         // Log("Setting sprite pixel X: " + i.toString() + " Y: " + j.toString());
                     } else {
                         context.fillRect((this.x + (i * this.localScale)) * scale, (this.y + (j * this.localScale)) * scale, scale * this.localScale, scale * this.localScale);

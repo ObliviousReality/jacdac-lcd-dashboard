@@ -286,6 +286,13 @@ export const JDSend = () => {
         createUpdate(69, UpdateTypes.T, [-10, -10]);
     }
 
+    const bigGroup = () => {
+        createUpdate(69, UpdateTypes.S, [2]);
+    }
+    const regularGroup = () => {
+        createUpdate(69, UpdateTypes.S, [1]);
+    }
+
     const autoRenderOn = () => {
         sendInitCmd(InitTypes.A, 1);
     }
@@ -347,6 +354,8 @@ export const JDSend = () => {
                     <button onClick={groupTest}>Snowman</button>
                     <button onClick={moveGroup}>Move Down</button>
                     <button onClick={moveGroup2}>Move Up</button>
+                    <button onClick={bigGroup}>Scale Up</button>
+                    <button onClick={regularGroup}>Scale Down</button>
                 </div>
                 <div>
                     <button onClick={renderScreen}>Render</button>

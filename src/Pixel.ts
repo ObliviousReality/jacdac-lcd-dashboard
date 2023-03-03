@@ -1,12 +1,10 @@
 import RenderItem from "./RenderItem.ts";
 
 export class Pixel extends RenderItem {
-    x: number;
-    y: number;
     constructor(params: number[]) {
         super(params);
-        this.x = params[0];
-        this.y = params[1];
+        this.x = this.unconvCoord(params[0], params[1]);
+        this.y = this.unconvCoord(params[2], params[3]);
     }
 
     draw(context: any, scale: any): void {

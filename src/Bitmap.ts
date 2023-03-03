@@ -1,3 +1,6 @@
+import Log from "./Logger.tsx";
+
+
 export class Bitmap {
 
     width: number;
@@ -55,6 +58,14 @@ export class Bitmap {
                     d = d + (2 * absdx) - (2 * absdy);
                 }
                 this.set(x, y, c);
+            }
+        }
+    }
+
+    fillRect(x, y, w, h, colour) {
+        for (let i = x; i < x + w; i++) {
+            for (let j = y; j < y + h; j++) {
+                this.set(i, j, colour);
             }
         }
     }

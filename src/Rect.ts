@@ -4,8 +4,6 @@ import Log from "./Logger.tsx";
 
 
 export class Rect extends RenderItem {
-    x: number;
-    y: number;
     w: number;
     h: number;
     constructor(params: number[]) {
@@ -26,8 +24,8 @@ export class Rect extends RenderItem {
     draw(context: any, scale: any): void {
         if (advancedRenderMode) {
             if (this.filled) {
-                for (let i = this.x; i < this.x + this.w; i++) {
-                    for (let j = this.y; j < this.h + this.y; j++) {
+                for (let i = this.x; i < this.x + this.w * this.localScale; i++) {
+                    for (let j = this.y; j < this.h + this.y * this.localScale; j++) {
                         buffer.set(i, j, this.colour);
                     }
                 }

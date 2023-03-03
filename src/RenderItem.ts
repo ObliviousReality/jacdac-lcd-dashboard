@@ -2,11 +2,25 @@ import { globalColour, globalDrawWidth, globalFilled, globalGroup, groupList } f
 import RenderTypes from "./RenderTypes.ts";
 import Log from "./Logger.tsx";
 
+
+export enum OriginTypes {
+    TOPLEFT,
+    // TOPCENTER,
+    // TOPRIGHT,
+    CENTER
+    // BOTTOMLEFT,
+    // BOTTOMCENTER,
+    // BOTTOMRIGHT
+
+}
+
 export class RenderItem {
     type: number | undefined;
     id: number | undefined;
     data: number[];
 
+    x: number;
+    y: number;
     z: number = 1;
 
     colour: number[] = [];
@@ -16,6 +30,8 @@ export class RenderItem {
     visibility: boolean = true;
     angle: number = 0;
     localScale: number = 1;
+
+    origin: number = OriginTypes.TOPLEFT;
 
     next: RenderItem | undefined = undefined;
 
