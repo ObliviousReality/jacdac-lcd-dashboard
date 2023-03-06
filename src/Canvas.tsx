@@ -143,10 +143,11 @@ export const refresh = () => {
     }
 }
 
-export const setColour = (r: number, g: number, b: number) => {
+export const setColour = (r: number, g: number, b: number, a: undefined | number = 255) => {
     globalColour[0] = r;
     globalColour[1] = g;
     globalColour[2] = b;
+    globalColour[3] = a == undefined ? 255 : a;
 }
 
 export const setFilled = (f: number) => {

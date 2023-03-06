@@ -131,12 +131,13 @@ export const JDSend = () => {
         createCircle(getRndInteger(0, 160), getRndInteger(0, 120), getRndInteger(1, 50), getRndInteger(21, 30));
     }
 
-    const setColour = (r: number, g: number, b: number) => {
-        let arr = new Uint8Array(4);
+    const setColour = (r: number, g: number, b: number, a: number = 255) => {
+        let arr = new Uint8Array(5);
         arr[0] = RenderTypes.C;
         arr[1] = r;
         arr[2] = g;
         arr[3] = b;
+        arr[4] = a;
         rotService.sendCmdAsync(10, arr, false);
     }
 
@@ -197,14 +198,14 @@ export const JDSend = () => {
     }
 
     const drawASprite = () => {
-        drawSprite(50, 50, SpriteTypes.A);
+        drawSprite(50, 50, SpriteTypes.A, 60);
     }
 
     const drawBSprite = () => {
-        drawSprite(56, 50, SpriteTypes.B);
+        drawSprite(56, 50, SpriteTypes.B, 60);
     }
 
-    const drawSprite = (x, y, id: number) => {
+    const drawSprite = (x, y, id: number, z: number) => {
         let arr = new Uint8Array(8);
         arr[0] = RenderTypes.S;
         arr[1] = idCounter++;
@@ -215,45 +216,45 @@ export const JDSend = () => {
         arr[4] = x[1];
         arr[5] = y[0];
         arr[6] = y[1];
-        arr[7] = 60;
+        arr[7] = z;
         rotService.sendCmdAsync(10, arr, false);
     }
 
     const sayHello = () => {
-        drawSprite(50, 60, SpriteTypes.H);
-        drawSprite(56, 60, SpriteTypes.E);
-        drawSprite(62, 60, SpriteTypes.L);
-        drawSprite(68, 60, SpriteTypes.L);
-        drawSprite(74, 60, SpriteTypes.O);
+        drawSprite(50, 60, SpriteTypes.H, 60);
+        drawSprite(56, 60, SpriteTypes.E, 60);
+        drawSprite(62, 60, SpriteTypes.L, 60);
+        drawSprite(68, 60, SpriteTypes.L, 60);
+        drawSprite(74, 60, SpriteTypes.O, 60);
     }
 
     const theRest = () => {
-        drawSprite(62, 70, SpriteTypes.I);
-        drawSprite(56, 80, SpriteTypes.A);
-        drawSprite(62, 80, SpriteTypes.M);
-        drawSprite(74, 80, SpriteTypes.A);
-        drawSprite(50, 90, SpriteTypes.S);
-        drawSprite(56, 90, SpriteTypes.P);
-        drawSprite(62, 90, SpriteTypes.R);
-        drawSprite(68, 90, SpriteTypes.I);
-        drawSprite(74, 90, SpriteTypes.T);
-        drawSprite(80, 90, SpriteTypes.E);
-        drawSprite(86, 90, SpriteTypes.Exclamation_Mark);
+        drawSprite(62, 70, SpriteTypes.I, 60);
+        drawSprite(56, 80, SpriteTypes.A, 60);
+        drawSprite(62, 80, SpriteTypes.M, 60);
+        drawSprite(74, 80, SpriteTypes.A, 60);
+        drawSprite(50, 90, SpriteTypes.S, 60);
+        drawSprite(56, 90, SpriteTypes.P, 60);
+        drawSprite(62, 90, SpriteTypes.R, 60);
+        drawSprite(68, 90, SpriteTypes.I, 60);
+        drawSprite(74, 90, SpriteTypes.T, 60);
+        drawSprite(80, 90, SpriteTypes.E, 60);
+        drawSprite(86, 90, SpriteTypes.Exclamation_Mark, 60);
     }
 
     const alphabet = () => {
         createGroup(70, 2);
         for (let i = 0; i < 26; i++) {
             setRandom();
-            drawSprite(3 + 6 * i, 5, SpriteTypes.A + i);
+            drawSprite(3 + 6 * i, 5, SpriteTypes.A + i, 60);
         }
         for (let i = 0; i < 26; i++) {
             setRandom();
-            drawSprite(3 + 6 * i, 15, SpriteTypes.a + i);
+            drawSprite(3 + 6 * i, 15, SpriteTypes.a + i, 61);
         }
         for (let i = 0; i < 10; i++) {
             setRandom();
-            drawSprite(3 + 6 * i, 25, SpriteTypes.NUM_0 + i);
+            drawSprite(3 + 6 * i, 25, SpriteTypes.NUM_0 + i, 62);
         }
         createGroup(0, 0);
         renderScreen();
@@ -309,6 +310,20 @@ export const JDSend = () => {
         sendInitCmd(InitTypes.R, 0);
     }
 
+    const fishtank = () => {
+        setColour(255, 177, 0);
+        drawSprite(getRndInteger(0, 160), getRndInteger(0, 120), SpriteTypes.fish, 30);
+        drawSprite(getRndInteger(0, 160), getRndInteger(0, 120), SpriteTypes.fish, 30);
+        drawSprite(getRndInteger(0, 160), getRndInteger(0, 120), SpriteTypes.fish, 30);
+        drawSprite(getRndInteger(0, 160), getRndInteger(0, 120), SpriteTypes.fish, 30);
+        setColour(0, 0, 128, 128);
+        createRect(0, 0, 160, 120, 20);
+    }
+
+    const movethefish = () => {
+
+    }
+
     if (rotService != null) {
 
         return (
@@ -356,6 +371,10 @@ export const JDSend = () => {
                     <button onClick={moveGroup2}>Move Up</button>
                     <button onClick={bigGroup}>Scale Up</button>
                     <button onClick={regularGroup}>Scale Down</button>
+                </div>
+                <div>
+                    <button onClick={fishtank}>Fish Tank</button>
+                    <button onClick={movethefish}>Poke the tank</button>
                 </div>
                 <div>
                     <button onClick={renderScreen}>Render</button>

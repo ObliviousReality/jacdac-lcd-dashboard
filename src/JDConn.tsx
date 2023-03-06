@@ -33,7 +33,7 @@ const JDConn = () => {
                 addItem(new Pixel(outdata));
                 break;
             case RenderTypes.C:
-                setColour(outdata[1], outdata[2], outdata[3]);
+                setColour(outdata[1], outdata[2], outdata[3], outdata[4]);
                 break;
             case RenderTypes.F:
                 setFilled(outdata[1]);

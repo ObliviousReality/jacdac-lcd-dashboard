@@ -1,5 +1,6 @@
 export enum SpriteTypes {
 	Exclamation_Mark,
+	fish,
 	a,
 	b,
 	c,
