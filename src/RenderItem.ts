@@ -51,6 +51,7 @@ export class RenderItem {
         this.colour.push(globalColour[0]);
         this.colour.push(globalColour[1]);
         this.colour.push(globalColour[2]);
+        this.colour.push(globalColour[3]);
 
         this.filled = globalFilled;
         this.width = globalDrawWidth;

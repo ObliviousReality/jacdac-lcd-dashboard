@@ -311,17 +311,27 @@ export const JDSend = () => {
     }
 
     const fishtank = () => {
-        setColour(255, 177, 0);
+        setColour(255, 177, 0, 255);
+        createGroup(100, 10);
+        drawSprite(75, 55, SpriteTypes.fish, 30);
+        // drawSprite(getRndInteger(0, 160), getRndInteger(0, 120), SpriteTypes.fish, 30);
+        createGroup(101, 11);
         drawSprite(getRndInteger(0, 160), getRndInteger(0, 120), SpriteTypes.fish, 30);
+        createGroup(102, 12);
         drawSprite(getRndInteger(0, 160), getRndInteger(0, 120), SpriteTypes.fish, 30);
+        createGroup(103, 13);
         drawSprite(getRndInteger(0, 160), getRndInteger(0, 120), SpriteTypes.fish, 30);
-        drawSprite(getRndInteger(0, 160), getRndInteger(0, 120), SpriteTypes.fish, 30);
+        createGroup(0, 0);
+        setFill(true);
         setColour(0, 0, 128, 128);
-        createRect(0, 0, 160, 120, 20);
+        createRect(0, 0, 160, 120, 40);
     }
 
     const movethefish = () => {
-
+        createUpdate(100, UpdateTypes.T, [getRndInteger(-50, 50), getRndInteger(-50, 50)]);
+        createUpdate(101, UpdateTypes.T, [getRndInteger(-50, 50), getRndInteger(-50, 50)]);
+        createUpdate(102, UpdateTypes.T, [getRndInteger(-50, 50), getRndInteger(-50, 50)]);
+        createUpdate(103, UpdateTypes.T, [getRndInteger(-50, 50), getRndInteger(-50, 50)]);
     }
 
     if (rotService != null) {
