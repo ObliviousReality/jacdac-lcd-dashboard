@@ -29,22 +29,22 @@ export class Bitmap {
                     for (let channel = 0; channel < 3; channel++) {
                         let t = ((prevCol[channel] + colour[channel]) / (prevCol[3] / colour[3]))
                         //Still not perfect, needs a bit more debugging with non-mutually exclusive colours.
-                        if (x == 80 && y == 60) {
-                            Log([prevCol[channel], prevCol[3], colour[3]]);
-                            Log(t.toString());
-                        }
+                        // if (x == 80 && y == 60) {
+                        //     Log([prevCol[channel], prevCol[3], colour[3]]);
+                        //     Log(t.toString());
+                        // }
                         if (t > 255)
                             t = 255;
                         if (t < 0)
                             t = 0;
                         newCol[channel] = t;
                     }
-                    if (x == 80 && y == 60) {
-                        Log("Middle:");
-                        Log(prevCol);
-                        Log(colour);
-                        Log(newCol);
-                    }
+                    // if (x == 80 && y == 60) {
+                    //     Log("Middle:");
+                    //     Log(prevCol);
+                    //     Log(colour);
+                    //     Log(newCol);
+                    // }
                     // if (x == 0 && y == 0) {
                     //     Log("Top Left:");
                     //     Log(prevCol);
@@ -55,18 +55,18 @@ export class Bitmap {
                 }
                 else {
                     this.buf[i] = colour;
-                    if (x == 80 && y == 60) {
-                        Log("Middle:");
-                        Log(colour);
-                    }
+                    // if (x == 80 && y == 60) {
+                    //     Log("Middle:");
+                    //     Log(colour);
+                    // }
                 }
             }
             else {
                 this.buf[i] = colour;
-                if (x == 80 && y == 60) {
-                    Log("Middle:");
-                    Log(colour);
-                }
+                // if (x == 80 && y == 60) {
+                //     Log("Middle:");
+                //     Log(colour);
+                // }
             }
         }
     }

@@ -133,10 +133,10 @@ export const refresh = () => {
             for (let j = 0; j < buffer.height; j++) {
                 const c = buffer.get(i, j);
                 context.fillStyle = `rgb(${c[0]}, ${c[1]}, ${c[2]})`;
-                if (i == 80 && j == 80) {
-                    Log("C: " + c);
-                    Log("Fillstyle: " + context.fillStyle.toString());
-                }
+                // if (i == 80 && j == 80) {
+                //     Log("C: " + c);
+                //     Log("Fillstyle: " + context.fillStyle.toString());
+                // }
                 context.fillRect(i * scaleFactor, j * scaleFactor, scaleFactor, scaleFactor);
             }
         }

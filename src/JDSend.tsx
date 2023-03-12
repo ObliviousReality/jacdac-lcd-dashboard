@@ -132,7 +132,7 @@ export const JDSend = () => {
     }
 
     const setColour = (r: number, g: number, b: number, a: number = 255) => {
-        Log([r, g, b]);
+        // Log([r, g, b]);
         let arr = new Uint8Array(5);
         arr[0] = RenderTypes.C;
         arr[1] = r;
