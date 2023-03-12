@@ -132,6 +132,7 @@ export const JDSend = () => {
     }
 
     const setColour = (r: number, g: number, b: number, a: number = 255) => {
+        Log([r, g, b]);
         let arr = new Uint8Array(5);
         arr[0] = RenderTypes.C;
         arr[1] = r;
@@ -239,7 +240,7 @@ export const JDSend = () => {
         drawSprite(68, 90, SpriteTypes.I, 60);
         drawSprite(74, 90, SpriteTypes.T, 60);
         drawSprite(80, 90, SpriteTypes.E, 60);
-        drawSprite(86, 90, SpriteTypes.Exclamation_Mark, 60);
+        drawSprite(86, 90, SpriteTypes.question_mark, 60);
     }
 
     const alphabet = () => {
@@ -311,7 +312,7 @@ export const JDSend = () => {
     }
 
     const fishtank = () => {
-        setColour(255, 177, 0, 255);
+        setColour(255, 255, 0, 255);
         createGroup(100, 10);
         drawSprite(75, 55, SpriteTypes.fish, 30);
         // drawSprite(getRndInteger(0, 160), getRndInteger(0, 120), SpriteTypes.fish, 30);
@@ -323,7 +324,7 @@ export const JDSend = () => {
         drawSprite(getRndInteger(0, 160), getRndInteger(0, 120), SpriteTypes.fish, 30);
         createGroup(0, 0);
         setFill(true);
-        setColour(0, 0, 128, 128);
+        setColour(255, 0, 255, 128);
         createRect(0, 0, 160, 120, 40);
     }
 
