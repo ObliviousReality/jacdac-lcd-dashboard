@@ -11,6 +11,9 @@ export class Sprite extends RenderItem {
     w: number;
     h: number;
 
+    static bonusSprites = { "sprites": [] }
+    static spriteOffset: number = 0;
+
     constructor(params: number[]) {
         super(params);
         this.spriteType = params.shift();
@@ -22,6 +25,13 @@ export class Sprite extends RenderItem {
             this.y = params[1];
         }
         let spriteJSON = sprites[this.spriteType.toString()];
+        if (spriteJSON == undefined) {
+            spriteJSON = Sprite.bonusSprites.sprites[this.spriteType - Sprite.spriteOffset];
+            if (spriteJSON == undefined) {
+                Log("Can't find sprite; exiting");
+                return;
+            }
+        }
         this.spriteData = spriteJSON.data;
         this.w = spriteJSON.width;
         this.h = spriteJSON.height;
@@ -58,5 +68,28 @@ export class Sprite extends RenderItem {
     translate(data: number[]): void {
         this.x += this.unconvCoord(data[0], data[1]);
         this.y += this.unconvCoord(data[2], data[3]);
+    }
+
+    static addSprite(data) {
+        let sid = data.shift();
+        let w = data.shift();
+        let h = data.shift();
+
+        if (Sprite.spriteOffset == 0) {
+            Sprite.spriteOffset = Object.keys(sprites).length;
+        }
+
+        let sdata: number[][] = [];
+        for (let i = 0; i < h; i++) {
+            let n: number[] = [];
+            for (let j = 0; j < w; j++) {
+                n.push(data.shift());
+            }
+            sdata.push(n);
+            // Log(n);
+        }
+
+        Sprite.bonusSprites.sprites[(sid - Sprite.spriteOffset).toString()] = { "width": w, "height": h , "data" : sdata};
+
     }
 }

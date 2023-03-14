@@ -72,6 +72,10 @@ const JDConn = () => {
                 //
                 init(outdata[1]);
                 break;
+            case RenderTypes.N:
+                outdata.shift();
+                Sprite.addSprite(outdata);
+                break;
             default:
                 Log("Not sure");
                 break;

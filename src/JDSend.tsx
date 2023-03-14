@@ -312,7 +312,7 @@ export const JDSend = () => {
     }
 
     const fishtank = () => {
-        setColour(255, 255, 0, 255);
+        setColour(255, 177, 0, 255);
         createGroup(100, 10);
         drawSprite(75, 55, SpriteTypes.fish, 30);
         // drawSprite(getRndInteger(0, 160), getRndInteger(0, 120), SpriteTypes.fish, 30);
@@ -324,7 +324,7 @@ export const JDSend = () => {
         drawSprite(getRndInteger(0, 160), getRndInteger(0, 120), SpriteTypes.fish, 30);
         createGroup(0, 0);
         setFill(true);
-        setColour(255, 0, 255, 128);
+        setColour(0, 0, 255, 128);
         createRect(0, 0, 160, 120, 40);
     }
 
@@ -333,6 +333,29 @@ export const JDSend = () => {
         createUpdate(101, UpdateTypes.T, [getRndInteger(-50, 50), getRndInteger(-50, 50)]);
         createUpdate(102, UpdateTypes.T, [getRndInteger(-50, 50), getRndInteger(-50, 50)]);
         createUpdate(103, UpdateTypes.T, [getRndInteger(-50, 50), getRndInteger(-50, 50)]);
+    }
+
+    const newSprite = (id, w, h, data: number[]) => {
+        let arr = new Uint8Array(4 + data.length);
+        arr[0] = RenderTypes.N;
+        arr[1] = id;
+        arr[2] = w;
+        arr[3] = h;
+        let i = 4;
+        data.map((item) => arr[i++] = item);
+        rotService.sendCmdAsync(10, arr, false);
+    }
+
+    const addSprite1 = () => {
+        let data =
+            [1, 0, 1,
+                0, 1, 0,
+                1, 0, 1];
+        newSprite(72, 3, 3, data);
+    }
+
+    const drawSprite1 = () => {
+        drawSprite(80, 80, 72, 100);
     }
 
     if (rotService != null) {
@@ -386,6 +409,10 @@ export const JDSend = () => {
                 <div>
                     <button onClick={fishtank}>Fish Tank</button>
                     <button onClick={movethefish}>Poke the tank</button>
+                </div>
+                <div>
+                    <button onClick={addSprite1}>Add Sprite</button>
+                    <button onClick={drawSprite1}>Draw Sprite</button>
                 </div>
                 <div>
                     <button onClick={renderScreen}>Render</button>

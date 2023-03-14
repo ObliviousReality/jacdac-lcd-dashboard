@@ -12,7 +12,8 @@ export enum RenderTypes {
     S,
     G,
     B,
-    I
+    I,
+    N
 }
 
 export default RenderTypes;
