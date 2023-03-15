@@ -38,23 +38,10 @@ export class Sprite extends RenderItem {
     }
 
     draw(context: any, scale: any): void {
-        context.fillStyle = `rgb(${this.colour[0]}, ${this.colour[1]}, ${this.colour[2]})`;
-        context.strokeStyle = `rgb(${this.colour[0]}, ${this.colour[1]}, ${this.colour[2]})`;
-        context.lineWidth = this.width * scale * this.localScale;
         for (let i = 0; i < this.w; i++) {
             for (let j = 0; j < this.h; j++) {
                 if (this.spriteData[j][i]) {
-                    if (advancedRenderMode) {
-                        // for (let k = (this.x + (i)); k < (this.x + (i * this.localScale)); k++) {
-                        //     for (let l = (this.y + (j)); l < (this.y + (j * this.localScale)); l++) {
-                        //         buffer.set(k, l, this.colour);
-                        //     }
-                        // }
-                        buffer.fillRect(this.x + (i * this.localScale), this.y + (j * this.localScale), this.localScale, this.localScale, this.colour);
-                        // Log("Setting sprite pixel X: " + i.toString() + " Y: " + j.toString());
-                    } else {
-                        context.fillRect((this.x + (i * this.localScale)) * scale, (this.y + (j * this.localScale)) * scale, scale * this.localScale, scale * this.localScale);
-                    }
+                    buffer.fillRect(this.x + (i * this.localScale), this.y + (j * this.localScale), this.localScale, this.localScale, this.colour);
                 }
             }
         }
@@ -78,7 +65,6 @@ export class Sprite extends RenderItem {
         if (Sprite.spriteOffset == 0) {
             Sprite.spriteOffset = Object.keys(sprites).length;
         }
-
         let sdata: number[][] = [];
         for (let i = 0; i < h; i++) {
             let n: number[] = [];
@@ -86,10 +72,8 @@ export class Sprite extends RenderItem {
                 n.push(data.shift());
             }
             sdata.push(n);
-            // Log(n);
         }
-
-        Sprite.bonusSprites.sprites[(sid - Sprite.spriteOffset).toString()] = { "width": w, "height": h , "data" : sdata};
+        Sprite.bonusSprites.sprites[(sid - Sprite.spriteOffset).toString()] = { "width": w, "height": h, "data": sdata };
 
     }
 }

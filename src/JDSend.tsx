@@ -1,4 +1,4 @@
-import { SRV_ROTARY_ENCODER } from "jacdac-ts";
+import { Packet, SRV_ROTARY_ENCODER } from "jacdac-ts";
 import * as React from "react";
 import { useServices } from "react-jacdac";
 import RenderTypes from "./RenderTypes.ts";
@@ -335,27 +335,47 @@ export const JDSend = () => {
         createUpdate(103, UpdateTypes.T, [getRndInteger(-50, 50), getRndInteger(-50, 50)]);
     }
 
-    const newSprite = (id, w, h, data: number[]) => {
-        let arr = new Uint8Array(4 + data.length);
+    const newSprite = (id, w, h, data: number[][]) => {
+        let arr = new Uint8Array(4 + (w * h));
         arr[0] = RenderTypes.N;
         arr[1] = id;
         arr[2] = w;
         arr[3] = h;
         let i = 4;
-        data.map((item) => arr[i++] = item);
-        rotService.sendCmdAsync(10, arr, false);
+        data.map((item) => item.map((item2) => { arr[i++] = item2 }));
+        // rotService.sendCmdAsync(10, arr, false);
+        rotService.sendPacketAsync(Packet.from(0x080, arr));
     }
 
     const addSprite1 = () => {
         let data =
-            [1, 0, 1,
-                0, 1, 0,
-                1, 0, 1];
+            [[1, 0, 1],
+            [0, 1, 0],
+            [1, 0, 1]];
         newSprite(72, 3, 3, data);
+    }
+    const addSprite2 = () => {
+        // let w = getRndInteger(10, 20);
+        // let h = getRndInteger(10, 20);
+        let w = 10;
+        let h = 10;
+        let data: number[][] = [];
+        for (let i = 0; i < w; i++) {
+            data.push([]);
+            for (let j = 0; j < h; j++) {
+                // data[i][j] = getRndInteger(0, 2);
+                data[i][j] = 1;
+            }
+        }
+        newSprite(70, w, h, data);
     }
 
     const drawSprite1 = () => {
         drawSprite(80, 80, 72, 100);
+    }
+
+    const drawSprite2 = () => {
+        drawSprite(20, 20, 70, 100);
     }
 
     if (rotService != null) {
@@ -413,6 +433,8 @@ export const JDSend = () => {
                 <div>
                     <button onClick={addSprite1}>Add Sprite</button>
                     <button onClick={drawSprite1}>Draw Sprite</button>
+                    <button onClick={addSprite2}>Add Sprite 2</button>
+                    <button onClick={drawSprite2}>Draw Sprite 2</button>
                 </div>
                 <div>
                     <button onClick={renderScreen}>Render</button>

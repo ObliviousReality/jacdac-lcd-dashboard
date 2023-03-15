@@ -1,4 +1,4 @@
-import { PACKET_SEND, SRV_ROTARY_ENCODER } from "jacdac-ts";
+import { Packet, PACKET_SEND, SRV_ROTARY_ENCODER } from "jacdac-ts";
 import { useServices } from "react-jacdac";
 import { addGroup, addItem, clear, del, init, refresh, setColour, setDrawWidth, setFilled, update } from "./Canvas.tsx";
 import { Circle } from "./Circle.ts";
@@ -14,17 +14,11 @@ const JDConn = () => {
     const rotService = useServices({ serviceClass: SRV_ROTARY_ENCODER })[0];
 
 
-    const handlePacket = (pkt) => {
+    const handlePacket = (pkt: Packet) => {
         // Log("Packet Received: " + pkt);
-        let x: string = pkt.toString();
-        let y = x.split(" ");
-        let data = y[3];
-        let newdata = data.match(/.{1,2}/g)?.toString().split(",");
-        let outdata = newdata?.map((item) => parseInt(item, 16));
-        if (!outdata) {
-            console.log("Error with parsed Data");
-            return;
-        }
+        // Log(pkt.data);
+        let outdata: number[] = [];
+        pkt.data.forEach((item) => outdata.push(item));
         switch (outdata[0]) {
             case RenderTypes.X:
                 clear();
