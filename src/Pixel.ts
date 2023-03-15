@@ -1,3 +1,4 @@
+import { buffer } from "./Canvas.tsx";
 import RenderItem from "./RenderItem.ts";
 
 export class Pixel extends RenderItem {
@@ -7,11 +8,12 @@ export class Pixel extends RenderItem {
         this.y = this.unconvCoord(params[2], params[3]);
     }
 
-    draw(context: any, scale: any): void {
-        context.fillStyle = `rgb(${this.colour[0]}, ${this.colour[1]}, ${this.colour[2]})`;
-        context.strokeStyle = `rgb(${this.colour[0]}, ${this.colour[1]}, ${this.colour[2]})`;
-        context.lineWidth = this.width * scale;
-        context.fillRect(this.x * scale, this.y * scale, scale, scale);
+    draw(scale: any): void {
+        // context.fillStyle = `rgb(${this.colour[0]}, ${this.colour[1]}, ${this.colour[2]})`;
+        // context.strokeStyle = `rgb(${this.colour[0]}, ${this.colour[1]}, ${this.colour[2]})`;
+        // context.lineWidth = this.width * scale;
+        // context.fillRect(this.x * scale, this.y * scale, scale, scale);
+        buffer.fillRect(this.x * scale, this.y * scale, scale, scale);
     }
 
     setPosition(data: number[]): void {

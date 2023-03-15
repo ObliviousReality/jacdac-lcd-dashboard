@@ -1,4 +1,4 @@
-import { advancedRenderMode, buffer } from "./Canvas.tsx";
+import { buffer } from "./Canvas.tsx";
 import RenderItem from "./RenderItem.ts";
 
 export class Line extends RenderItem {
@@ -23,18 +23,8 @@ export class Line extends RenderItem {
         }
     }
 
-    draw(context: any, scale: any): void {
-        if (advancedRenderMode) {
-            buffer.fillLine(this.x, this.y, this.x2, this.y2, this.colour);
-        } else {
-            context.fillStyle = `rgb(${this.colour[0]}, ${this.colour[1]}, ${this.colour[2]})`;
-            context.strokeStyle = `rgb(${this.colour[0]}, ${this.colour[1]}, ${this.colour[2]})`;
-            context.lineWidth = this.width * scale;
-            context.beginPath();
-            context.moveTo(this.x * scale, this.y * scale);
-            context.lineTo(this.x2 * scale, this.y2 * scale);
-            context.stroke();
-        }
+    draw(scale: any): void {
+        buffer.fillLine(this.x, this.y, this.x2, this.y2, this.colour);
     }
 
     setPosition(data: number[]): void {

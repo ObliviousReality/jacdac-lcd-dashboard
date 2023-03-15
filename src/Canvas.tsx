@@ -37,7 +37,6 @@ var groupIDList: number[] = [];
 
 var topZ = 0;
 
-export var advancedRenderMode: boolean = true;
 var autoRefreshMode: boolean = true;
 
 // var buffer: number[][][] = [];
@@ -59,15 +58,6 @@ export const init = (data: number) => {
     switch (cmd) {
         case InitTypes.A:
             autoRefreshMode = bit ? true : false;
-            break;
-        case InitTypes.R:
-            advancedRenderMode = bit ? true : false;
-            // if (advancedRenderMode) {
-            //     buildBuffer();
-            // }
-            // else {
-            //     buffer = [];
-            // }
             if (autoRefreshMode) {
                 refresh();
             }
@@ -76,15 +66,6 @@ export const init = (data: number) => {
             break;
     }
 }
-
-// const buildBuffer = () => {
-//     for (let i = 0; i < context.canvas.width; i++) {
-//         buffer.push([]);
-//         for (let j = 0; j < context.canvas.height; j++) {
-//             buffer[i].push([0, 0, 128, 0]);
-//         }
-//     }
-// }
 
 export const addItem = (item: RenderItem) => {
     if (ItemList == undefined) {
@@ -120,7 +101,6 @@ export const addItem = (item: RenderItem) => {
 export const refresh = () => {
     let st = Date.now();
     let ctx = canvas.getContext('2d');
-    // ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     let temp: RenderItem = ItemList;
     while (temp) {
         if (temp.visibility) {
@@ -128,23 +108,15 @@ export const refresh = () => {
         }
         temp = temp.next;
     }
-    if (advancedRenderMode) {
-        for (let i = 0; i < buffer.width; i++) {
-            for (let j = 0; j < buffer.height; j++) {
-                const c = buffer.get(i, j);
-                context.fillStyle = `rgb(${c[0]}, ${c[1]}, ${c[2]})`;
-                // if (i == 80 && j == 80) {
-                //     Log("C: " + c);
-                //     Log("Fillstyle: " + context.fillStyle.toString());
-                // }
-                context.fillRect(i * scaleFactor, j * scaleFactor, scaleFactor, scaleFactor);
-            }
+    for (let i = 0; i < buffer.width; i++) {
+        for (let j = 0; j < buffer.height; j++) {
+            const c = buffer.get(i, j);
+            context.fillStyle = `rgb(${c[0]}, ${c[1]}, ${c[2]})`;
+            context.fillRect(i * scaleFactor, j * scaleFactor, scaleFactor, scaleFactor);
         }
     }
-    if (advancedRenderMode) {
-        // st = (Date.now() - st);
-        // Log("Render Time: " + st.toString() + "ms");
-    }
+    // st = (Date.now() - st);
+    // Log("Render Time: " + st.toString() + "ms");
 }
 
 export const setColour = (r: number, g: number, b: number, a: undefined | number = 255) => {

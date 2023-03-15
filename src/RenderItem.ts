@@ -81,7 +81,7 @@ export class RenderItem {
         this.next = undefined;
     }
 
-    draw(context, scale) {
+    draw(scale) {
         Log("Drawing in the wrong place.");
     }
 

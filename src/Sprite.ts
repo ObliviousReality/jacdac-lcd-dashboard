@@ -37,7 +37,7 @@ export class Sprite extends RenderItem {
         this.h = spriteJSON.height;
     }
 
-    draw(context: any, scale: any): void {
+    draw(scale: any): void {
         for (let i = 0; i < this.w; i++) {
             for (let j = 0; j < this.h; j++) {
                 if (this.spriteData[j][i]) {

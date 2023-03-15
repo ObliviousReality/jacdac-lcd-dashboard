@@ -303,14 +303,6 @@ export const JDSend = () => {
         sendInitCmd(InitTypes.A, 0);
     }
 
-    const advancedRenderTypeOn = () => {
-        sendInitCmd(InitTypes.R, 1);
-    }
-
-    const advancedRenderTypeOff = () => {
-        sendInitCmd(InitTypes.R, 0);
-    }
-
     const fishtank = () => {
         setColour(255, 177, 0, 255);
         createGroup(100, 10);
@@ -385,8 +377,6 @@ export const JDSend = () => {
                 <div>
                     <button onClick={autoRenderOn}>Enable Auto Render</button>
                     <button onClick={autoRenderOff}>Disable Auto Render</button>
-                    <button onClick={advancedRenderTypeOn}>Enable Advanced Render</button>
-                    <button onClick={advancedRenderTypeOff}>Disable Advanced Render</button>
                 </div>
                 <div>
                     <button onClick={drawRect}>Rect</button>

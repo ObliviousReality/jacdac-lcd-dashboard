@@ -21,33 +21,21 @@ export class Rect extends RenderItem {
         }
     }
 
-    draw(context: any, scale: any): void {
-        if (advancedRenderMode) {
-            if (this.filled) {
-                for (let i = this.x; i < this.x + this.w * this.localScale; i++) {
-                    for (let j = this.y; j < this.h + this.y * this.localScale; j++) {
-                        buffer.set(i, j, this.colour);
-                    }
+    draw(scale: any): void {
+        if (this.filled) {
+            for (let i = this.x; i < this.x + this.w * this.localScale; i++) {
+                for (let j = this.y; j < this.h + this.y * this.localScale; j++) {
+                    buffer.set(i, j, this.colour);
                 }
-            }
-            else {
-                buffer.fillLine(this.x, this.y, this.x + this.w, this.y, this.colour);
-                buffer.fillLine(this.x + this.w, this.y, this.x + this.w, this.y + this.h, this.colour);
-                buffer.fillLine(this.x, this.y + this.h, this.x + this.w, this.y + this.h, this.colour);
-                buffer.fillLine(this.x, this.y, this.x, this.y + this.h, this.colour);
             }
         }
         else {
-            context.fillStyle = `rgb(${this.colour[0]}, ${this.colour[1]}, ${this.colour[2]})`;
-            context.strokeStyle = `rgb(${this.colour[0]}, ${this.colour[1]}, ${this.colour[2]})`;
-            context.lineWidth = this.width * scale;
-            if (this.filled) {
-                context.fillRect(this.x * scale, this.y * scale, this.w * scale, this.h * scale);
-
-            } else {
-                context.strokeRect(this.x * scale, this.y * scale, this.w * scale, this.h * scale);
-            }
+            buffer.fillLine(this.x, this.y, this.x + this.w, this.y, this.colour);
+            buffer.fillLine(this.x + this.w, this.y, this.x + this.w, this.y + this.h, this.colour);
+            buffer.fillLine(this.x, this.y + this.h, this.x + this.w, this.y + this.h, this.colour);
+            buffer.fillLine(this.x, this.y, this.x, this.y + this.h, this.colour);
         }
+
     }
 
     setPosition(data: number[]): void {
