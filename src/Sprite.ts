@@ -66,10 +66,23 @@ export class Sprite extends RenderItem {
             Sprite.spriteOffset = Object.keys(sprites).length;
         }
         let sdata: number[][] = [];
+        let ctr = 0;
+        let index = 0;
+        let tdata: number[] = [];
+        for (let i = 0; i < data.length; i++) {
+            for (let j = 7; j >= 0; j--) {
+                if (data[i] & (1 << j)) {
+                    tdata.push(1);
+                }
+                else {
+                    tdata.push(0);
+                }
+            }
+        }
         for (let i = 0; i < h; i++) {
             let n: number[] = [];
             for (let j = 0; j < w; j++) {
-                n.push(data.shift());
+                n.push(tdata.shift());
             }
             sdata.push(n);
         }

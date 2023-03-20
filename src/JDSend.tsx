@@ -327,38 +327,43 @@ export const JDSend = () => {
         createUpdate(103, UpdateTypes.T, [getRndInteger(-50, 50), getRndInteger(-50, 50)]);
     }
 
-    const newSprite = (id, w, h, data: number[][]) => {
-        let arr = new Uint8Array(4 + (w * h));
+    const newSprite = (id, w, h, data: number[]) => {
+        let arr = new Uint8Array(4 + Math.ceil((w * h) / 8));
         arr[0] = RenderTypes.N;
         arr[1] = id;
         arr[2] = w;
         arr[3] = h;
-        let i = 4;
-        data.map((item) => item.map((item2) => { arr[i++] = item2 }));
+        let next = 4;
+        for (let i = 0; i < Math.ceil((w * h) / 8); i++) {
+            let temp = 0;
+            let ctr = 7;
+            for (let j: number = 0 + (i * 8); ctr >= 0; j++) {
+                temp = temp + ((data[j] != undefined ? data[j] : 0) << ctr);
+                ctr--;
+            }
+            arr[next] = temp;
+            next++;
+        }
+        Log(arr.length.toString());
         // rotService.sendCmdAsync(10, arr, false);
         rotService.sendPacketAsync(Packet.from(0x080, arr));
     }
 
     const addSprite1 = () => {
         let data =
-            [[1, 0, 1],
-            [0, 1, 0],
-            [1, 0, 1]];
+            [1, 0, 1,
+                0, 1, 0,
+                1, 0, 1];
         newSprite(72, 3, 3, data);
     }
     const addSprite2 = () => {
-        // let w = getRndInteger(10, 20);
-        // let h = getRndInteger(10, 20);
-        let w = 10;
-        let h = 10;
-        let data: number[][] = [];
-        for (let i = 0; i < w; i++) {
-            data.push([]);
-            for (let j = 0; j < h; j++) {
-                // data[i][j] = getRndInteger(0, 2);
-                data[i][j] = 1;
-            }
+        let w = 43;
+        let h = 43;
+        let data: number[] = [];
+        for (let i = 0; i < w * h; i++) {
+            data[i] = getRndInteger(0, 2);
         }
+        Log(data.length.toString());
         newSprite(70, w, h, data);
     }
 
