@@ -1,4 +1,4 @@
-import { advancedRenderMode, buffer } from "./Canvas.tsx";
+import { buffer } from "./Canvas.tsx";
 import RenderItem from "./RenderItem.ts";
 import Log from "./Logger.tsx";
 
@@ -30,10 +30,25 @@ export class Rect extends RenderItem {
             }
         }
         else {
-            buffer.fillLine(this.x, this.y, this.x + this.w, this.y, this.colour);
-            buffer.fillLine(this.x + this.w, this.y, this.x + this.w, this.y + this.h, this.colour);
-            buffer.fillLine(this.x, this.y + this.h, this.x + this.w, this.y + this.h, this.colour);
-            buffer.fillLine(this.x, this.y, this.x, this.y + this.h, this.colour);
+            if (this.width == 1) {
+                buffer.fillLine(this.x, this.y, this.x + this.w, this.y, this.colour);
+                buffer.fillLine(this.x + this.w, this.y, this.x + this.w, this.y + this.h, this.colour);
+                buffer.fillLine(this.x, this.y + this.h, this.x + this.w, this.y + this.h, this.colour);
+                buffer.fillLine(this.x, this.y, this.x, this.y + this.h, this.colour);
+            }
+            else {
+                for (let off = - Math.floor(this.width / 2); off < Math.ceil(this.width / 2); off++) {
+                    let x = this.x + off;
+                    let y = this.y + off;
+                    let w = this.w - 2 *off;
+                    let h = this.h - 2 * off;
+
+                    buffer.fillLine(x, y, x + w, y, this.colour);
+                    buffer.fillLine(x + w, y, x + w, y + h, this.colour);
+                    buffer.fillLine(x, y + h, x + w, y + h, this.colour);
+                    buffer.fillLine(x, y, x, y + h, this.colour);
+                }
+            }
         }
 
     }

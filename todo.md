@@ -7,6 +7,6 @@
 5. Fix Scaling
 6. Rotation
 7. Customisable Origin Rotation
-8. Alpha transparency in Advanced Mode
+8. ~~Alpha transparency in Advanced Mode~~
 9. Anti-Aliasing
 10. Vector Fonts

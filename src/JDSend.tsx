@@ -362,6 +362,7 @@ export const JDSend = () => {
         let data: number[] = [];
         for (let i = 0; i < w * h; i++) {
             data[i] = getRndInteger(0, 2);
+            // data[i] = 1;
         }
         Log(data.length.toString());
         newSprite(70, w, h, data);
@@ -373,6 +374,24 @@ export const JDSend = () => {
 
     const drawSprite2 = () => {
         drawSprite(20, 20, 70, 100);
+    }
+
+    const setWidth = (w) => {
+        let arr = new Uint8Array(2);
+        arr[0] = RenderTypes.W;
+        arr[1] = w;
+        rotService.sendCmdAsync(10, arr, false);
+    }
+
+    const oneWidth = () => {
+        setWidth(1);
+    }
+    const twoWidth = () => {
+        setWidth(2);
+    }
+
+    const threeWidth = () => {
+        setWidth(3);
     }
 
     if (rotService != null) {
@@ -430,6 +449,11 @@ export const JDSend = () => {
                     <button onClick={drawSprite1}>Draw Sprite</button>
                     <button onClick={addSprite2}>Add Sprite 2</button>
                     <button onClick={drawSprite2}>Draw Sprite 2</button>
+                </div>
+                <div>
+                    <button onClick={oneWidth}>Width 1</button>
+                    <button onClick={twoWidth}>Width 2</button>
+                    <button onClick={threeWidth}>Width 3</button>
                 </div>
                 <div>
                     <button onClick={renderScreen}>Render</button>
