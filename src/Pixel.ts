@@ -1,5 +1,6 @@
 import { buffer } from "./Canvas.tsx";
 import RenderItem from "./RenderItem.ts";
+import Log from "./Logger.tsx";
 
 export class Pixel extends RenderItem {
     constructor(params: number[]) {
@@ -9,11 +10,7 @@ export class Pixel extends RenderItem {
     }
 
     draw(scale: any): void {
-        // context.fillStyle = `rgb(${this.colour[0]}, ${this.colour[1]}, ${this.colour[2]})`;
-        // context.strokeStyle = `rgb(${this.colour[0]}, ${this.colour[1]}, ${this.colour[2]})`;
-        // context.lineWidth = this.width * scale;
-        // context.fillRect(this.x * scale, this.y * scale, scale, scale);
-        buffer.fillRect(this.x * scale, this.y * scale, scale, scale);
+        buffer.fillRect(this.x, this.y, 1, 1, this.colour);
     }
 
     setPosition(data: number[]): void {

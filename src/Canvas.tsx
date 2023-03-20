@@ -39,13 +39,9 @@ var topZ = 0;
 
 var autoRefreshMode: boolean = true;
 
-// var buffer: number[][][] = [];
-export var buffer: Bitmap;
+var rotService;
 
-// export const setPixel = (x: number, y: number, c: number[]) => {
-//     if (x >= 0 && y >= 0)
-//         buffer[x][y] = c;
-// }
+export var buffer: Bitmap;
 
 export const unconvCoord = (upper, lower) => {
     return ((upper << 8) + lower) - 32767;
@@ -241,7 +237,7 @@ const Canvas = (props) => {
     const canvasRef = React.useRef(null);
 
     const service = useServices({ serviceClass: SRV_BUTTON })[0];
-    const rotService = useServices({ serviceClass: SRV_ROTARY_ENCODER })[0];
+    rotService = useServices({ serviceClass: SRV_ROTARY_ENCODER })[0];
 
     const buttonReg = useRegister(service, ButtonReg.Pressure);
 
@@ -284,6 +280,8 @@ const Canvas = (props) => {
                     setFilled(1);
                     addItem(new Rect([RenderTypes.R, 256, 0, 0, width, height, 0]));
                     setFilled(0);
+
+                    window.addEventListener('mousedown', draw, false);
                 }
 
                 if (pressure > 0) {
@@ -300,11 +298,48 @@ const Canvas = (props) => {
     if (rotService) {
         return (
             <div>
-                <canvas id="thecanvas" ref={canvasRef} {...props} />
+                <canvas id="thecanvas" ref={canvasRef}  {...props} />
             </div>
         );
     }
 }
 
+function draw(e) {
+    var pos = getMousePosition(canvas, e);
+    // Log(pos.x.toString() + " " + pos.y.toString());
+    let x = Math.floor(pos.x / scaleFactor);
+    let y = Math.floor(pos.y / scaleFactor);
+    drawPixel(x, y);
+}
+
+function convCoord(c: number) {
+    let n = [0, 0];
+    c = c + 32767;
+    n[0] = c >> 8;
+    n[1] = c & 0xff;
+    return n;
+}
+
+function drawPixel(x, y) {
+    let arr = new Uint8Array(7);
+    arr[0] = RenderTypes.P;
+    arr[1] = 0;
+    x = convCoord(x);
+    y = convCoord(y);
+    arr[2] = x[0];
+    arr[3] = x[1];
+    arr[4] = y[0];
+    arr[5] = y[1];
+    arr[6] = 255;
+    rotService.sendCmdAsync(10, arr, false);
+}
+
+function getMousePosition(canvas, evnt) {
+    var rect = canvas.getBoundingClientRect();
+    return {
+        x: (evnt.clientX - rect.left) / (rect.right - rect.left) * canvas.width,
+        y: (evnt.clientY - rect.top) / (rect.bottom - rect.top) * canvas.height
+    };
+}
 
 export default Canvas;
