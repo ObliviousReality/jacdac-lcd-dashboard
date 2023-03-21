@@ -40,7 +40,7 @@ export class Rect extends RenderItem {
                 for (let off = - Math.floor(this.width / 2); off < Math.ceil(this.width / 2); off++) {
                     let x = this.x + off;
                     let y = this.y + off;
-                    let w = this.w - 2 *off;
+                    let w = this.w - 2 * off;
                     let h = this.h - 2 * off;
 
                     buffer.fillLine(x, y, x + w, y, this.colour);

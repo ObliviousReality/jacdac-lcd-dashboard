@@ -306,7 +306,6 @@ const Canvas = (props) => {
 
 function draw(e) {
     var pos = getMousePosition(canvas, e);
-    // Log(pos.x.toString() + " " + pos.y.toString());
     let x = Math.floor(pos.x / scaleFactor);
     let y = Math.floor(pos.y / scaleFactor);
     drawPixel(x, y);
