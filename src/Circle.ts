@@ -15,42 +15,66 @@ export class Circle extends RenderItem {
     }
 
     draw(scale: any): void {
-        let scaledRadius = this.r * this.localScale;
-        this.x = this.x | 0;
-        this.y = this.y | 0;
-        scaledRadius = scaledRadius | 0;
-        // short cuts
-        if (scaledRadius < 0)
-            return;
+        if (this.filled) {
+            let scaledRadius = (this.r * this.localScale);
+            this.x = this.x | 0;
+            this.y = this.y | 0;
+            scaledRadius = scaledRadius | 0;
+            // short cuts
+            if (scaledRadius < 0)
+                return;
 
-        // Bresenham's algorithm
-        let x = 0
-        let y = scaledRadius
-        let d = 3 - 2 * scaledRadius
+            // Bresenham's algorithm
+            let x = 0
+            let y = scaledRadius
+            let d = 3 - 2 * scaledRadius
 
-        while (y >= x) {
-            if (!this.filled) {
-                buffer.set(this.x + x, this.y + y, this.colour);
-                buffer.set(this.x - x, this.y + y, this.colour);
-                buffer.set(this.x + x, this.y - y, this.colour);
-                buffer.set(this.x - x, this.y - y, this.colour);
-                buffer.set(this.x + y, this.y + x, this.colour);
-                buffer.set(this.x - y, this.y + x, this.colour);
-                buffer.set(this.x + y, this.y - x, this.colour);
-                buffer.set(this.x - y, this.y - x, this.colour);
-            }
-            else {
+            while (y >= x) {
                 buffer.fillLine(this.x + x, this.y + y, this.x - x, this.y + y, this.colour);
                 buffer.fillLine(this.x + x, this.y - y, this.x - x, this.y - y, this.colour);
                 buffer.fillLine(this.x + y, this.y + x, this.x - y, this.y + x, this.colour);
                 buffer.fillLine(this.x + y, this.y - x, this.x - y, this.y - x, this.colour);
+                x++
+                if (d > 0) {
+                    y--
+                    d += 4 * (x - y) + 10
+                } else {
+                    d += 4 * x + 6
+                }
             }
-            x++
-            if (d > 0) {
-                y--
-                d += 4 * (x - y) + 10
-            } else {
-                d += 4 * x + 6
+        }
+        else {
+            for (let off = - Math.floor(this.width / 2); off < Math.ceil(this.width / 2); off++) {
+                let scaledRadius = (this.r * this.localScale) + off;
+                this.x = this.x | 0;
+                this.y = this.y | 0;
+                scaledRadius = scaledRadius | 0;
+                // short cuts
+                if (scaledRadius < 0)
+                    return;
+
+                // Bresenham's algorithm
+                let x = 0
+                let y = scaledRadius
+                let d = 3 - 2 * scaledRadius
+
+                while (y >= x) {
+                    buffer.set(this.x + x, this.y + y, this.colour);
+                    buffer.set(this.x - x, this.y + y, this.colour);
+                    buffer.set(this.x + x, this.y - y, this.colour);
+                    buffer.set(this.x - x, this.y - y, this.colour);
+                    buffer.set(this.x + y, this.y + x, this.colour);
+                    buffer.set(this.x - y, this.y + x, this.colour);
+                    buffer.set(this.x + y, this.y - x, this.colour);
+                    buffer.set(this.x - y, this.y - x, this.colour);
+                    x++
+                    if (d > 0) {
+                        y--
+                        d += 4 * (x - y) + 10
+                    } else {
+                        d += 4 * x + 6
+                    }
+                }
             }
         }
     }
