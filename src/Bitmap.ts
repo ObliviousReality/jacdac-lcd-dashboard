@@ -104,7 +104,7 @@ export class Bitmap {
             }
             return this.buf[index]; // Return colour
         }
-        return [0, 0, 0]; 
+        return [0, 0, 0];
     }
 
     // FLattens a 2D coord into a 1D index.

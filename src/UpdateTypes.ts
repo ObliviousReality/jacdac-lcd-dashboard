@@ -1,14 +1,14 @@
 enum UpdateTypes {
-    V,
-    T,
-    P,
-    R,
-    A,
-    C,
-    W,
-    F,
+    Visibility,
+    Translate,
+    Position,
+    Resize,
+    Angle,
+    Colour,
+    Width,
+    Fill,
     Z,
-    S
+    Scale
 }
 
 export default UpdateTypes

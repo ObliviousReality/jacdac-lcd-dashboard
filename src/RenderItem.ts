@@ -16,7 +16,7 @@ export enum OriginTypes {
 
 export class RenderItem {
     type: number | undefined; // Type of item, like rect or circle
-    id: number | undefined; // ID for later referencing. 
+    id: number | undefined; // ID for later referencing.
     data: number[]; // Data.
 
     x: number; // X coord
@@ -38,7 +38,7 @@ export class RenderItem {
     constructor(params: number[]) {
         this.type = params.shift();
         this.id = params.shift();
-        if (this.type != RenderTypes.G) // Groups have no layer.
+        if (this.type != RenderTypes.Group) // Groups have no layer.
             this.z = params.pop();
         if (this.z == 0) { // Item's can't have a Z of 0
             if (this.id != 256) { // Unless it's the background.
@@ -57,7 +57,7 @@ export class RenderItem {
         this.width = globalDrawWidth;
         if (this.type != RenderTypes.G) { // If not a group: (TODO: Groups in groups?)
             if (globalGroup > 0) { // If a group has been selected
-                let gr = groupList.find(g => g.groupID == globalGroup); 
+                let gr = groupList.find(g => g.groupID == globalGroup);
                 if (gr) {
                     gr.items.push(this); // Add to group.
                 }

@@ -179,31 +179,32 @@ export const update = (id: number, params: number[]) => {
         }
     }
     switch (params.shift()) {
-        case UpdateTypes.V:
+        case UpdateTypes.Visibility:
             var val = unconvCoord(params[0], params[1]);
             head.setVisibility(val ? true : false);
             break;
-        case UpdateTypes.T:
+        case UpdateTypes.Translate:
+            Log("Translate");
             head.translate(params);
             break;
-        case UpdateTypes.P:
+        case UpdateTypes.Position:
             head.setPosition(params);
             break;
-        case UpdateTypes.R:
+        case UpdateTypes.Resize:
             head.resize(params);
             break;
-        case UpdateTypes.A:
+        case UpdateTypes.Angle:
             var val = unconvCoord(params[0], params[1]);
             head.setAngle(val);
             break;
-        case UpdateTypes.C:
+        case UpdateTypes.Colour:
             head.setColour(params);
             break;
-        case UpdateTypes.W:
+        case UpdateTypes.Width:
             var val = unconvCoord(params[0], params[1]);
             head.setWidth(val);
             break;
-        case UpdateTypes.F:
+        case UpdateTypes.Fill:
             var val = unconvCoord(params[0], params[1]);
             head.setFilled(val ? true : false);
             break;
@@ -216,7 +217,7 @@ export const update = (id: number, params: number[]) => {
             del(head.id);
             addItem(head);
             break;
-        case UpdateTypes.S:
+        case UpdateTypes.Scale:
             var val = unconvCoord(params[0], params[1]);
             head.setScale(val);
             break;
@@ -240,7 +241,7 @@ export const addGroup = (data: number[]) => {
         let g = new Group(data); // Create a new group.
         groupList.push(g);
         groupIDList.push(gid);
-        addItem(g); // Add to item list, just for updating purposes. 
+        addItem(g); // Add to item list, just for updating purposes.
     }
 }
 
@@ -269,7 +270,7 @@ const Canvas = (props) => {
         ctx.canvas.width = width * scaleFactor;
         ctx.canvas.height = height * scaleFactor;
         scaletext.innerText = "Dimensions: " + width + "x" + height + ", with scaling factor " + scaleFactor;
-        // ^ Update text element accordingly. 
+        // ^ Update text element accordingly.
         refresh();
     }
 
@@ -281,14 +282,16 @@ const Canvas = (props) => {
                 context.canvas.width = width * scaleFactor; // Set width
                 context.canvas.height = height * scaleFactor; // Set height
                 if (!initialSetup) { // Only once
-                    buffer = new Bitmap(context.canvas.width, context.canvas.height); // Create the buffer
+                    buffer = new Bitmap(width, height); // Create the buffer
                     globalColour.push(0); // Build the default starting colour.
                     globalColour.push(0);
                     globalColour.push(0);
                     initialSetup = true; // Don't do this again.
                     setFilled(1); // Solid
                     let coord = convCoord(0);
-                    addItem(new Rect([RenderTypes.R, 256, coord[0], coord[1], coord[0], coord[1], width, height, 0]));
+                    let cw = convCoord(width);
+                    let ch = convCoord(height);
+                    addItem(new Rect([RenderTypes.Rect, 256, coord[0], coord[1], coord[0], coord[1], cw[0], cw[1], ch[0], ch[1], 0]));
                     // ^ The black background of the display. HTML Canvas is by default white, LCD will be black, so this counteracts.
                     setFilled(0); // Reset.
 
@@ -329,7 +332,7 @@ function convCoord(c: number) {
 //Creates a new pixel at the selected location.
 function drawPixel(x, y) {
     let arr = new Uint8Array(7);
-    arr[0] = RenderTypes.P;
+    arr[0] = RenderTypes.Pixel;
     arr[1] = 0;
     x = convCoord(x);
     y = convCoord(y);

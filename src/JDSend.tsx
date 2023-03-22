@@ -27,14 +27,14 @@ export const JDSend = () => {
 
     const sendInitCmd = (type: number, bit: number) => {
         let arr = new Uint8Array(2);
-        arr[0] = RenderTypes.I;
+        arr[0] = RenderTypes.Init;
         arr[1] = (type << 1) + bit;
         rotService.sendCmdAsync(10, arr, false)
     }
 
     const createGroup = (id, gid) => {
         let arr = new Uint8Array(3);
-        arr[0] = RenderTypes.G;
+        arr[0] = RenderTypes.Group;
         arr[1] = id;
         arr[2] = gid;
         rotService.sendCmdAsync(10, arr, false)
@@ -42,7 +42,7 @@ export const JDSend = () => {
 
     const createCircle = (x, y, r, z) => {
         let arr = new Uint8Array(9);
-        arr[0] = RenderTypes.O;
+        arr[0] = RenderTypes.Circle;
         arr[1] = idCounter++;
         x = convCoord(x);
         arr[2] = x[0];
@@ -59,7 +59,7 @@ export const JDSend = () => {
 
     const createRect = (x, y, w, h, z) => {
         let arr = new Uint8Array(11);
-        arr[0] = RenderTypes.R;
+        arr[0] = RenderTypes.Rect;
         arr[1] = idCounter++;
         x = convCoord(x);
         y = convCoord(y);
@@ -79,7 +79,7 @@ export const JDSend = () => {
 
     const createLine = (x1, y1, x2, y2, z) => {
         let arr = new Uint8Array(11);
-        arr[0] = RenderTypes.L;
+        arr[0] = RenderTypes.Line;
         arr[1] = idCounter++;
         x1 = convCoord(x1);
         x2 = convCoord(x2);
@@ -99,7 +99,7 @@ export const JDSend = () => {
 
     const createUpdate = (uid, ut, p: number[]) => {
         let arr = new Uint8Array(3 + (p.length * 2));
-        arr[0] = RenderTypes.U;
+        arr[0] = RenderTypes.Update;
         arr[1] = uid;
         arr[2] = ut;
         let n = 3;
@@ -133,7 +133,7 @@ export const JDSend = () => {
 
     const setColour = (r: number, g: number, b: number, a: number = 255) => {
         let arr = new Uint8Array(5);
-        arr[0] = RenderTypes.C;
+        arr[0] = RenderTypes.Colour;
         arr[1] = r;
         arr[2] = g;
         arr[3] = b;
@@ -159,7 +159,7 @@ export const JDSend = () => {
 
     const setFill = (fill: boolean) => {
         let arr = new Uint8Array(2);
-        arr[0] = RenderTypes.F;
+        arr[0] = RenderTypes.Fill;
         arr[1] = fill ? 1 : 0;
         rotService.sendCmdAsync(10, arr, false);
     }
@@ -173,26 +173,26 @@ export const JDSend = () => {
     }
 
     const moveFirst = () => {
-        createUpdate(1, UpdateTypes.P, [0, 0]);
+        createUpdate(1, UpdateTypes.Position, [0, 0]);
     }
 
     const delFirst = () => {
         let arr = new Uint8Array(2);
-        arr[0] = RenderTypes.D;
+        arr[0] = RenderTypes.Delete;
         arr[1] = 1;
         rotService.sendCmdAsync(10, arr, false);
     }
 
     const clearScreen = () => {
         let arr = new Uint8Array(1);
-        arr[0] = RenderTypes.X;
+        arr[0] = RenderTypes.Clear;
         rotService.sendCmdAsync(10, arr, false);
         idCounter = 1;
     }
 
     const renderScreen = () => {
         let arr = new Uint8Array(1);
-        arr[0] = RenderTypes.B;
+        arr[0] = RenderTypes.Render;
         rotService.sendCmdAsync(10, arr, false);
         idCounter = 1;
     }
@@ -207,7 +207,7 @@ export const JDSend = () => {
 
     const drawSprite = (x, y, id: number, z: number) => {
         let arr = new Uint8Array(8);
-        arr[0] = RenderTypes.S;
+        arr[0] = RenderTypes.Sprite;
         arr[1] = idCounter++;
         arr[2] = id;
         x = convCoord(x);
@@ -261,10 +261,10 @@ export const JDSend = () => {
     }
 
     const bigAlphabet = () => {
-        createUpdate(70, UpdateTypes.S, [2]);
+        createUpdate(70, UpdateTypes.Scale, [2]);
     }
     const smallAlphabet = () => {
-        createUpdate(70, UpdateTypes.S, [1]);
+        createUpdate(70, UpdateTypes.Scale, [1]);
     }
 
     const groupTest = () => {
@@ -280,26 +280,26 @@ export const JDSend = () => {
     }
 
     const moveGroup = () => {
-        createUpdate(69, UpdateTypes.T, [10, 10]);
+        createUpdate(69, UpdateTypes.Translate, [10, 10]);
     }
 
     const moveGroup2 = () => {
-        createUpdate(69, UpdateTypes.T, [-10, -10]);
+        createUpdate(69, UpdateTypes.Translate, [-10, -10]);
     }
 
     const bigGroup = () => {
-        createUpdate(69, UpdateTypes.S, [2]);
+        createUpdate(69, UpdateTypes.Scale, [2]);
     }
     const regularGroup = () => {
-        createUpdate(69, UpdateTypes.S, [1]);
+        createUpdate(69, UpdateTypes.Scale, [1]);
     }
 
     const autoRenderOn = () => {
-        sendInitCmd(InitTypes.A, 1);
+        sendInitCmd(InitTypes.AutoRefresh, 1);
     }
 
     const autoRenderOff = () => {
-        sendInitCmd(InitTypes.A, 0);
+        sendInitCmd(InitTypes.AutoRefresh, 0);
     }
 
     const fishtank = () => {
@@ -320,15 +320,15 @@ export const JDSend = () => {
     }
 
     const movethefish = () => {
-        createUpdate(100, UpdateTypes.T, [getRndInteger(-50, 50), getRndInteger(-50, 50)]);
-        createUpdate(101, UpdateTypes.T, [getRndInteger(-50, 50), getRndInteger(-50, 50)]);
-        createUpdate(102, UpdateTypes.T, [getRndInteger(-50, 50), getRndInteger(-50, 50)]);
-        createUpdate(103, UpdateTypes.T, [getRndInteger(-50, 50), getRndInteger(-50, 50)]);
+        createUpdate(100, UpdateTypes.Translate, [getRndInteger(-50, 50), getRndInteger(-50, 50)]);
+        createUpdate(101, UpdateTypes.Translate, [getRndInteger(-50, 50), getRndInteger(-50, 50)]);
+        createUpdate(102, UpdateTypes.Translate, [getRndInteger(-50, 50), getRndInteger(-50, 50)]);
+        createUpdate(103, UpdateTypes.Translate, [getRndInteger(-50, 50), getRndInteger(-50, 50)]);
     }
 
     const newSprite = (id, w, h, data: number[]) => {
         let arr = new Uint8Array(4 + Math.ceil((w * h) / 8));
-        arr[0] = RenderTypes.N;
+        arr[0] = RenderTypes.NewSprite;
         arr[1] = id;
         arr[2] = w;
         arr[3] = h;
@@ -377,7 +377,7 @@ export const JDSend = () => {
 
     const setWidth = (w) => {
         let arr = new Uint8Array(2);
-        arr[0] = RenderTypes.W;
+        arr[0] = RenderTypes.Width;
         arr[1] = w;
         rotService.sendCmdAsync(10, arr, false);
     }

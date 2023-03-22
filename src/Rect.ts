@@ -12,6 +12,7 @@ export class Rect extends RenderItem {
         this.y = this.unconvCoord(params[2], params[3]);
         this.w = this.unconvCoord(params[4], params[5]);
         this.h = this.unconvCoord(params[6], params[7]);
+        Log([this.x, this.y, this.w, this.h]);
     }
 
     draw(scale: any): void {

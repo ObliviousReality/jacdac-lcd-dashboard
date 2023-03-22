@@ -20,54 +20,54 @@ const JDConn = () => {
         // Log("Packet Received: " + pkt);
         // Log(pkt.data);
         let outdata: number[] = [];
-        pkt.data.forEach((item) => outdata.push(item)); // Conv to array. 
+        pkt.data.forEach((item) => outdata.push(item)); // Conv to array.
         switch (outdata[0]) { // Switch on type:
-            case RenderTypes.X:
+            case RenderTypes.Clear:
                 clear();
                 break;
-            case RenderTypes.P:
+            case RenderTypes.Pixel:
                 addItem(new Pixel(outdata));
                 break;
-            case RenderTypes.C:
+            case RenderTypes.Colour:
                 setColour(outdata[1], outdata[2], outdata[3], outdata[4]);
                 break;
-            case RenderTypes.F:
+            case RenderTypes.Fill:
                 setFilled(outdata[1]);
                 break;
-            case RenderTypes.W:
+            case RenderTypes.Width:
                 setDrawWidth(outdata[1]);
                 break;
-            case RenderTypes.R:
+            case RenderTypes.Rect:
                 addItem(new Rect(outdata));
                 break;
-            case RenderTypes.L:
+            case RenderTypes.Line:
                 addItem(new Line(outdata));
                 break;
-            case RenderTypes.O:
+            case RenderTypes.Circle:
                 addItem(new Circle(outdata));
                 break;
-            case RenderTypes.U:
+            case RenderTypes.Update:
                 outdata.shift();
                 let id = outdata.shift();
                 update(id, outdata);
                 break;
-            case RenderTypes.D:
+            case RenderTypes.Delete:
                 del(outdata[1]);
                 break;
-            case RenderTypes.S:
+            case RenderTypes.Sprite:
                 addItem(new Sprite(outdata));
                 break;
-            case RenderTypes.G:
+            case RenderTypes.Group:
                 //New Group
                 addGroup(outdata);
                 break;
-            case RenderTypes.B:
+            case RenderTypes.Render:
                 refresh();
                 break;
-            case RenderTypes.I:
+            case RenderTypes.Init:
                 init(outdata[1]);
                 break;
-            case RenderTypes.N:
+            case RenderTypes.NewSprite:
                 outdata.shift();
                 Sprite.addSprite(outdata);
                 break;

@@ -1,19 +1,19 @@
 export enum RenderTypes {
-    X,
-    P,
-    C,
-    F,
-    W,
-    R,
-    L,
-    O,
-    U,
-    D,
-    S,
-    G,
-    B,
-    I,
-    N
+    Clear,
+    Pixel,
+    Colour,
+    Fill,
+    Width,
+    Rect,
+    Line,
+    Circle,
+    Update,
+    Delete,
+    Sprite,
+    Group,
+    Render,
+    Init,
+    NewSprite
 }
 
 export default RenderTypes;

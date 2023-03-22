@@ -1,4 +1,4 @@
-import { advancedRenderMode, buffer } from "./Canvas.tsx";
+import { buffer } from "./Canvas.tsx";
 import RenderItem from "./RenderItem.ts";
 import Log from "./Logger.tsx";
 
@@ -59,7 +59,7 @@ export class Sprite extends RenderItem {
         this.y += this.unconvCoord(data[2], data[3]);
     }
 
-    //Global function for adding new sprites. 
+    //Global function for adding new sprites.
     static addSprite(data) {
         let sid = data.shift();
         let w = data.shift();
