@@ -10,7 +10,7 @@ export class Pixel extends RenderItem {
     }
 
     draw(scale: any): void {
-        buffer.fillRect(this.x, this.y, 1, 1, this.colour);
+        buffer.set(this.x, this.y, this.colour);
     }
 
     setPosition(data: number[]): void {
@@ -24,6 +24,6 @@ export class Pixel extends RenderItem {
     }
 
     resize(data: number[]): void {
-        ;
+        ; // Can't really resize a pixel. 
     }
 }

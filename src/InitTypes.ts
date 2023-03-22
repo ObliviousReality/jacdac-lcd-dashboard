@@ -1,3 +1,3 @@
 export enum InitTypes{
-    A
+    AutoRefresh
 }

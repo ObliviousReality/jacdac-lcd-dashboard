@@ -3,17 +3,19 @@ import RenderItem from "./RenderItem.ts";
 
 export class Group extends RenderItem {
     groupID: number;
-    items: RenderItem[] = [];
-    visibility: boolean = false;
+    items: RenderItem[] = []; // List of items in the group.
 
     constructor(params: number[]) {
         super(params);
         this.groupID = params[0];
+        this.visibility = false; // Override to be false.
     }
 
-    draw(context: any, scale: any): void {
-        ;
+    draw(scale: any): void {
+        ; // No draw command
     }
+
+    // All the update commands are edited to affect the items in the group not the group itself.
 
     setVisibility(nv: boolean): void {
         for (let i = 0; i < this.items.length; i++) {
@@ -37,6 +39,7 @@ export class Group extends RenderItem {
 
     resize(data: number[]): void {
         Log("Error: Cannot resize a group.");
+        // This is because the three resizeable elements all have to be manipulated in different ways to resize them.
     }
 
     setColour(colour: number[]): void {

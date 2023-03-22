@@ -2,25 +2,17 @@ import { buffer } from "./Canvas.tsx";
 import RenderItem from "./RenderItem.ts";
 
 export class Line extends RenderItem {
-    x: number;
+    x: number; // Coord 1
     y: number;
-    x2: number;
+    x2: number; // Coord 2
     y2: number;
 
     constructor(params: number[]) {
         super(params);
-        if (params.length > 5) {
-            this.x = this.unconvCoord(params[0], params[1]);
-            this.y = this.unconvCoord(params[2], params[3]);
-            this.x2 = this.unconvCoord(params[4], params[5]);
-            this.y2 = this.unconvCoord(params[6], params[7]);
-        }
-        else {
-            this.x = params[0];
-            this.y = params[1];
-            this.x2 = params[2];
-            this.y2 = params[3];
-        }
+        this.x = this.unconvCoord(params[0], params[1]);
+        this.y = this.unconvCoord(params[2], params[3]);
+        this.x2 = this.unconvCoord(params[4], params[5]);
+        this.y2 = this.unconvCoord(params[6], params[7]);
     }
 
     draw(scale: any): void {

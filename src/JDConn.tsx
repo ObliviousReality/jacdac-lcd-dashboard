@@ -12,14 +12,16 @@ import { Sprite } from "./Sprite.ts";
 const JDConn = () => {
 
     const rotService = useServices({ serviceClass: SRV_ROTARY_ENCODER })[0];
+    // Connect to device.
+    //TODO: Change to LCD service.
 
-
+    // On receiving a packet:
     const handlePacket = (pkt: Packet) => {
         // Log("Packet Received: " + pkt);
         // Log(pkt.data);
         let outdata: number[] = [];
-        pkt.data.forEach((item) => outdata.push(item));
-        switch (outdata[0]) {
+        pkt.data.forEach((item) => outdata.push(item)); // Conv to array. 
+        switch (outdata[0]) { // Switch on type:
             case RenderTypes.X:
                 clear();
                 break;
@@ -63,7 +65,6 @@ const JDConn = () => {
                 refresh();
                 break;
             case RenderTypes.I:
-                //
                 init(outdata[1]);
                 break;
             case RenderTypes.N:
@@ -78,7 +79,7 @@ const JDConn = () => {
 
     if (rotService != null) {
 
-        rotService.on(PACKET_SEND, pkt => handlePacket(pkt));
+        rotService.on(PACKET_SEND, pkt => handlePacket(pkt)); // Receive data.
     }
 
 }

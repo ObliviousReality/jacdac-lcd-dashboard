@@ -1,6 +1,8 @@
 import { CONNECTION_STATE, injectDevTools } from "jacdac-ts";
 import { useBus } from "react-jacdac";
 
+// Code taken from the Jacdac docs, see:
+// https://microsoft.github.io/jacdac-docs/clients/javascript/
 export default function Connect() {
 
     const connect = document.getElementById("connectbtn") as HTMLButtonElement;
