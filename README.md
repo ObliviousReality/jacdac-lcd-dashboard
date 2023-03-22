@@ -54,15 +54,36 @@ Objects can be updated after creation in various ways:
 - Change fill
 - Change visibility
 - Change layer
+- Change scale
+
+### Sprites
 
 Sprites are also supported, and are fairly easy to add more of. As part of sprite handling text is also supported - both upper and lower case characters are included as sprites.
 
 Sprites can be added by creating PNG images with a transparent background, and filling in the shape with non-transparent pixels. The image can then be added to the `sprites` subdirectory, and then upon running the file `spritetojson.py` the sprite will be added to the sprites JSON file and the Typescript enumerator to allow code access.
 
+Additional sprites can be added at runtime using the NewSprite command. This takes a new ID for the sprite (which must be outside the range of the inbuilt sprites) and an array of bytes for the pixels. Each pixel is represented as a bit; to allow sprites as large as possible these must be packed into bytes. These sprites are stored in memory only, so are per-session.
+
+Example:
+
+To create a small 3x3 cross, in simple array format it would look like:
+
+[[1,0,1],
+
+ [0,1,0],
+
+ [1,0,1]]
+
+This would then be packed down as:
+
+[10101010, 10000000]
+
+### Groups
+
 An alternative to sprites which allows multiple colours is the use of groups, a group can be created using a custom ID and until that ID is changed or set to 0 (meaning subsequent items are added to no groups), all created items are added to this group. Updating this group in any way (except resizing) will affect all items in the group.
 
-## To Do
+### Environment Controls
 
-- Send the commands from a microbit program, not HTML buttons.
-- A render command, to allow the user to create a draw loop for animations.
-- More inbuilt sprites.
+The init command is there for controlling environment variables of the screen. At the moment only one command is supported, which disables the auto-refresh of the screen. This gives manual control over the refreshing to the user, allowing the creation of animations and the like.
+
+More commands could definitely be added here, notably some form of colour depth control or perhaps ways of limiting the size of the screen.

@@ -49,6 +49,16 @@ export const unconvCoord = (upper, lower) => {
     return ((upper << 8) + lower) - 32767;
 }
 
+//Converts a JS Number into two Uint8s, allowing a range of numbers between
+// -32768 and 32768.
+function convCoord(c: number) {
+    let n = [0, 0];
+    c = c + 32767;
+    n[0] = c >> 8;
+    n[1] = c & 0xff;
+    return n;
+}
+
 // Initialise Command.
 export const init = (data: number) => {
     let bit = data % 1; // First bit is the toggle (on/off)
@@ -198,7 +208,16 @@ export const update = (id: number, params: number[]) => {
             head.setAngle(val);
             break;
         case UpdateTypes.Colour:
-            head.setColour(params);
+            let c: number[] = [];
+            c.push(unconvCoord(params[0], params[1]));
+            c.push(unconvCoord(params[2], params[3]));
+            c.push(unconvCoord(params[4], params[5]));
+            try {
+                c.push(unconvCoord(params[6], params[7]));
+            } catch (error) {
+                c.push(255);
+            }
+            head.setColour(c);
             break;
         case UpdateTypes.Width:
             var val = unconvCoord(params[0], params[1]);
@@ -317,16 +336,6 @@ function draw(e) {
     let x = Math.floor(pos.x / scaleFactor);
     let y = Math.floor(pos.y / scaleFactor);
     drawPixel(x, y); // Set pixel
-}
-
-//Converts a JS Number into two Uint8s, allowing a range of numbers between
-// -32768 and 32768.
-function convCoord(c: number) {
-    let n = [0, 0];
-    c = c + 32767;
-    n[0] = c >> 8;
-    n[1] = c & 0xff;
-    return n;
 }
 
 //Creates a new pixel at the selected location.
